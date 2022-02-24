@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EmployeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,12 +20,12 @@ class Employe
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
@@ -40,12 +42,28 @@ class Employe
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $adMail;
+    private $adresseMail;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $estRepresentantLegal;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="interlocuteur")
+     */
+    private $recherches;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="employes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $entreprise;
+
+    public function __construct()
+    {
+        $this->recherches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -100,14 +118,14 @@ class Employe
         return $this;
     }
 
-    public function getAdMail(): ?string
+    public function getAdresseMail(): ?string
     {
-        return $this->adMail;
+        return $this->adresseMail;
     }
 
-    public function setAdMail(?string $adMail): self
+    public function setAdresseMail(?string $adresseMail): self
     {
-        $this->adMail = $adMail;
+        $this->adresseMail = $adresseMail;
 
         return $this;
     }
@@ -120,6 +138,48 @@ class Employe
     public function setEstRepresentantLegal(?bool $estRepresentantLegal): self
     {
         $this->estRepresentantLegal = $estRepresentantLegal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recherche>
+     */
+    public function getRecherches(): Collection
+    {
+        return $this->recherches;
+    }
+
+    public function addRecherch(Recherche $recherch): self
+    {
+        if (!$this->recherches->contains($recherch)) {
+            $this->recherches[] = $recherch;
+            $recherch->setInterlocuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecherch(Recherche $recherch): self
+    {
+        if ($this->recherches->removeElement($recherch)) {
+            // set the owning side to null (unless already changed)
+            if ($recherch->getInterlocuteur() === $this) {
+                $recherch->setInterlocuteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
 
         return $this;
     }

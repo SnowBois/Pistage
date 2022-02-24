@@ -167,6 +167,28 @@ class Stage
      */
     private $nombreHeuresEnseignement;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Recherche::class, mappedBy="stage", cascade={"persist", "remove"})
+     */
+    private $recherche;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EtablissementEnseignement::class, inversedBy="stages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etablissementEnseignement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EnseignantReferent::class, inversedBy="stages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $enseignantReferent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="stages")
+     */
+    private $adresse;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -528,6 +550,64 @@ class Stage
     public function setNombreHeuresEnseignement(int $nombreHeuresEnseignement): self
     {
         $this->nombreHeuresEnseignement = $nombreHeuresEnseignement;
+
+        return $this;
+    }
+
+    public function getRecherche(): ?Recherche
+    {
+        return $this->recherche;
+    }
+
+    public function setRecherche(?Recherche $recherche): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($recherche === null && $this->recherche !== null) {
+            $this->recherche->setStage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($recherche !== null && $recherche->getStage() !== $this) {
+            $recherche->setStage($this);
+        }
+
+        $this->recherche = $recherche;
+
+        return $this;
+    }
+
+    public function getEtablissementEnseignement(): ?EtablissementEnseignement
+    {
+        return $this->etablissementEnseignement;
+    }
+
+    public function setEtablissementEnseignement(?EtablissementEnseignement $etablissementEnseignement): self
+    {
+        $this->etablissementEnseignement = $etablissementEnseignement;
+
+        return $this;
+    }
+
+    public function getEnseignantReferent(): ?EnseignantReferent
+    {
+        return $this->enseignantReferent;
+    }
+
+    public function setEnseignantReferent(?EnseignantReferent $enseignantReferent): self
+    {
+        $this->enseignantReferent = $enseignantReferent;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

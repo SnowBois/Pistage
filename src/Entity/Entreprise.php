@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EntrepriseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +73,35 @@ class Entreprise
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $siteWeb;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Employe::class, mappedBy="entreprise")
+     */
+    private $employes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="entreprise")
+     */
+    private $recherches;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="entreprise")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $services;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="entreprises")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adresse;
+
+    public function __construct()
+    {
+        $this->employes = new ArrayCollection();
+        $this->recherches = new ArrayCollection();
+        $this->services = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -217,6 +248,108 @@ class Entreprise
     public function setSiteWeb(?string $siteWeb): self
     {
         $this->siteWeb = $siteWeb;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Employe>
+     */
+    public function getEmployes(): Collection
+    {
+        return $this->employes;
+    }
+
+    public function addEmploye(Employe $employe): self
+    {
+        if (!$this->employes->contains($employe)) {
+            $this->employes[] = $employe;
+            $employe->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploye(Employe $employe): self
+    {
+        if ($this->employes->removeElement($employe)) {
+            // set the owning side to null (unless already changed)
+            if ($employe->getEntreprise() === $this) {
+                $employe->setEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recherche>
+     */
+    public function getRecherches(): Collection
+    {
+        return $this->recherches;
+    }
+
+    public function addRecherch(Recherche $recherch): self
+    {
+        if (!$this->recherches->contains($recherch)) {
+            $this->recherches[] = $recherch;
+            $recherch->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecherch(Recherche $recherch): self
+    {
+        if ($this->recherches->removeElement($recherch)) {
+            // set the owning side to null (unless already changed)
+            if ($recherch->getEntreprise() === $this) {
+                $recherch->setEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): self
+    {
+        if (!$this->services->contains($service)) {
+            $this->services[] = $service;
+            $service->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): self
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getEntreprise() === $this) {
+                $service->setEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

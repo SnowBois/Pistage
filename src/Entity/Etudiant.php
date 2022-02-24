@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,28 @@ class Etudiant
      * @ORM\Column(type="string", length=100)
      */
     private $adresseMail;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="etudiant")
+     */
+    private $recherches;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Cursus::class, inversedBy="etudiants")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $cursus;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adresse;
+
+    public function __construct()
+    {
+        $this->recherches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +110,60 @@ class Etudiant
     public function setAdresseMail(string $adresseMail): self
     {
         $this->adresseMail = $adresseMail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recherche>
+     */
+    public function getRecherches(): Collection
+    {
+        return $this->recherches;
+    }
+
+    public function addRecherch(Recherche $recherch): self
+    {
+        if (!$this->recherches->contains($recherch)) {
+            $this->recherches[] = $recherch;
+            $recherch->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecherch(Recherche $recherch): self
+    {
+        if ($this->recherches->removeElement($recherch)) {
+            // set the owning side to null (unless already changed)
+            if ($recherch->getEtudiant() === $this) {
+                $recherch->setEtudiant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCursus(): ?Cursus
+    {
+        return $this->cursus;
+    }
+
+    public function setCursus(?Cursus $cursus): self
+    {
+        $this->cursus = $cursus;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

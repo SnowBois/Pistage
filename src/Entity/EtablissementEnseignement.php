@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EtablissementEnseignementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,22 @@ class EtablissementEnseignement
      * @ORM\Column(type="string", length=15)
      */
     private $numeroTelephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stage::class, mappedBy="etablissementEnseignement")
+     */
+    private $stages;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etablissementsEnseignement")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adresse;
+
+    public function __construct()
+    {
+        $this->stages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +104,48 @@ class EtablissementEnseignement
     public function setNumeroTelephone(string $numeroTelephone): self
     {
         $this->numeroTelephone = $numeroTelephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stage>
+     */
+    public function getStages(): Collection
+    {
+        return $this->stages;
+    }
+
+    public function addStage(Stage $stage): self
+    {
+        if (!$this->stages->contains($stage)) {
+            $this->stages[] = $stage;
+            $stage->setEtablissementEnseignement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStage(Stage $stage): self
+    {
+        if ($this->stages->removeElement($stage)) {
+            // set the owning side to null (unless already changed)
+            if ($stage->getEtablissementEnseignement() === $this) {
+                $stage->setEtablissementEnseignement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

@@ -27,6 +27,12 @@ class EtatRecherche
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Recherche::class, inversedBy="etatsRecherche")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $recherche;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +58,18 @@ class EtatRecherche
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getRecherche(): ?Recherche
+    {
+        return $this->recherche;
+    }
+
+    public function setRecherche(?Recherche $recherche): self
+    {
+        $this->recherche = $recherche;
 
         return $this;
     }

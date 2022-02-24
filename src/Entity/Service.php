@@ -22,6 +22,18 @@ class Service
      */
     private $nom;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="services")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $entreprise;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="services")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adresse;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +47,30 @@ class Service
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?Adresse $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }
