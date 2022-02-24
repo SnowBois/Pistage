@@ -7,8 +7,10 @@
 {% block contenu %}
     <div class="container-fluid">
 	    <div class="row">
-            <div class="col-md-12">
-                Cette page contiendra le formulaire d'ajout d'une recherche
+            <div class="col-md-6 offset-md-3">
+                    {{ form(vueFormulaireRecherche) }}
+
+                    <button type="submit" class="btn btn-dark">Enregistrer</button>
             </div>
 	    </div>
     </div>
