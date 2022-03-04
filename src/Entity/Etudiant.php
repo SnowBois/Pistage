@@ -35,6 +35,11 @@ class Etudiant
     private $numeroEtudiant;
 
     /**
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $numeroTelephone;
+
+    /**
      * @ORM\Column(type="string", length=100)
      */
     private $adresseMail;
@@ -55,6 +60,12 @@ class Etudiant
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresse;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="etudiant", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $utilisateur;
 
     public function __construct()
     {
@@ -102,6 +113,18 @@ class Etudiant
         return $this;
     }
 
+    public function getNumeroTelephone(): ?string
+    {
+        return $this->numeroTelephone;
+    }
+
+    public function setNumeroTelephone(?string $numeroTelephone): self
+    {
+        $this->numeroTelephone = $numeroTelephone;
+
+        return $this;
+    }
+
     public function getAdresseMail(): ?string
     {
         return $this->adresseMail;
@@ -122,22 +145,22 @@ class Etudiant
         return $this->recherches;
     }
 
-    public function addRecherch(Recherche $recherch): self
+    public function addRecherche(Recherche $recherche): self
     {
-        if (!$this->recherches->contains($recherch)) {
-            $this->recherches[] = $recherch;
-            $recherch->setEtudiant($this);
+        if (!$this->recherches->contains($recherche)) {
+            $this->recherches[] = $recherche;
+            $recherche->setEtudiant($this);
         }
 
         return $this;
     }
 
-    public function removeRecherch(Recherche $recherch): self
+    public function removeRecherche(Recherche $recherche): self
     {
-        if ($this->recherches->removeElement($recherch)) {
+        if ($this->recherches->removeElement($recherche)) {
             // set the owning side to null (unless already changed)
-            if ($recherch->getEtudiant() === $this) {
-                $recherch->setEtudiant(null);
+            if ($recherche->getEtudiant() === $this) {
+                $recherche->setEtudiant(null);
             }
         }
 
@@ -164,6 +187,18 @@ class Etudiant
     public function setAdresse(?Adresse $adresse): self
     {
         $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(Utilisateur $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }
