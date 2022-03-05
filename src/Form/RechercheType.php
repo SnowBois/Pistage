@@ -14,7 +14,7 @@ class RechercheType extends AbstractType
         $builder
             ->add('mediaContact')
             ->add('observations')
-            ->add('interlocuteur')
+            ->add('employe')
             ->add('entreprise')
             // ->add('etudiant')
             // ->add('stage')

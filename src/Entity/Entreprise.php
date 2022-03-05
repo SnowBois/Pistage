@@ -290,22 +290,22 @@ class Entreprise
         return $this->recherches;
     }
 
-    public function addRecherch(Recherche $recherch): self
+    public function addRecherche(Recherche $recherche): self
     {
-        if (!$this->recherches->contains($recherch)) {
-            $this->recherches[] = $recherch;
-            $recherch->setEntreprise($this);
+        if (!$this->recherches->contains($recherche)) {
+            $this->recherches[] = $recherche;
+            $recherche->setEntreprise($this);
         }
 
         return $this;
     }
 
-    public function removeRecherch(Recherche $recherch): self
+    public function removeRecherche(Recherche $recherche): self
     {
-        if ($this->recherches->removeElement($recherch)) {
+        if ($this->recherches->removeElement($recherche)) {
             // set the owning side to null (unless already changed)
-            if ($recherch->getEntreprise() === $this) {
-                $recherch->setEntreprise(null);
+            if ($recherche->getEntreprise() === $this) {
+                $recherche->setEntreprise(null);
             }
         }
 

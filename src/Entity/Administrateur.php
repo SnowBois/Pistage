@@ -18,8 +18,8 @@ class Administrateur
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="administrateur", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="administrateur", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $utilisateur;
 

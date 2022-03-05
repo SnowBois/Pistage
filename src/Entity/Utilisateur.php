@@ -35,12 +35,14 @@ class Utilisateur implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToOne(targetEntity=Administrateur::class, mappedBy="utilisateur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Administrateur::class, mappedBy="utilisateur", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $administrateur;
 
     /**
-     * @ORM\OneToOne(targetEntity=Etudiant::class, mappedBy="utilisateur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Etudiant::class, mappedBy="utilisateur", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $etudiant;
 

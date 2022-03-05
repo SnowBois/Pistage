@@ -50,7 +50,7 @@ class Employe
     private $estRepresentantLegal;
 
     /**
-     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="interlocuteur")
+     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="employe")
      */
     private $recherches;
 
@@ -150,22 +150,22 @@ class Employe
         return $this->recherches;
     }
 
-    public function addRecherch(Recherche $recherch): self
+    public function addRecherche(Recherche $recherche): self
     {
-        if (!$this->recherches->contains($recherch)) {
-            $this->recherches[] = $recherch;
-            $recherch->setInterlocuteur($this);
+        if (!$this->recherches->contains($recherche)) {
+            $this->recherches[] = $recherche;
+            $recherche->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeRecherch(Recherche $recherch): self
+    public function removeRecherche(Recherche $recherche): self
     {
-        if ($this->recherches->removeElement($recherch)) {
+        if ($this->recherches->removeElement($recherche)) {
             // set the owning side to null (unless already changed)
-            if ($recherch->getInterlocuteur() === $this) {
-                $recherch->setInterlocuteur(null);
+            if ($recherche->getEmploye() === $this) {
+                $recherche->setEmploye(null);
             }
         }
 

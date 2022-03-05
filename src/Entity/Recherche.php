@@ -37,7 +37,7 @@ class Recherche
     /**
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="recherches")
      */
-    private $interlocuteur;
+    private $employe;
 
     /**
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="recherches")
@@ -98,36 +98,36 @@ class Recherche
         return $this->etatsRecherche;
     }
 
-    public function addEtatsRecherche(EtatRecherche $etatsRecherche): self
+    public function addEtatRecherche(EtatRecherche $etatRecherche): self
     {
-        if (!$this->etatsRecherche->contains($etatsRecherche)) {
-            $this->etatsRecherche[] = $etatsRecherche;
-            $etatsRecherche->setRecherche($this);
+        if (!$this->etatsRecherche->contains($etatRecherche)) {
+            $this->etatsRecherche[] = $etatRecherche;
+            $etatRecherche->setRecherche($this);
         }
 
         return $this;
     }
 
-    public function removeEtatsRecherche(EtatRecherche $etatsRecherche): self
+    public function removeEtatRecherche(EtatRecherche $etatRecherche): self
     {
-        if ($this->etatsRecherche->removeElement($etatsRecherche)) {
+        if ($this->etatsRecherche->removeElement($etatRecherche)) {
             // set the owning side to null (unless already changed)
-            if ($etatsRecherche->getRecherche() === $this) {
-                $etatsRecherche->setRecherche(null);
+            if ($etatRecherche->getRecherche() === $this) {
+                $etatRecherche->setRecherche(null);
             }
         }
 
         return $this;
     }
 
-    public function getInterlocuteur(): ?Employe
+    public function getEmploye(): ?Employe
     {
-        return $this->interlocuteur;
+        return $this->employe;
     }
 
-    public function setInterlocuteur(?Employe $interlocuteur): self
+    public function setEmploye(?Employe $employe): self
     {
-        $this->interlocuteur = $interlocuteur;
+        $this->employe = $employe;
 
         return $this;
     }

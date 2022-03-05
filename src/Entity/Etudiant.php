@@ -62,8 +62,8 @@ class Etudiant
     private $adresse;
 
     /**
-     * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="etudiant", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="etudiant", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $utilisateur;
 
