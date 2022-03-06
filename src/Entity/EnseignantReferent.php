@@ -114,4 +114,9 @@ class EnseignantReferent
 
         return $this;
     }
+
+    public function getNomComplet(): ?string 
+    {
+        return $this->getPrenom() . ' ' . $this->getNom();
+    }
 }

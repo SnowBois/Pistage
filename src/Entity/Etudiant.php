@@ -202,4 +202,9 @@ class Etudiant
 
         return $this;
     }
+
+    public function getNomComplet(): ?string 
+    {
+        return $this->getPrenom() . ' ' . $this->getNom();
+    }
 }

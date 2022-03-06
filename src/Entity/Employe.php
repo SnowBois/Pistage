@@ -183,4 +183,14 @@ class Employe
 
         return $this;
     }
+
+    public function getNomComplet(): ?string 
+    {
+        return $this->getPrenom() . ' ' . $this->getNom();
+    }
+
+    public function getNomCompletEtEntreprise(): ?string 
+    {
+        return $this->getPrenom() . ' ' . $this->getNom() . ' (' . $this->getEntreprise()->getNom() . ')';
+    }
 }

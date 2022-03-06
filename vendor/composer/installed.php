@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd3a81e99963f114367465e8ef901a9626839c3a9',
+        'reference' => '71b17bfe83400351ba03c54b03405060e4022458',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd3a81e99963f114367465e8ef901a9626839c3a9',
+            'reference' => '71b17bfe83400351ba03c54b03405060e4022458',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -1230,12 +1230,12 @@
             'dev_requirement' => false,
         ),
         'symfony/var-dumper' => array(
-            'pretty_version' => 'v4.4.37',
-            'version' => '4.4.37.0',
+            'pretty_version' => 'v4.4.39',
+            'version' => '4.4.39.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/var-dumper',
             'aliases' => array(),
-            'reference' => 'e74eee4ec02de71db3d60151aa5b203c990556df',
+            'reference' => '35237c5e5dcb6593a46a860ba5b29c1d4683d80e',
             'dev_requirement' => false,
         ),
         'symfony/var-exporter' => array(

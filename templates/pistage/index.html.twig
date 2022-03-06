@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block titrePage %}
-    Journal de recherches de stage de {{etudiant.prenom}} {{etudiant.nom}}
+    Journal de recherches de stage de {{etudiant.getNomComplet()}}
 {% endblock %}
 
 {% block contenu %}

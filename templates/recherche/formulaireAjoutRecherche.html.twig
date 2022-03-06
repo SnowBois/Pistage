@@ -18,11 +18,41 @@
     <div class="container-fluid">
 	    <div class="row">
             <div class="col-md-6 offset-md-3">
-                    {{ form(vueFormulaireRecherche) }}
+                    {{ form_start(vueFormulaireRecherche) }}
+
+                    <div> <!-- Affichage du champ de sélection du média de contact de la recherche -->
+                        {{form_row(vueFormulaireRecherche.mediaContact, {'label': "Média de contact"})}} <br/>
+                    </div>
+
+                    <div> <!-- Affichage du champ de saisie des observations de la recherche -->
+                        {{form_row(vueFormulaireRecherche.observations, {'attr': {'placeholder': "Observations vis-à-vis de la recherche..."}}) }} <br/>
+                    </div>
+
+                    <HR>
+
+                    <div> <!-- Affichage du champ de sélection de l'entreprise associée à la recherche -->
+                        {{form_row(vueFormulaireRecherche.entreprise)}}
+                    </div>
+
+                    <br/>
+
+                    <HR>
+
+                    <div> <!-- Affichage du champ de sélection de l'employé associée à la recherche -->
+                        {{form_row(vueFormulaireRecherche.employe)}}
+                    </div>
+
+                    <HR>
+
+                    <div> <!-- Affichage des boutons radio de choix d'état de la recherche -->
+                        {{form_row(vueFormulaireRecherche.premierEtat, {'label': 'État de la recherche'})}}
+                    </div>
 
                     <br/>
 
                     <button type="submit" class="btn btn-dark">Enregistrer</button>
+
+                    {{ form_end(vueFormulaireRecherche) }}
             </div>
 	    </div>
     </div>
