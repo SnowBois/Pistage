@@ -12,12 +12,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Recherche;
 use App\Form\RechercheType;
 
+use App\Repository\EntrepriseRepository;
+
 class RechercheController extends AbstractController
 {
     /**
-     * @Route("/ajoutRecherche", name="pistage_formulaireAjoutRecherche")
+     * @Route("/ajoutRecherche", name="recherche_formulaireAjoutRecherche")
      */
-    public function ajouterRecherche(Request $requeteHTTP, EntityManagerInterface $manager): Response
+    public function ajouterRecherche(Request $requeteHTTP, EntityManagerInterface $manager, EntrepriseRepository $entrepriseRepository): Response
     {	
         // Création d'une recherche initialement vierge
         $recherche = new Recherche();
@@ -39,6 +41,8 @@ class RechercheController extends AbstractController
             return $this->redirectToRoute('pistage_accueil');
         }
 
-        return $this->render('pistage/formulaireAjoutRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView ()]);
+        // Récupération de la liste des entreprises disponibles
+
+        return $this->render('recherche/formulaireAjoutRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView ()]);
     }
 }
