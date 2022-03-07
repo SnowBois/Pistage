@@ -47,4 +47,20 @@ class RechercheRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant)
+    {
+        return $this->createQueryBuilder('rec')
+                    ->select('rec,ent,emp,etu,adr,eta')
+                    ->join('rec.entreprise', 'ent')
+                    ->join('ent.adresse', 'adr')
+                    ->join('rec.employe', 'emp')
+                    ->join('rec.etudiant', 'etu')
+                    ->join('rec.etatsRecherche', 'eta')
+                    ->andWhere('etu = :etudiant')
+                    ->setParameter('etudiant', $etudiant)
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }
 }

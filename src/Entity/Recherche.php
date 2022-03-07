@@ -38,12 +38,12 @@ class Recherche
     private $etatsRecherche;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="recherches")
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="recherches", cascade={"persist"})
      */
     private $employe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="recherches")
+     * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="recherches", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $entreprise;

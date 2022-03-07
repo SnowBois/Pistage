@@ -39,7 +39,10 @@ class RechercheController extends AbstractController
             $employe = $recherche->getEmploye();
             $entreprise = $recherche->getEntreprise();
 
-            $employe->setEntreprise($entreprise);
+            if($employe->getEntreprise() == null)
+            {
+                $employe->setEntreprise($entreprise);
+            }
 
             // On assigne la recherche saisie à l'utilisateur connecté
             $etudiant = $this->getUser()->getEtudiant();
@@ -56,7 +59,6 @@ class RechercheController extends AbstractController
 
             // Enregistrer la recherche en BD
             $manager->persist($etatRecherche);
-            $manager->persist($employe);
             $manager->persist($recherche);
             $manager->flush();
 

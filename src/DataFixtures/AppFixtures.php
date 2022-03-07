@@ -120,7 +120,7 @@ class AppFixtures extends Fixture
             $employe->setPrenom($faker->firstName());
             $employe->setFonction($faker->jobTitle());
             $employe->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
-            $employe->setAdresseMail($employe->getPrenom() . "." . $employe->getNom() . "@" . str_replace(' ', '', strtolower($entreprise->getNom())) . ".com");
+            $employe->setAdresseMail(strtolower($employe->getPrenom()) . "." . strtolower($employe->getNom()) . "@" . str_replace(' ', '', strtolower($entreprise->getNom())) . ".com");
 
             // Mise en place des relations
 

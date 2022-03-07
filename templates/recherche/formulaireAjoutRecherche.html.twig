@@ -1,15 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% use 'form_div_layout.html.twig' with form_label as base_form_label %}
-
-{% block form_label %}
-    {{ block('base_form_label') }}
-
-    {% if required %}
-        <span class="required" title="This field is required">*</span>
-    {% endif %}
-{% endblock %}
-
 {% block titrePage %}
     Formulaire d'ajout d'une recherche
 {% endblock %}

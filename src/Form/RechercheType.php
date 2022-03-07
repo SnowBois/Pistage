@@ -46,6 +46,15 @@ class RechercheType extends AbstractType
                 'placeholder' => "Sélectionner le média de contact..."
             ))
             ->add('observations', TextareaType::class, ['required' => false])
+            ->add('employe', EntityType::class, array(
+                'class' => Employe::class,
+                'choice_label' => 'nomComplet',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => "Choisissez l'employé..."
+            ))
             ->add('entreprise', EntityType::class, array(
                 'class' => Entreprise::class,
                 'choice_label' => 'nom',
@@ -80,6 +89,7 @@ class RechercheType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event)
             {
+                /*
                 $entreprise = $event->getData()->getEntreprise() ?? null;
 
                 $repositoryEmploye = $this->getRepositoryEmploye();
@@ -102,6 +112,7 @@ class RechercheType extends AbstractType
                     'placeholder' => "Choisissez l'employé...",
                     'disabled' => $entreprise === null
                 ));
+                */
             }
         );
     }
