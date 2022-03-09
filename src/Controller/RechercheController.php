@@ -39,11 +39,6 @@ class RechercheController extends AbstractController
             $employe = $recherche->getEmploye();
             $entreprise = $recherche->getEntreprise();
 
-            if($employe->getEntreprise() == null)
-            {
-                $employe->setEntreprise($entreprise);
-            }
-
             // On assigne la recherche saisie à l'utilisateur connecté
             $etudiant = $this->getUser()->getEtudiant();
             $recherche->setEtudiant($etudiant);
@@ -68,6 +63,6 @@ class RechercheController extends AbstractController
 
         // Récupération de la liste des entreprises disponibles
 
-        return $this->render('recherche/formulaireAjoutRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView ()]);
+        return $this->render('recherche/formulaireAjoutRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView()]);
     }
 }

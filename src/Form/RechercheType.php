@@ -15,6 +15,7 @@ use App\Entity\Entreprise;
 use App\Entity\Employe;
 use App\Repository\EmployeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -46,15 +47,7 @@ class RechercheType extends AbstractType
                 'placeholder' => "Sélectionner le média de contact..."
             ))
             ->add('observations', TextareaType::class, ['required' => false])
-            ->add('employe', EntityType::class, array(
-                'class' => Employe::class,
-                'choice_label' => 'nomComplet',
-
-                // used to render a select box, check boxes or radios
-                'multiple' => false,
-                'expanded' => false,
-                'placeholder' => "Choisissez l'employé..."
-            ))
+            ->add('employe')
             ->add('entreprise', EntityType::class, array(
                 'class' => Entreprise::class,
                 'choice_label' => 'nom',
@@ -87,32 +80,48 @@ class RechercheType extends AbstractType
             // ->add('stage')
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event)
+        $formModifier = function (FormInterface $form, Entreprise $entreprise = null) {
+            $employes = null === $entreprise ? array() : $entreprise->getEmployes();
+
+            if($employes == null)
             {
-                /*
-                $entreprise = $event->getData()->getEntreprise() ?? null;
-
-                $repositoryEmploye = $this->getRepositoryEmploye();
-
-                $employes = $entreprise === null ? [] : $repositoryEmploye->createQueryBuilder('em')
-                                            ->andWhere('em.entreprise = :entreprise')
-                                            ->setParameter('entreprise', $entreprise)
-                                            ->orderBy('em.nom', 'ASC')
-                                            ->getQuery()
-                                            ->getResult();
-
-                $event->getForm()->add('employe', EntityType::class, array(
+                $form->add('employe', EntityType::class, array(
                     'class' => Employe::class,
                     'choice_label' => 'nomComplet',
-
+    
                     // used to render a select box, check boxes or radios
                     'multiple' => false,
                     'expanded' => false,
-                    'choices' => $employes,
                     'placeholder' => "Choisissez l'employé...",
-                    'disabled' => $entreprise === null
+                    'disabled' => true
                 ));
-                */
+            }
+            else
+            {
+                $form->add('employe', EntityType::class, array(
+                    'class' => Employe::class,
+                    'choice_label' => 'nomComplet',
+    
+                    // used to render a select box, check boxes or radios
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => "Choisissez l'employé...",
+                    'choices' => $employes
+                ));
+            }
+        };
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) 
+            {
+                $data = $event->getData();
+                $formModifier($event->getForm(), $data->getEntreprise());
+            }
+        );
+
+        $builder->get('entreprise')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier) 
+            {
+                $entreprise = $event->getForm()->getData();
+                $formModifier($event->getForm()->getParent(), $entreprise);
             }
         );
     }

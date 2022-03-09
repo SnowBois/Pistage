@@ -48,7 +48,7 @@ class RechercheRepository extends ServiceEntityRepository
     }
     */
 
-    public function findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant)
+    public function findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiantAntechronologique($etudiant)
     {
         return $this->createQueryBuilder('rec')
                     ->select('rec,ent,emp,etu,adr,eta')
@@ -59,6 +59,7 @@ class RechercheRepository extends ServiceEntityRepository
                     ->join('rec.etatsRecherche', 'eta')
                     ->andWhere('etu = :etudiant')
                     ->setParameter('etudiant', $etudiant)
+                    ->orderBy('eta.date', 'DESC')
                     ->getQuery()
                     ->getResult()
         ;
