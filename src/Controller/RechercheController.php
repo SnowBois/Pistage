@@ -35,9 +35,16 @@ class RechercheController extends AbstractController
         // Traiter les données du formulaire s'il a été soumis et est valide
         if($formulaireRecherche->isSubmitted() && $formulaireRecherche->isValid())
         {
+            dump($recherche);
+
             // On récupère l'employé saisi pour l'assigner à l'entreprise choisie
             $employe = $recherche->getEmploye();
             $entreprise = $recherche->getEntreprise();
+
+            if($employe->getEntreprise() == null)
+            {
+                $employe->setEntreprise($entreprise);
+            }
 
             // On assigne la recherche saisie à l'utilisateur connecté
             $etudiant = $this->getUser()->getEtudiant();

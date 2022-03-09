@@ -47,7 +47,6 @@ class RechercheType extends AbstractType
                 'placeholder' => "Sélectionner le média de contact..."
             ))
             ->add('observations', TextareaType::class, ['required' => false])
-            ->add('employe')
             ->add('entreprise', EntityType::class, array(
                 'class' => Entreprise::class,
                 'choice_label' => 'nom',

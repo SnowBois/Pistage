@@ -29,7 +29,7 @@ class EtatRecherche
 
     /**
      * @ORM\ManyToOne(targetEntity=Recherche::class, inversedBy="etatsRecherche")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $recherche;
 
