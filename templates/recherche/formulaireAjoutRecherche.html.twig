@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block contenu %}
-    <div class="container-fluid">
+    <div id="chargement" style="display: none;">
+        <img src="{{ asset('/img/loading.gif') }}"/>
+    </div>
+
+    <div id="contenuPage" class="container-fluid">
 	    <div class="row">
             <div class="col-md-6 offset-md-3">
                     {{ form_start(vueFormulaireRecherche) }}
@@ -48,11 +52,17 @@
     </div>
 
     <script>
+        $( document ).ajaxStart(function() {
+            $( "#contenuPage" ).fadeOut();
+            $( "#chargement" ).fadeIn();
+        });
+
         var $entreprise = $('#recherche_entreprise');
             $entreprise.change(function() {
             var $form = $(this).closest('form');
             var data = {};
             data[$entreprise.attr('name')] = $entreprise.val();
+            
             $.ajax({
                 url : $form.attr('action'),
                 type: $form.attr('method'),
@@ -61,6 +71,11 @@
                     $('#recherche_employe').replaceWith(
                         $(html).find('#recherche_employe')
                     );
+
+                    $( document ).ajaxStop(function() {
+                        $( "#chargement" ).fadeOut();
+                        $( "#contenuPage" ).fadeIn();
+                    });
                 }
             });
         });
