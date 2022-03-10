@@ -23,7 +23,7 @@ class EtatRecherche
     private $etat;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 

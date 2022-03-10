@@ -40,7 +40,7 @@ class Adresse
     private $codePostal;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=50)
      */
     private $pays;
 

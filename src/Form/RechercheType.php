@@ -10,11 +10,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\ORM\EntityRepository;
 use App\Entity\Entreprise;
 use App\Entity\Employe;
 use App\Repository\EmployeRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\EntrepriseRepository;
+
 use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Form\FormEvent;
@@ -22,18 +22,6 @@ use Symfony\Component\Form\FormEvents;
 
 class RechercheType extends AbstractType
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    private function getRepositoryEmploye(): EmployeRepository
-    {
-        return $this->entityManager->getRepository(Employe::class);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $option): void
     {
         $builder
@@ -54,8 +42,8 @@ class RechercheType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => false,
                 'expanded' => false,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('e')
+                'query_builder' => function (EntrepriseRepository $repositoryEntreprise) {
+                    return $repositoryEntreprise->createQueryBuilder('e')
                         ->orderBy('e.nom', 'ASC');
                 },
                 'placeholder' => "Choisissez l'entreprise..."
@@ -82,32 +70,17 @@ class RechercheType extends AbstractType
         $formModifier = function (FormInterface $form, Entreprise $entreprise = null) {
             $employes = null === $entreprise ? array() : $entreprise->getEmployes();
 
-            if($employes == null)
-            {
-                $form->add('employe', EntityType::class, array(
-                    'class' => Employe::class,
-                    'choice_label' => 'nomComplet',
-    
-                    // used to render a select box, check boxes or radios
-                    'multiple' => false,
-                    'expanded' => false,
-                    'placeholder' => "Choisissez l'employé...",
-                    'disabled' => true
-                ));
-            }
-            else
-            {
-                $form->add('employe', EntityType::class, array(
-                    'class' => Employe::class,
-                    'choice_label' => 'nomComplet',
-    
-                    // used to render a select box, check boxes or radios
-                    'multiple' => false,
-                    'expanded' => false,
-                    'placeholder' => "Choisissez l'employé...",
-                    'choices' => $employes
-                ));
-            }
+            $form->add('employe', EntityType::class, array(
+                'class' => Employe::class,
+                'choice_label' => 'nomComplet',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => "Choisissez l'employé...",
+                'choices' => $employes,
+                'disabled' => $entreprise === null
+            ));
         };
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) 
