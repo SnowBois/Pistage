@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}
+    Formulaire d'ajout d'étudiants
+{% endblock %}
+
+{% block contenu %}
+    <div id="contenuPage" class="container-fluid">
+	    <div class="row">
+            <div class="col-md-6 offset-md-3">
+                    {{ form_start(vueFormulaireEtudiant) }}
+
+                    <div> <!-- Affichage du champ de sélection de fichier CSV -->
+                        {{form_row(vueFormulaireEtudiant.fichierCSV, {'label': "Fichier CSV"})}} <br/>
+                    </div>
+
+                    
+                    <button type="submit" class="btn btn-dark">Enregistrer</button>
+
+                    {{ form_end(vueFormulaireEtudiant) }}
+            </div>
+	    </div>
+    </div>
+{% endblock %}
+
+
