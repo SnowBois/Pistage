@@ -45,7 +45,7 @@ class Etudiant
     private $adresseMail;
 
     /**
-     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="etudiant")
+     * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="etudiant", nullable=true)
      */
     private $recherches;
 
@@ -56,7 +56,7 @@ class Etudiant
     private $cursus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants")
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants", nullable=true)
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresse;
