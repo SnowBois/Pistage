@@ -1,5 +1,5 @@
-label.required:after {
-    content: " *";
+label.required:before {
+    content: "* ";
     color: red;
 }
 
@@ -9,4 +9,9 @@ label.required:after {
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+/* Fix CSS du thème de formulaire de Bootstrap qui affiche les messages d'erreurs en blanc */
+.badge {
+    background-color:#dc3545;
 }

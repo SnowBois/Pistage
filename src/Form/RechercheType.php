@@ -20,6 +20,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class RechercheType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $option): void
@@ -57,6 +59,9 @@ class RechercheType extends AbstractType
                 ],
                 'multiple' => false,
                 'expanded' => true,
+                'constraints' => [
+                    new Assert\NotBlank()
+                ],
                 'label_attr' =>  [
                     'class'=>'radio-inline' // Pour que les boutons radio soient alignés
                 ],
@@ -79,7 +84,8 @@ class RechercheType extends AbstractType
                 'expanded' => false,
                 'placeholder' => "Choisissez l'employé...",
                 'choices' => $employes,
-                'disabled' => $entreprise === null
+                'disabled' => $entreprise === null,
+                'required' => false
             ));
         };
 

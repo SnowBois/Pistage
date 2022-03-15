@@ -39,9 +39,12 @@ class RechercheController extends AbstractController
             $employe = $recherche->getEmploye();
             $entreprise = $recherche->getEntreprise();
 
-            if($employe->getEntreprise() == null)
+            if($employe == null)
             {
-                $employe->setEntreprise($entreprise);
+                if($employe->getEntreprise() == null)
+                {
+                    $employe->setEntreprise($entreprise);
+                }
             }
 
             // On assigne la recherche saisie à l'utilisateur connecté
