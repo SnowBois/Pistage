@@ -13,10 +13,9 @@ class EtudiantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('fichier', FileType::class, [
+            ->add('fichierCSV', FileType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'placeholder' => 'Aucun fichier sélectionné',
                     'accept' => '.csv'
                 ]
             ]);

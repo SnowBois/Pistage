@@ -21,7 +21,7 @@ class RechercheController extends AbstractController
     /**
      * @Route("/ajoutRecherche", name="recherche_formulaireAjoutRecherche")
      */
-    public function ajouterRecherche(Request $requeteHTTP, EntityManagerInterface $manager, EntrepriseRepository $entrepriseRepository): Response
+    public function ajouterRecherche(Request $requeteHTTP, EntityManagerInterface $manager): Response
     {	
         // Création d'une recherche initialement vierge
         $recherche = new Recherche();
