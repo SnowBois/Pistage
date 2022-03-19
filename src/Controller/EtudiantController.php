@@ -80,16 +80,16 @@ class EtudiantController extends AbstractController
                     $ligneCourante = fgets($fichier);
                     $etudiantCourant = explode(";", $ligneCourante);
                     $etudiant = new Etudiant();
-                    $etudiant->setNom($etudiantCourant[GroupeEtudiantController::COLONNE_NOM]);
-                    $etudiant->setPrenom($etudiantCourant[GroupeEtudiantController::COLONNE_PRENOM]);
-                    $etudiant->setNumeroEtudiant($etudiantCourant[GroupeEtudiantController::COLONNE_NUMERO_ETUDIANT]);
-                    $etudiant->setNumeroTelephone($etudiantCourant[GroupeEtudiantController::COLONNE_NUMERO_TELEPHONE]);
-                    $etudiant->setAdresseMail($etudiantCourant[GroupeEtudiantController::COLONNE_ADRESSE_MAIL]);
+                    $etudiant->setNom($etudiantCourant[EtudiantController::COLONNE_NOM]);
+                    $etudiant->setPrenom($etudiantCourant[EtudiantController::COLONNE_PRENOM]);
+                    $etudiant->setNumeroEtudiant($etudiantCourant[EtudiantController::COLONNE_NUMERO_ETUDIANT]);
+                    $etudiant->setNumeroTelephone($etudiantCourant[EtudiantController::COLONNE_NUMERO_TELEPHONE]);
+                    $etudiant->setAdresseMail($etudiantCourant[EtudiantController::COLONNE_ADRESSE_MAIL]);
                     $adresse = new Adresse();
-                    $adresse->setVoie($etudiantCourant[GroupeEtudiantController::COLONNE_VOIE]);
-                    $adresse->setBatimentResidenceZI($etudiantCourant[GroupeEtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
-                    $adresse->setCommune($etudiantCourant[GroupeEtudiantController::COLONNE_COMMUNE]);
-                    $adresse->setCodePostal($etudiantCourant[GroupeEtudiantController::COLONNE_CODE_POSTAL]);
+                    $adresse->setVoie($etudiantCourant[EtudiantController::COLONNE_VOIE]);
+                    $adresse->setBatimentResidenceZI($etudiantCourant[EtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
+                    $adresse->setCommune($etudiantCourant[EtudiantController::COLONNE_COMMUNE]);
+                    $adresse->setCodePostal($etudiantCourant[EtudiantController::COLONNE_CODE_POSTAL]);
                     $etudiant->setAdresse($adresse);                    
                     $entityManager->persist($etudiant);
                 }
