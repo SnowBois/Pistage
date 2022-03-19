@@ -2,78 +2,144 @@
 
 namespace App\Controller;
 
+use App\Entity\Etudiant;
+use App\Entity\Adresse;
+use App\Form\EtudiantType;
+use App\Repository\EtudiantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Etudiant;
-use App\Form\EtudiantType;
 
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-
-use Symfony\Component\Form\FormError;
-
+/**
+ * @Route("/etudiant")
+ */
 class EtudiantController extends AbstractController
 {
+    const COLONNE_NOM = 0;
+    const COLONNE_PRENOM = 1;
+    const COLONNE_NUMERO_ETUDIANT = 2;
+    const COLONNE_NUMERO_TELEPHONE = 3;
+    const COLONNE_ADRESSE_MAIL = 4;
+    const COLONNE_VOIE = 5;
+    const COLONNE_BATIMENT_RESIDENCE_ZI = 6;
+    const COLONNE_COMMUNE = 7;
+    const COLONNE_CODE_POSTAL = 8;
+    const COLONNE_PAYS = 9;
+    const COLONNE_FORMATION = 10;
+
     /**
-     * @Route("/ajoutEtudiant", name="etudiant_formulaireAjoutEtudiant")
+     * @Route("/", name="etudiant_index", methods={"GET"})
      */
-    public function ajouterEtudiant(Request $requeteHTTP, EntityManagerInterface $manager): Response
+    public function index(EtudiantRepository $etudiantRepository): Response
     {
-        // Création d'un objet formulaire pour ajouter des étudiants
-        $formulaireEtudiant = $this->createForm(EtudiantType::class);
+        return $this->render('etudiant/index.html.twig', [
+            'etudiants' => $etudiantRepository->findAll(),
+        ]);
+    }
 
-        // Récupération des données dans la variable si elles ont été soumises
-        $formulaireEtudiant->handleRequest($requeteHTTP);
+    /**
+     * @Route("/new", name="etudiant_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $etudiant = new Etudiant();
+        $form = $this->createForm(EtudiantType::class, $etudiant);
+        $form->handleRequest($request);
 
-        // Traiter les données du formulaire s'il a été soumis et est valide
-        if($formulaireEtudiant->isSubmitted() && $formulaireEtudiant->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($etudiant);
+            $entityManager->flush();
 
-            $fichierCSV = $formulaireEtudiant->get('fichierCSV')->getData();
-
-            $donneesFichierCSV = fopen($fichierCSV, "r");
-            $nombreLignes = count(file($fichierCSV));
-
-            $premiereLigne = chop(fgets($donneesFichierCSV));
-
-            // On vérifie si le format CSV attendu est respecté
-            if ($premiereLigne === "NOM;PRENOM;MAIL") 
-            {
-                for ($i = 0; $i < $nombreLignes; $i++) 
-                {
-                    $ligneActuelle = fgets($donneesFichierCSV);
-                    $etudiantActuel = explode(";", $ligneActuelle);
-
-                    $etudiant = new Etudiant();
-                    $etudiant->setNom($etudiantActuel[GroupeEtudiantController::COLONNE_NOM]);
-                    $etudiant->setPrenom($etudiantActuel[GroupeEtudiantController::COLONNE_PRENOM]);
-                    $etudiant->setMail($etudiantActuel[GroupeEtudiantController::COLONNE_MAIL]);
-                    $etudiant->setEstDemissionaire(false);
-                    $etudiant->addGroupe($groupeEtudiant);
-
-                    $manager->persist($etudiant);
-                }
-            }
-            else
-            {
-                // Dans le cas contraire, on affiche une erreur à l'utilisateur
-
-                fclose($donneesFichierCSV);
-
-                $formulaireEtudiant->get('fichierCSV')->addError(new FormError('Les colonnes du fichier CSV importé sont incorrectes.'));
-                
-                return $this->render('etudiant/formulaireAjoutEtudiant.html.twig', ['vueFormulaireEtudiant' => $formulaireEtudiant->createView()]);
-            }
-
-            fclose($donneesFichierCSV);
-
-            $manager->flush();
-
-            // Rediriger l'utilisateur vers la page d'accueil affichant la liste des recherches
-            return $this->redirectToRoute('pistage_accueil');
+            return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('etudiant/formulaireAjoutEtudiant.html.twig', ['vueFormulaireEtudiant' => $formulaireEtudiant->createView()]);
+        return $this->render('etudiant/new.html.twig', [
+            'etudiant' => $etudiant,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/csv", name="etudiant_ajout_par_CSV", methods={"GET", "POST"})
+     */
+    public function ajoutCSV(Request $request, EntityManagerInterface $entityManager):Response
+    {
+        $data = ['message' => 'type your message here'];
+        $form = $this->createForm(EtudiantCSVType::class, $data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $fichierCSV = $form['fichierCSV']->getData();
+            $fichier = fopen($fichierCSV, "r");
+            $nbLignes = count(file($fichierCSV));
+            $premiereLigne = chop(fgets($fichier));
+            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL") {
+                for ($i = 0; $i < $nbLignes - 1; ++$i) {
+                    $ligneCourante = fgets($fichier);
+                    $etudiantCourant = explode(";", $ligneCourante);
+                    $etudiant = new Etudiant();
+                    $etudiant->setNom($etudiantCourant[GroupeEtudiantController::COLONNE_NOM]);
+                    $etudiant->setPrenom($etudiantCourant[GroupeEtudiantController::COLONNE_PRENOM]);
+                    $etudiant->setNumeroEtudiant($etudiantCourant[GroupeEtudiantController::COLONNE_NUMERO_ETUDIANT]);
+                    $etudiant->setNumeroTelephone($etudiantCourant[GroupeEtudiantController::COLONNE_NUMERO_TELEPHONE]);
+                    $etudiant->setAdresseMail($etudiantCourant[GroupeEtudiantController::COLONNE_ADRESSE_MAIL]);
+                    $adresse = new Adresse();
+                    $adresse->setVoie($etudiantCourant[GroupeEtudiantController::COLONNE_VOIE]);
+                    $adresse->setBatimentResidenceZI($etudiantCourant[GroupeEtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
+                    $adresse->setCommune($etudiantCourant[GroupeEtudiantController::COLONNE_COMMUNE]);
+                    $adresse->setCodePostal($etudiantCourant[GroupeEtudiantController::COLONNE_CODE_POSTAL]);
+                    $etudiant->setAdresse($adresse);                    
+                    $entityManager->persist($etudiant);
+                }
+            }
+        }
+
+    }
+
+
+
+    /**
+     * @Route("/{id}", name="etudiant_show", methods={"GET"})
+     */
+    public function show(Etudiant $etudiant): Response
+    {
+        return $this->render('etudiant/show.html.twig', [
+            'etudiant' => $etudiant,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="etudiant_edit", methods={"GET", "POST"})
+     */
+    public function edit(Request $request, Etudiant $etudiant, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EtudiantType::class, $etudiant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('etudiant/edit.html.twig', [
+            'etudiant' => $etudiant,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="etudiant_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Etudiant $etudiant, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$etudiant->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($etudiant);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);
     }
 }
