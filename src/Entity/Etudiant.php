@@ -50,7 +50,7 @@ class Etudiant
     private $recherches;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Cursus::class, inversedBy="etudiants")
+     * @ORM\ManyToOne(targetEntity=Cursus::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $cursus;
@@ -63,7 +63,7 @@ class Etudiant
 
     /**
      * @ORM\OneToOne(targetEntity=Utilisateur::class, inversedBy="etudiant", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $utilisateur;
 

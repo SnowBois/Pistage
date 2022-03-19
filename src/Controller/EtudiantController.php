@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Etudiant;
 use App\Entity\Adresse;
+use App\Entity\Cursus;
 use App\Form\EtudiantType;
 use App\Form\EtudiantCSVType;
+use App\Repository\CursusRepository;
+use App\Repository\AdresseRepository;
 use App\Repository\EtudiantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +30,10 @@ class EtudiantController extends AbstractController
     const COLONNE_BATIMENT_RESIDENCE_ZI = 6;
     const COLONNE_COMMUNE = 7;
     const COLONNE_CODE_POSTAL = 8;
-    const COLONNE_PAYS = 9;
-    const COLONNE_FORMATION = 10;
+    const COLONNE_CEDEX = 9;
+    const COLONNE_PAYS = 10;
+    const COLONNE_CURSUS_NOM_LONG = 11;
+    const COLONNE_CURSUS_NOM_COURT = 12;
 
     /**
      * @Route("/", name="etudiant_index", methods={"GET"})
@@ -65,10 +70,11 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/csv", name="etudiant_ajout_par_CSV", methods={"GET", "POST"})
      */
-    public function ajoutCSV(Request $request, EntityManagerInterface $manager):Response
+    public function ajoutCSV(Request $request, EntityManagerInterface $manager, 
+                            EtudiantRepository $repositoryEtudiant, AdresseRepository $repositoryAdresse,
+                            CursusRepository $repositoryCursus):Response
     {
-        $data = ['message' => 'type your message here'];
-        $form = $this->createForm(EtudiantCSVType::class, $data);
+        $form = $this->createForm(EtudiantCSVType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
@@ -76,28 +82,92 @@ class EtudiantController extends AbstractController
             $fichier = fopen($fichierCSV, "r");
             $nbLignes = count(file($fichierCSV));
             $premiereLigne = chop(fgets($fichier));
-            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;PAYS") {
+            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;CEDEX;PAYS;CURSUS_NOM_LONG;CURSUS_NOM_COURT") {
                 for ($i = 0; $i < $nbLignes - 1; ++$i) {
-                    $ligneCourante = fgets($fichier);
+                    $ligneCourante = utf8_encode(fgets($fichier));
                     $etudiantCourant = explode(";", $ligneCourante);
+
                     $etudiant = new Etudiant();
                     $etudiant->setNom($etudiantCourant[EtudiantController::COLONNE_NOM]);
                     $etudiant->setPrenom($etudiantCourant[EtudiantController::COLONNE_PRENOM]);
                     $etudiant->setNumeroEtudiant($etudiantCourant[EtudiantController::COLONNE_NUMERO_ETUDIANT]);
                     $etudiant->setNumeroTelephone($etudiantCourant[EtudiantController::COLONNE_NUMERO_TELEPHONE]);
                     $etudiant->setAdresseMail($etudiantCourant[EtudiantController::COLONNE_ADRESSE_MAIL]);
-                    $adresse = new Adresse();
-                    $adresse->setVoie($etudiantCourant[EtudiantController::COLONNE_VOIE]);
-                    $adresse->setBatimentResidenceZI($etudiantCourant[EtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
-                    $adresse->setCommune($etudiantCourant[EtudiantController::COLONNE_COMMUNE]);
-                    $adresse->setCodePostal($etudiantCourant[EtudiantController::COLONNE_CODE_POSTAL]);
-                    $adresse->setPays($etudiantCourant[EtudiantController::COLONNE_PAYS]);
-                    $etudiant->setAdresse($adresse);                    
-                    $manager->persist($etudiant);
+
+                    // On vérifie que l'étudiant spécifié n'existe pas déjà
+                    $resultat = $repositoryEtudiant->findOneBy(['nom' => $etudiant->getNom(), 
+                                                                'prenom' => $etudiant->getPrenom(),
+                                                                'numeroEtudiant' => $etudiant->getNumeroEtudiant(),
+                                                                'numeroTelephone' => $etudiant->getNumeroTelephone(),
+                                                                'adresseMail' => $etudiant->getAdresseMail()
+                                                                ]);
+                    
+                    if($resultat == null)
+                    {
+                        // L'étudiant n'est pas dans la base de données
+                        $adresse = new Adresse();
+                        $adresse->setVoie($etudiantCourant[EtudiantController::COLONNE_VOIE]);
+                        $adresse->setBatimentResidenceZI($etudiantCourant[EtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
+                        $adresse->setCommune($etudiantCourant[EtudiantController::COLONNE_COMMUNE]);
+                        $adresse->setCodePostal($etudiantCourant[EtudiantController::COLONNE_CODE_POSTAL]);
+                        $adresse->setPays($etudiantCourant[EtudiantController::COLONNE_PAYS]);
+
+                        // On vérifie que l'adresse spécifiée n'existe pas déjà
+                        $resultat = $repositoryAdresse->findOneBy(['voie' => $adresse->getVoie(), 
+                                                                    'batimentResidenceZI' => $adresse->getBatimentResidenceZI(),
+                                                                    'commune' => $adresse->getCommune(),
+                                                                    'codePostal' => $adresse->getCodePostal(),
+                                                                    'pays' => $adresse->getPays(),
+                                                                    'cedex' => $adresse->getCedex()
+                                                                    ]);
+
+                        if($resultat == null)
+                        {
+                            // L'adresse n'est pas dans la base de données
+                            $etudiant->setAdresse($adresse);
+                            $adresse->addEtudiant($etudiant);
+                        }
+                        else
+                        {
+                            // L'adresse existe déjà
+                            $etudiant->setAdresse($resultat);
+                            $resultat->addEtudiant($etudiant);
+                        }
+
+                        $cursus = new Cursus();
+                        $cursus->setNomLong($etudiantCourant[EtudiantController::COLONNE_CURSUS_NOM_LONG]);
+                        $cursus->setNomCourt($etudiantCourant[EtudiantController::COLONNE_CURSUS_NOM_COURT]);
+
+                        // On vérifie que le cursus spécifié n'existe pas déjà
+                        $resultat = $repositoryCursus->findOneBy(['nomLong' => $cursus->getNomLong(), 
+                                                                'nomCourt' => $cursus->getNomCourt()
+                                                                ]);
+                        
+                        if($resultat == null)
+                        {
+                            // Le cursus n'est pas dans la base de données
+                            $etudiant->setCursus($cursus);
+                            $cursus->addEtudiant($etudiant);
+                        }
+                        else
+                        {
+                            // Le cursus existe déjà
+                            $etudiant->setCursus($resultat);
+                            $resultat->addEtudiant($etudiant);
+                        }
+
+                        $manager->persist($etudiant);
+                        $manager->flush();  
+                        
+                        // On flush à chaque itération pour éviter de créer des doublons si des
+                        // lignes dans le CSV ont la même adresse ou le même cursus
+                    }
+                    else
+                    {
+                        // L'étudiant est déjà en base de données, on ne le persiste pas
+                    }
                 }
             }
-
-            $manager->flush();
 
             return $this->redirectToRoute('etudiant_index');
         }
