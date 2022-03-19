@@ -43,15 +43,15 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/new", name="etudiant_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $etudiant = new Etudiant();
         $form = $this->createForm(EtudiantType::class, $etudiant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($etudiant);
-            $entityManager->flush();
+            $manager->persist($etudiant);
+            $manager->flush();
 
             return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -65,7 +65,7 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/csv", name="etudiant_ajout_par_CSV", methods={"GET", "POST"})
      */
-    public function ajoutCSV(Request $request, EntityManagerInterface $entityManager):Response
+    public function ajoutCSV(Request $request, EntityManagerInterface $manager):Response
     {
         $data = ['message' => 'type your message here'];
         $form = $this->createForm(EtudiantCSVType::class, $data);
@@ -76,7 +76,7 @@ class EtudiantController extends AbstractController
             $fichier = fopen($fichierCSV, "r");
             $nbLignes = count(file($fichierCSV));
             $premiereLigne = chop(fgets($fichier));
-            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL") {
+            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;PAYS") {
                 for ($i = 0; $i < $nbLignes - 1; ++$i) {
                     $ligneCourante = fgets($fichier);
                     $etudiantCourant = explode(";", $ligneCourante);
@@ -91,15 +91,18 @@ class EtudiantController extends AbstractController
                     $adresse->setBatimentResidenceZI($etudiantCourant[EtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
                     $adresse->setCommune($etudiantCourant[EtudiantController::COLONNE_COMMUNE]);
                     $adresse->setCodePostal($etudiantCourant[EtudiantController::COLONNE_CODE_POSTAL]);
+                    $adresse->setPays($etudiantCourant[EtudiantController::COLONNE_PAYS]);
                     $etudiant->setAdresse($adresse);                    
-                    $entityManager->persist($etudiant);
+                    $manager->persist($etudiant);
                 }
             }
-            $entityManager->flush();
-            return $this->redirectToRoute('pistage_accueil');
+
+            $manager->flush();
+
+            return $this->redirectToRoute('etudiant_index');
         }
 
-        return $this->render('etudiant/formulaireAjoutEtudiant.html.twig', [
+        return $this->render('etudiant/formulaireAjoutEtudiantsCSV.html.twig', [
             'vueFormulaireEtudiant' => $form->createView()
         ]);
     }
@@ -118,13 +121,13 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/{id}/edit", name="etudiant_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Etudiant $etudiant, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Etudiant $etudiant, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(EtudiantType::class, $etudiant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $manager->flush();
 
             return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -138,11 +141,11 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/{id}", name="etudiant_delete", methods={"POST"})
      */
-    public function delete(Request $request, Etudiant $etudiant, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Etudiant $etudiant, EntityManagerInterface $manager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$etudiant->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($etudiant);
-            $entityManager->flush();
+            $manager->remove($etudiant);
+            $manager->flush();
         }
 
         return $this->redirectToRoute('etudiant_index', [], Response::HTTP_SEE_OTHER);

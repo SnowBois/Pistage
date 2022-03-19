@@ -56,7 +56,7 @@ class Etudiant
     private $cursus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants")
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresse;
