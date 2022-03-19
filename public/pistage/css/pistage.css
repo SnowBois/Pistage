@@ -15,3 +15,27 @@ label.required:before {
 .badge {
     background-color:#dc3545;
 }
+
+
+/*Page Index */
+.form-control{
+	border:solid 1px black;
+}
+
+#boutonAjoutRecherche{
+	float:right;
+}
+
+.thead{
+	background-color=green;
+}
+
+[class~=enTete]{
+	border:solid 2px #228B22;
+	background-color:#32CD32;
+	margin-bottom:3%;
+}
+
+[class~=boutonsTable]{
+	margin-bottom:2%;
+}

@@ -22,32 +22,29 @@
         <!-- BLOCK DU HEADER -->
         {% block header %}
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="/accueil">
-                                    <img src="{{ asset('/img/pistage_logo_titre.png') }}" />
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="d-flex justify-content-end">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Mon Compte
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#">Alertes</a></li>
-                                            <li><a class="dropdown-item" href="#">Profil</a></li>
-                                            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row enTete">
+                    <div class="col-md-6">
+                        <a href="/accueil">
+                            <img src="{{ asset('/img/pistage_logo_titre.png') }}" />
+                        </a>
                     </div>
-                </div>
+                    <div class="col-md-6 align-middle">
+                        <div class="d-flex justify-content-end align-middle">
+                            <div class="dropdown ">
+								<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Mon Compte
+                                </button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+									<li><a class="dropdown-item" href="#">Alertes</a></li>
+									<li><a class="dropdown-item" href="#">Profil</a></li>
+									<li><a class="dropdown-item" href="#">Déconnexion</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
             </div>
+       
         {% endblock %}
 
         <!-- BLOCK DES SCRIPTS JAVASCRIPT -->

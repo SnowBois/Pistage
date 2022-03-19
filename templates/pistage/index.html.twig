@@ -8,64 +8,75 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="d-flex flex-row bd-highlight mb-3">
-                    <div class="align-self-center">
-                        Trier par :
-                    </div>
+                <div class="d-flex flex-row mb-1 boutonsTable">
+					<div class="col-md-2">
+						<div class="input-group mb-2 ">
+							<label class="input-group-text" for="inputGroupSelect01">Trier par :</label>
+							<select class="custom-select" id="inputGroupSelect01" >
+								<option value="1">chronologique</option>
+								<option value="2">antechronologique</option>
+							</select>
+						</div>
+					</div>
 
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            ordre antéchronologique
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">ordre chronologique</a></li>
-                        </ul>
-                    </div>
+					
+					<div class="col-md-3">
+						<div class="input-group mb-2">
+							<div class="input-group mb-2 ">
+							<label class="input-group-text" for="inputGroupSelect02">rechercher :</label>
+							<select class="custom-select" id="inputGroupSelect02" >
+								<option value="1">nom</option>
+								<option value="2">adresse</option>
+								<option value="2">etat</option>
+							</select>
+							<input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+						</div>
+							
+						</div>
+					</div>
 
-                    <button type="button" class="btn btn-success">
-                        Filtrer par mot clé
-                    </button> 
-
-                    <a href="/ajoutRecherche">
-                        <button type="button" class="btn btn-success">
-                            Ajouter une recherche
-                        </button>
-                    </a>
+					<div class="col-md-7">
+						<a href="/ajoutRecherche" >
+							<button type="button" class="btn btn-success" id="boutonAjoutRecherche">
+								Ajouter une recherche
+							</button>
+						</a>
+					</div>
                 </div>
 
-                <table class="table">
-                    <thead>
+                <table class="table table-striped table-bordered">
+                     <thead class="thead"">
                         <tr>
-                            <th>
+                            <th scope="col">
                                 Date
                             </th>
-                            <th>
+                            <th scope="col">
                                 Nom
                             </th>
-                            <th>
+                            <th scope="col">
                                 Adresse
                             </th>
-                            <th>
+                            <th scope="col">
                                 Nom
-                            </th>
-                            <th>
+                            </th >
+                            <th scope="col">
                                 Fonction
                             </th>
-                            <th>
+                            <th scope="col">
                                 Média
                             </th>
-                            <th>
+                            <th scope="col">
                                 Mail
                             </th>
-                            <th>
+                            <th scope="col">
                                 Téléphone
                             </th>
-                            <th>
+                            <th scope="col">
                                 État
                             </th>
                         </tr>
                     </thead>
-                    
+                    <tbody>
                     {% for recherche in recherches %}
 					    <tr>
 							<td>
@@ -96,11 +107,14 @@
                                 {{recherche.etatsRecherche[0].etat}}
                             </td>
 					    </tr>
+					
+				
 					{% else %}
 						<h3><center>Aucune recherche disponible.</center></h3>
 					{% endfor %}
-
-                </table>
+					</tbody>
+				</table>
+                
             </div>
         </div>
     </div>
