@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}
+    Liste des entreprises
+{% endblock %}
+
+{% block contenu %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Numéro de téléphone</th>
+                <th>Type d'établissement</th>
+                <th>Activité</th>
+                <th>Numéro de SIRET</th>
+                <th>Code APE ou NAF</th>
+                <th>Statut juridique</th>
+                <th>Effectif</th>
+                <th>Numéro de fax</th>
+                <th>Adresse mail</th>
+                <th>Site web</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entreprise in entreprises %}
+            <tr>
+                <td>{{ entreprise.id }}</td>
+                <td>{{ entreprise.nom }}</td>
+                <td>{{ entreprise.numeroTelephone }}</td>
+                <td>{{ entreprise.typeEtablissement }}</td>
+                <td>{{ entreprise.activite }}</td>
+                <td>{{ entreprise.numeroSIRET }}</td>
+                <td>{{ entreprise.codeAPEouNAF }}</td>
+                <td>{{ entreprise.statutJuridique }}</td>
+                <td>{{ entreprise.effectif }}</td>
+                <td>{{ entreprise.numeroFax }}</td>
+                <td>{{ entreprise.adresseMail }}</td>
+                <td>{{ entreprise.siteWeb }}</td>
+                <td>
+                    <a href="{{ path('entreprise_show', {'id': entreprise.id}) }}">Voir</a>
+                    <a href="{{ path('entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">Aucune entreprise trouvée.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('entreprise_new') }}">Créer une nouvelle entreprise</a>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}
+    Entreprise
+{% endblock %}
+
+{% block contenu %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>{{ entreprise.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entreprise.nom }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de téléphone</th>
+                <td>{{ entreprise.numeroTelephone }}</td>
+            </tr>
+            <tr>
+                <th>Type d'établissement</th>
+                <td>{{ entreprise.typeEtablissement }}</td>
+            </tr>
+            <tr>
+                <th>Activité</th>
+                <td>{{ entreprise.activite }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de SIRET</th>
+                <td>{{ entreprise.numeroSIRET }}</td>
+            </tr>
+            <tr>
+                <th>Code APE ou NAF</th>
+                <td>{{ entreprise.codeAPEouNAF }}</td>
+            </tr>
+            <tr>
+                <th>Statut juridique</th>
+                <td>{{ entreprise.statutJuridique }}</td>
+            </tr>
+            <tr>
+                <th>Effectif</th>
+                <td>{{ entreprise.effectif }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de fax</th>
+                <td>{{ entreprise.numeroFax }}</td>
+            </tr>
+            <tr>
+                <th>Adresse mail</th>
+                <td>{{ entreprise.adresseMail }}</td>
+            </tr>
+            <tr>
+                <th>Site web</th>
+                <td>{{ entreprise.siteWeb }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('entreprise_index') }}">Retour vers la liste des entreprises</a>
+
+    <a href="{{ path('entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
+
+    {{ include('entreprise/_delete_form.html.twig') }}
+{% endblock %}

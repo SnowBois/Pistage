@@ -14,7 +14,7 @@
 							<label class="input-group-text" for="inputGroupSelect01">Trier par :</label>
 							<select class="custom-select" id="inputGroupSelect01" >
 								<option value="1">chronologique</option>
-								<option value="2">antechronologique</option>
+								<option value="2">antéchronologique</option>
 							</select>
 						</div>
 					</div>
@@ -27,7 +27,7 @@
 							<select class="custom-select" id="inputGroupSelect02" >
 								<option value="1">nom</option>
 								<option value="2">adresse</option>
-								<option value="2">etat</option>
+								<option value="2">état</option>
 							</select>
 							<input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
 						</div>
@@ -36,7 +36,7 @@
 					</div>
 
 					<div class="col-md-7">
-						<a href="/ajoutRecherche" >
+						<a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
 							<button type="button" class="btn btn-success" id="boutonAjoutRecherche">
 								Ajouter une recherche
 							</button>
@@ -45,7 +45,7 @@
                 </div>
 
                 <table class="table table-striped table-bordered">
-                     <thead class="thead"">
+                     <thead class="thead">
                         <tr>
                             <th scope="col">
                                 Date
@@ -103,9 +103,15 @@
                             <td>
                                 {{recherche.employe.numeroTelephone}}
                             </td>
-                            <td>
-                                {{recherche.etatsRecherche[0].etat}}
-                            </td>
+                                {% if (recherche.etatsRecherche[0].etat) == "En attente" %}
+                                    <td style="background-color:#008196;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
+                                {% elseif (recherche.etatsRecherche[0].etat) == "Relancé" %}
+                                    <td style="background-color:#C47F00;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
+                                {% elseif (recherche.etatsRecherche[0].etat) == "Accepté" %}
+                                    <td style="background-color:#189618;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
+                                {% elseif (recherche.etatsRecherche[0].etat) == "Refusé" %}
+                                    <td style="background-color:#CA3120;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
+                                {% endif %}
 					    </tr>
 					
 				

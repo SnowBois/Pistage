@@ -8,7 +8,7 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <td>{{ etudiant.id }}</td>
             </tr>
             <tr>
@@ -16,27 +16,27 @@
                 <td>{{ etudiant.nom }}</td>
             </tr>
             <tr>
-                <th>Prenom</th>
+                <th>Prénom</th>
                 <td>{{ etudiant.prenom }}</td>
             </tr>
             <tr>
-                <th>NumeroEtudiant</th>
+                <th>Numéro étudiant</th>
                 <td>{{ etudiant.numeroEtudiant }}</td>
             </tr>
             <tr>
-                <th>NumeroTelephone</th>
+                <th>Numéro de téléphone</th>
                 <td>{{ etudiant.numeroTelephone }}</td>
             </tr>
             <tr>
-                <th>AdresseMail</th>
+                <th>Adresse mail</th>
                 <td>{{ etudiant.adresseMail }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('etudiant_index') }}">back to list</a>
+    <a href="{{ path('etudiant_index') }}">Retour vers la liste des étudiants</a>
 
-    <a href="{{ path('etudiant_edit', {'id': etudiant.id}) }}">edit</a>
+    <a href="{{ path('etudiant_edit', {'id': etudiant.id}) }}">Modifier</a>
 
     {{ include('etudiant/_delete_form.html.twig') }}
 {% endblock %}
