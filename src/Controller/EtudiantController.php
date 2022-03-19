@@ -94,10 +94,14 @@ class EtudiantController extends AbstractController
                     $entityManager->persist($etudiant);
                 }
             }
+            $entityManager->flush();
+            return $this->redirectToRoute('pistage_accueil');
         }
 
+        return $this->render('etudiant/formulaireAjoutEtudiant.html.twig', [
+            'vueFormulaireEtudiant' => $form->createView()
+        ]);
     }
-
 
 
     /**
