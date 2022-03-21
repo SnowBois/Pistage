@@ -54,7 +54,7 @@ class RechercheRepository extends ServiceEntityRepository
                     ->select('rec,ent,emp,etu,adr,eta')
                     ->join('rec.entreprise', 'ent')
                     ->join('ent.adresse', 'adr')
-                    ->join('rec.employe', 'emp')
+                    ->leftjoin('rec.employe', 'emp')
                     ->join('rec.etudiant', 'etu')
                     ->join('rec.etatsRecherche', 'eta')
                     ->andWhere('etu = :etudiant')

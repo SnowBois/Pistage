@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
         $tableauEtatsRecherche = array("Refusé", "En attente", "Relancé", "Accepté");
 
         // On génère entre 10 et 20 recherches
-		$nombreRecherches = $faker->numberBetween(10,20);
+		$nombreRecherches = $faker->numberBetween(30,50);
 
         for ($i = 1 ; $i <= $nombreRecherches ; $i++)
 		{

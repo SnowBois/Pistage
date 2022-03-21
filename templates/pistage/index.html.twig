@@ -35,31 +35,34 @@
                      <thead class="thead">
                         <tr>
                             <th scope="col">
-                                Date
+                                Date d'ajout
                             </th>
                             <th scope="col">
-                                Nom
+                                Nom de l'entreprise
                             </th>
                             <th scope="col">
-                                Adresse
+                                Adresse de l'entreprise
                             </th>
                             <th scope="col">
-                                Nom
+                                Nom du contact
                             </th >
                             <th scope="col">
-                                Fonction
+                                Fonction du contact
                             </th>
                             <th scope="col">
-                                Média
+                                Média utilisé
                             </th>
                             <th scope="col">
-                                Mail
+                                Mail de l'entreprise
                             </th>
                             <th scope="col">
-                                Téléphone
+                                Téléphone de l'entreprise
                             </th>
                             <th scope="col">
-                                État
+                                État de la recherche
+                            </th>
+                            <th scope="col">
+                                Actions
                             </th>
                         </tr>
                     </thead>
@@ -69,27 +72,42 @@
 							<td>
                                 {{recherche.etatsRecherche[0].date|date("d/m/Y")}}
                             </td>
+
                             <td>
                                 {{recherche.entreprise.nom}}
                             </td>
+
                             <td>
                                 {{recherche.entreprise.adresse.voie}} {{recherche.entreprise.adresse.batimentResidenceZI}} {{recherche.entreprise.adresse.codePostal}} {{recherche.entreprise.adresse.commune}} 
                             </td>
-                            <td>
-                                {{recherche.employe.prenom}} {{recherche.employe.nom}}
-                            </td>
-                            <td>
-                                {{recherche.employe.fonction}}
-                            </td>
+
+                            {% if recherche.employe is not null %}
+                                <td>
+                                    {{recherche.employe.prenom}} {{recherche.employe.nom}}
+                                </td>
+
+                                <td>
+                                    {{recherche.employe.fonction}}
+                                </td>
+                            {% else %}
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            {% endif %}
+
                             <td>
                                 {{recherche.mediaContact}}
                             </td>
+
                             <td>
-                                {{recherche.employe.adresseMail}}
+                                {{recherche.entreprise.adresseMail}}
                             </td>
+
                             <td>
-                                {{recherche.employe.numeroTelephone}}
+                                {{recherche.entreprise.numeroTelephone}}
                             </td>
+                            
                                 {% if (recherche.etatsRecherche[0].etat) == "En attente" %}
                                     <td style="background-color:#008196;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
                                 {% elseif (recherche.etatsRecherche[0].etat) == "Relancé" %}
@@ -99,6 +117,11 @@
                                 {% elseif (recherche.etatsRecherche[0].etat) == "Refusé" %}
                                     <td style="background-color:#CA3120;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
                                 {% endif %}
+                            
+                            <td>
+                                Voir
+                                Modifier
+                            </td>
 					    </tr>
 					
 				
