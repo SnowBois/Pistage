@@ -39,10 +39,13 @@ class RechercheController extends AbstractController
             $employe = $recherche->getEmploye();
             $entreprise = $recherche->getEntreprise();
 
-            if($employe == null)
+            // On vérifie si l'employé a été saisi
+            if($employe != null)
             {
+                // On vérifie si c'était un employé parmi la liste ou un nouvel employé ajouté
                 if($employe->getEntreprise() == null)
                 {
+                    // Si c'était un nouvel employé ajouté, on définit son entreprise comme étant celle saisie
                     $employe->setEntreprise($entreprise);
                 }
             }

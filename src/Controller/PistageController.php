@@ -18,7 +18,7 @@ class PistageController extends AbstractController
     {
         $etudiant = $this->getUser()->getEtudiant();
 
-        $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiantAntechronologique($etudiant);
+        $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
 
         return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
                                                          'etudiant' => $etudiant]);

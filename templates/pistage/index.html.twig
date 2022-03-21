@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/datatables/css/datatables.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
+    <script src="{{ asset('/datatables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/moment.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/datetime-moment.js') }}"></script>
+{% endblock %}
+
 {% block titrePage %}
     Journal de recherches de stage de {{etudiant.getNomComplet()}}
 {% endblock %}
@@ -9,33 +22,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex flex-row mb-1 boutonsTable">
-					<div class="col-md-2">
-						<div class="input-group mb-2 ">
-							<label class="input-group-text" for="inputGroupSelect01">Trier par :</label>
-							<select class="custom-select" id="inputGroupSelect01" >
-								<option value="1">chronologique</option>
-								<option value="2">antéchronologique</option>
-							</select>
-						</div>
-					</div>
-
-					
-					<div class="col-md-3">
-						<div class="input-group mb-2">
-							<div class="input-group mb-2 ">
-							<label class="input-group-text" for="inputGroupSelect02">rechercher :</label>
-							<select class="custom-select" id="inputGroupSelect02" >
-								<option value="1">nom</option>
-								<option value="2">adresse</option>
-								<option value="2">état</option>
-							</select>
-							<input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
-						</div>
-							
-						</div>
-					</div>
-
-					<div class="col-md-7">
+					<div class="col-md-12">
 						<a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
 							<button type="button" class="btn btn-success" id="boutonAjoutRecherche">
 								Ajouter une recherche
@@ -44,7 +31,7 @@
 					</div>
                 </div>
 
-                <table class="table table-striped table-bordered">
+                <table id="dataTable" class="table table-bordered display">
                      <thead class="thead">
                         <tr>
                             <th scope="col">
@@ -124,4 +111,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $.fn.dataTable.moment('D/MM/YYYY');
+
+            $('#dataTable').DataTable( {
+                "order": [[ 0, "desc" ]],
+                "oLanguage": {
+                    "sUrl": "/datatables/datatables.french.json"
+                    }
+            } );
+        } );
+    </script>
 {% endblock %}

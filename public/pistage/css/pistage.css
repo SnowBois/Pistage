@@ -27,12 +27,12 @@ label.required:before {
 }
 
 .thead{
-	background-color=green;
+	background:#8fc857;
 }
 
 [class~=enTete]{
 	border:solid 2px #228B22;
-	background-color:#32CD32;
+	background-color:#8fc857;
 	margin-bottom:3%;
 }
 
