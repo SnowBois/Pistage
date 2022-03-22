@@ -6,7 +6,7 @@ use App\Entity\Etudiant;
 use App\Entity\Adresse;
 use App\Entity\Cursus;
 use App\Form\EtudiantType;
-use App\Form\EtudiantCSVType;
+use App\Form\FormulaireCSVType;
 use App\Repository\CursusRepository;
 use App\Repository\AdresseRepository;
 use App\Repository\EtudiantRepository;
@@ -74,7 +74,7 @@ class EtudiantController extends AbstractController
                             EtudiantRepository $repositoryEtudiant, AdresseRepository $repositoryAdresse,
                             CursusRepository $repositoryCursus):Response
     {
-        $form = $this->createForm(EtudiantCSVType::class);
+        $form = $this->createForm(FormulaireCSVType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
