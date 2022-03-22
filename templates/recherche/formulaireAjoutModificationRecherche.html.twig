@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block titrePage %}
-    Formulaire d'ajout d'une recherche
+    {% if action == 'ajouter' %}
+        Formulaire d'ajout d'une recherche
+    {% elseif action == 'modifier' %}
+        Formulaire de modification d'une recherche
+    {% endif %}
 {% endblock %}
 
 {% block contenu %}

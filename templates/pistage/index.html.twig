@@ -70,7 +70,7 @@
                     {% for recherche in recherches %}
 					    <tr>
 							<td>
-                                {{recherche.etatsRecherche[0].date|date("d/m/Y")}}
+                                {{recherche.etatsRecherche[0].date|date("d/m/Y H:i")}}
                             </td>
 
                             <td>
@@ -108,19 +108,23 @@
                                 {{recherche.entreprise.numeroTelephone}}
                             </td>
                             
-                                {% if (recherche.etatsRecherche[0].etat) == "En attente" %}
-                                    <td style="background-color:#008196;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
-                                {% elseif (recherche.etatsRecherche[0].etat) == "Relancé" %}
-                                    <td style="background-color:#C47F00;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
-                                {% elseif (recherche.etatsRecherche[0].etat) == "Accepté" %}
-                                    <td style="background-color:#189618;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
-                                {% elseif (recherche.etatsRecherche[0].etat) == "Refusé" %}
-                                    <td style="background-color:#CA3120;color:#FFFFFF">{{recherche.etatsRecherche[0].etat}}</td>
+                                {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
+                                    <td style="background-color:#008196;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                {% elseif (recherche.etatsRecherche|last.etat) == "Relancé" %}
+                                    <td style="background-color:#C47F00;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                {% elseif (recherche.etatsRecherche|last.etat) == "Accepté" %}
+                                    <td style="background-color:#189618;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
+                                    <td style="background-color:#CA3120;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
                                 {% endif %}
                             
                             <td>
                                 Voir
-                                Modifier
+                                <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
+                                    <button type="button" class="btn btn-success">
+                                       Modifier
+                                    </button>
+                                </a>
                             </td>
 					    </tr>
 					
@@ -137,7 +141,7 @@
 
     <script>
         $(document).ready(function() {
-            $.fn.dataTable.moment('D/MM/YYYY');
+            $.fn.dataTable.moment('D/MM/YYYY HH:mm');
 
             $('#dataTable').DataTable( {
                 "order": [[ 0, "desc" ]],
