@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Entreprise;
+use App\Entity\Adresse;
 use App\Form\EntrepriseType;
+use App\Form\FormulaireCSVType;
+use App\Repository\AdresseRepository;
 use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,13 +73,13 @@ class EntrepriseController extends AbstractController
     }
 
     /**
-     * @Route("/csv", name="etudiant_ajout_par_CSV", methods={"GET", "POST"})
+     * @Route("/csv", name="entreprise_ajout_par_CSV", methods={"GET", "POST"})
      */
     public function ajoutCSV(Request $request, EntityManagerInterface $manager, 
                             EntrepriseRepository $repositoryEntreprise, AdresseRepository $repositoryAdresse,
                             CursusRepository $repositoryCursus):Response
     {
-        $form = $this->createForm(EntrepriseCSVType::class);
+        $form = $this->createForm(FormulaireCSVType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
@@ -84,35 +87,35 @@ class EntrepriseController extends AbstractController
             $fichier = fopen($fichierCSV, "r");
             $nbLignes = count(file($fichierCSV));
             $premiereLigne = chop(fgets($fichier));
-            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;CEDEX;PAYS;CURSUS_NOM_LONG;CURSUS_NOM_COURT") {
+            if ($premiereLigne === "Code Postal;Pays;Statut Juridique;Type de Structure;Effectif;Code NAF;Téléphone;Fax;Mail;SiteWeb;Service d'accueil - Nom;Service d'accueil - Residence;Service d'accueil - Voie, Service d'accueil - Cedex, Service d'accueil - Code postal, Service d'accueil - Commune, Service d'accueil - Pays") {
                 for ($i = 0; $i < $nbLignes - 1; ++$i) {
                     $ligneCourante = utf8_encode(fgets($fichier));
-                    $etudiantCourant = explode(";", $ligneCourante);
+                    $entrepriseCourante = explode(";", $ligneCourante);
 
-                    $etudiant = new Etudiant();
-                    $etudiant->setNom($etudiantCourant[EtudiantController::COLONNE_NOM]);
-                    $etudiant->setPrenom($etudiantCourant[EtudiantController::COLONNE_PRENOM]);
-                    $etudiant->setNumeroEtudiant($etudiantCourant[EtudiantController::COLONNE_NUMERO_ETUDIANT]);
-                    $etudiant->setNumeroTelephone($etudiantCourant[EtudiantController::COLONNE_NUMERO_TELEPHONE]);
-                    $etudiant->setAdresseMail($etudiantCourant[EtudiantController::COLONNE_ADRESSE_MAIL]);
+                    $entreprise = new Entreprise();
+                    $entreprise->setNom($entrepriseCourante[EntrepriseController::COLONNE_NOM]);
+                    $entreprise->setPrenom($entrepriseCourante[EntrepriseController::COLONNE_PRENOM]);
+                    $entreprise->setNumeroentreprise($entrepriseCourante[EntrepriseController::COLONNE_NUMERO_entreprise]);
+                    $entreprise->setNumeroTelephone($entrepriseCourante[EntrepriseController::COLONNE_NUMERO_TELEPHONE]);
+                    $entreprise->setAdresseMail($entrepriseCourante[EntrepriseController::COLONNE_ADRESSE_MAIL]);
 
                     // On vérifie que l'étudiant spécifié n'existe pas déjà
-                    $resultat = $repositoryEtudiant->findOneBy(['nom' => $etudiant->getNom(), 
-                                                                'prenom' => $etudiant->getPrenom(),
-                                                                'numeroEtudiant' => $etudiant->getNumeroEtudiant(),
-                                                                'numeroTelephone' => $etudiant->getNumeroTelephone(),
-                                                                'adresseMail' => $etudiant->getAdresseMail()
+                    $resultat = $repositoryEntreprise->findOneBy(['nom' => $entreprise->getNom(), 
+                                                                'prenom' => $entreprise->getPrenom(),
+                                                                'numeroentreprise' => $entreprise->getNumeroentreprise(),
+                                                                'numeroTelephone' => $entreprise->getNumeroTelephone(),
+                                                                'adresseMail' => $entreprise->getAdresseMail()
                                                                 ]);
                     
                     if($resultat == null)
                     {
                         // L'étudiant n'est pas dans la base de données
                         $adresse = new Adresse();
-                        $adresse->setVoie($etudiantCourant[EtudiantController::COLONNE_VOIE]);
-                        $adresse->setBatimentResidenceZI($etudiantCourant[EtudiantController::COLONNE_BATIMENT_RESIDENCE_ZI]);
-                        $adresse->setCommune($etudiantCourant[EtudiantController::COLONNE_COMMUNE]);
-                        $adresse->setCodePostal($etudiantCourant[EtudiantController::COLONNE_CODE_POSTAL]);
-                        $adresse->setPays($etudiantCourant[EtudiantController::COLONNE_PAYS]);
+                        $adresse->setVoie($entrepriseCourante[EntrepriseController::COLONNE_VOIE]);
+                        $adresse->setBatimentResidenceZI($entrepriseCourante[EntrepriseController::COLONNE_BATIMENT_RESIDENCE_ZI]);
+                        $adresse->setCommune($entrepriseCourante[EntrepriseController::COLONNE_COMMUNE]);
+                        $adresse->setCodePostal($entrepriseCourante[EntrepriseController::COLONNE_CODE_POSTAL]);
+                        $adresse->setPays($entrepriseCourante[EntrepriseController::COLONNE_PAYS]);
 
                         // On vérifie que l'adresse spécifiée n'existe pas déjà
                         $resultat = $repositoryAdresse->findOneBy(['voie' => $adresse->getVoie(), 
@@ -126,19 +129,19 @@ class EntrepriseController extends AbstractController
                         if($resultat == null)
                         {
                             // L'adresse n'est pas dans la base de données
-                            $etudiant->setAdresse($adresse);
-                            $adresse->addEtudiant($etudiant);
+                            $entreprise->setAdresse($adresse);
+                            $adresse->addentreprise($entreprise);
                         }
                         else
                         {
                             // L'adresse existe déjà
-                            $etudiant->setAdresse($resultat);
-                            $resultat->addEtudiant($etudiant);
+                            $entreprise->setAdresse($resultat);
+                            $resultat->addentreprise($entreprise);
                         }
 
                         $cursus = new Cursus();
-                        $cursus->setNomLong($etudiantCourant[EtudiantController::COLONNE_CURSUS_NOM_LONG]);
-                        $cursus->setNomCourt($etudiantCourant[EtudiantController::COLONNE_CURSUS_NOM_COURT]);
+                        $cursus->setNomLong($entrepriseCourante[EntrepriseController::COLONNE_CURSUS_NOM_LONG]);
+                        $cursus->setNomCourt($entrepriseCourante[EntrepriseController::COLONNE_CURSUS_NOM_COURT]);
 
                         // On vérifie que le cursus spécifié n'existe pas déjà
                         $resultat = $repositoryCursus->findOneBy(['nomLong' => $cursus->getNomLong(), 
@@ -148,17 +151,17 @@ class EntrepriseController extends AbstractController
                         if($resultat == null)
                         {
                             // Le cursus n'est pas dans la base de données
-                            $etudiant->setCursus($cursus);
-                            $cursus->addEtudiant($etudiant);
+                            $entreprise->setCursus($cursus);
+                            $cursus->addentreprise($entreprise);
                         }
                         else
                         {
                             // Le cursus existe déjà
-                            $etudiant->setCursus($resultat);
-                            $resultat->addEtudiant($etudiant);
+                            $entreprise->setCursus($resultat);
+                            $resultat->addentreprise($entreprise);
                         }
 
-                        $manager->persist($etudiant);
+                        $manager->persist($entreprise);
                         $manager->flush();  
                         
                         // On flush à chaque itération pour éviter de créer des doublons si des
@@ -171,11 +174,11 @@ class EntrepriseController extends AbstractController
                 }
             }
 
-            return $this->redirectToRoute('etudiant_index');
+            return $this->redirectToRoute('entreprise_index');
         }
 
-        return $this->render('etudiant/formulaireAjoutEtudiantsCSV.html.twig', [
-            'vueFormulaireEtudiant' => $form->createView()
+        return $this->render('entreprise/formulaireAjoutentreprisesCSV.html.twig', [
+            'vueFormulaireentreprise' => $form->createView()
         ]);
     }
 
