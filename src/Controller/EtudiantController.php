@@ -95,12 +95,7 @@ class EtudiantController extends AbstractController
                     $etudiant->setAdresseMail($etudiantCourant[EtudiantController::COLONNE_ADRESSE_MAIL]);
 
                     // On vérifie que l'étudiant spécifié n'existe pas déjà
-                    $resultat = $repositoryEtudiant->findOneBy(['nom' => $etudiant->getNom(), 
-                                                                'prenom' => $etudiant->getPrenom(),
-                                                                'numeroEtudiant' => $etudiant->getNumeroEtudiant(),
-                                                                'numeroTelephone' => $etudiant->getNumeroTelephone(),
-                                                                'adresseMail' => $etudiant->getAdresseMail()
-                                                                ]);
+                    $resultat = $repositoryEtudiant->findOneBy(['numeroEtudiant' => $etudiant->getNumeroEtudiant()]);
                     
                     if($resultat == null)
                     {

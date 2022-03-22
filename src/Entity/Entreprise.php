@@ -35,7 +35,7 @@ class Entreprise
     private $typeEtablissement;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $activite;
 
@@ -55,7 +55,7 @@ class Entreprise
     private $statutJuridique;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=10)
      */
     private $effectif;
 
@@ -85,13 +85,13 @@ class Entreprise
     private $recherches;
 
     /**
-     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="entreprise")
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="entreprise", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $services;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="entreprises")
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="entreprises", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresse;
