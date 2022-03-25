@@ -12,6 +12,15 @@ use App\Repository\RechercheRepository;
 class PistageController extends AbstractController
 {
     /**
+     * @Route("/", name="redirect_to_pistage_accueil")
+     */
+
+    public function redirectToIndex() : Response
+    {
+        return $this->redirectToRoute('pistage_accueil');
+    }
+
+    /**
      * @Route("/accueil", name="pistage_accueil")
      */
     public function index(RechercheRepository $repositoryRecherche): Response
