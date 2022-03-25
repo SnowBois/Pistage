@@ -13,6 +13,7 @@ use App\Entity\Utilisateur;
 use App\Entity\Etudiant;
 use App\Entity\Adresse;
 use App\Entity\Cursus;
+use App\Entity\MediaContact;
 
 class AppFixtures extends Fixture
 {
@@ -56,8 +57,22 @@ class AppFixtures extends Fixture
         $manager->persist($utilisateur);
         $manager->persist($adresse);
         $manager->persist($cursus);
+        
+        $manager->persist($presentiel);
+        $manager->persist($mail);
+        $telephone->persist($telephone);
+        $courrier->persist($courrier);
 
-        $tableauMediasContact = array("Mail", "Présentiel", "Téléphone", "Courrier");
+        $presentiel = new MediaContact();
+        $mail = new MediaContact();
+        $telephone = new MediaContact();
+        $courrier = new MediaContact();
+        
+        $presentiel->setNomMedia("Présentiel");
+        $mail->setNomMedia("Mail");
+        $telephone->setNomMedia("Télépone");
+        $courrier->setNomMedia("Courrier");
+
         $tableauTypeEtablissements = array("Administration", "Association", "Entreprise privée", "Entreprise publique", "Mutuelle coopérative", "Autre");
         $tableauStatutsJuridiques = array("Micro-entrepreneur", "EI", "EIRL", "EURL", "SA", "SAS", "SARL", "SASU");
         $tableauEtatsRecherche = array("Refusé", "En attente", "Relancé", "Accepté");
@@ -68,9 +83,6 @@ class AppFixtures extends Fixture
         for ($i = 1 ; $i <= $nombreRecherches ; $i++)
 		{
 			$recherche = new Recherche();
-
-            $indiceMediaContact = $faker->numberBetween(0,count($tableauMediasContact) - 1);	
-			$recherche->setMediaContact($tableauMediasContact[$indiceMediaContact]);
 
             $recherche->setObservations($faker->realText(255,2));
 
@@ -144,6 +156,9 @@ class AppFixtures extends Fixture
             $manager->persist($entreprise);
             $manager->persist($adresse);
 		}
+
+
+
 
         // On persiste l'étudiant avec toutes ses recherches
 
