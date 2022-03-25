@@ -25,11 +25,22 @@ class PistageController extends AbstractController
      */
     public function index(RechercheRepository $repositoryRecherche): Response
     {
-        $etudiant = $this->getUser()->getEtudiant();
+        $user = $this->getUser();
 
-        $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $recherches = $repositoryRecherche->findAll();
 
-        return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
-                                                         'etudiant' => $etudiant]);
-    }
+            return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
+                                                             'etudiant']);
+        }
+        else{
+            $etudiant = $user->getEtudiant();
+
+            $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
+    
+            return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
+                                                             'etudiant' => $etudiant]);
+
+        }
+    } 
 }
