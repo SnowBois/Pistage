@@ -54,15 +54,6 @@ class AppFixtures extends Fixture
 
         // On persiste l'utilisateur associé à l'étudiant, ainsi que son adresse et son cursus
 
-        $manager->persist($utilisateur);
-        $manager->persist($adresse);
-        $manager->persist($cursus);
-        
-        $manager->persist($presentiel);
-        $manager->persist($mail);
-        $telephone->persist($telephone);
-        $courrier->persist($courrier);
-
         $presentiel = new MediaContact();
         $mail = new MediaContact();
         $telephone = new MediaContact();
@@ -73,6 +64,16 @@ class AppFixtures extends Fixture
         $telephone->setNomMedia("Télépone");
         $courrier->setNomMedia("Courrier");
 
+        $manager->persist($utilisateur);
+        $manager->persist($adresse);
+        $manager->persist($cursus);
+
+        $manager->persist($presentiel);
+        $manager->persist($mail);
+        $manager->persist($telephone);
+        $manager->persist($courrier);
+
+        $tableauMediaContact = array($presentiel, $mail, $telephone, $courrier);
         $tableauTypeEtablissements = array("Administration", "Association", "Entreprise privée", "Entreprise publique", "Mutuelle coopérative", "Autre");
         $tableauStatutsJuridiques = array("Micro-entrepreneur", "EI", "EIRL", "EURL", "SA", "SAS", "SARL", "SASU");
         $tableauEtatsRecherche = array("Refusé", "En attente", "Relancé", "Accepté");
@@ -84,6 +85,7 @@ class AppFixtures extends Fixture
 		{
 			$recherche = new Recherche();
 
+            $recherche->setMediaContact($tableauMediaContact[$faker->numberBetween(0,3)]);
             $recherche->setObservations($faker->realText(255,2));
 
             // L'état de la recherche
