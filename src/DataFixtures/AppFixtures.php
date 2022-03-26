@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+use App\Entity\Administrateur;
 use App\Entity\Recherche;
 use App\Entity\EtatRecherche;
 use App\Entity\Employe;
@@ -21,6 +22,51 @@ class AppFixtures extends Fixture
     {
         // Création d'un générateur de données Faker
 		$faker = \Faker\Factory::create('fr_FR');
+
+        // Création d'un étudiant, de son adresse, de son cursus et de son utilisateur associé
+        // PORTEUR D'AUCUNE RECHERCHE
+
+        $etudiant = new Etudiant();
+        $etudiant->setNom("Hyldas");
+        $etudiant->setPrenom("Sophie");
+        $etudiant->setNumeroEtudiant("667442");
+        $etudiant->setAdresseMail("shyldas@iutbayonne.univ-pau.fr");
+        $etudiant->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
+
+        $adresse = new Adresse();
+        $adresse->setVoie($faker->streetAddress());
+        $adresse->setBatimentResidenceZI($faker->secondaryAddress());
+        $adresse->setCommune($faker->city());
+        $adresse->setCodePostal($faker->randomNumber(5, true));
+        $adresse->setPays($faker->country());
+
+        $cursus = new Cursus();
+        $cursus->setNomLong("Diplôme Universitaire de Technologie en Informatique");
+        $cursus->setNomCourt("DUT Info");
+
+        $utilisateur = new Utilisateur();
+        $utilisateur->setUsername("shyldas");
+        $utilisateur->setPassword('$2y$10$X.X4WV9IJFDP37WZLjlAd.r3s0NYY9/lN6/aQlWzdTHqC8kbPXmca');
+        $utilisateur->setRoles(["ROLE_USER"]);
+
+        $adresse->addEtudiant($etudiant);
+
+        $cursus->addEtudiant($etudiant);
+
+        $utilisateur->setEtudiant($etudiant);
+
+        // On persiste l'utilisateur associé à l'étudiant (persisté en cascade), ainsi que son adresse et son cursus
+
+        $manager->persist($utilisateur);
+        $manager->persist($adresse);
+        $manager->persist($cursus);
+
+        
+
+
+
+        // Création d'un étudiant, de son adresse, de son cursus et de son utilisateur associé
+        // PORTEUR DE TOUTES LES RECHERCHES GÉNÉRÉES
 
         $etudiant = new Etudiant();
         $etudiant->setNom("Longy");
@@ -49,10 +95,36 @@ class AppFixtures extends Fixture
 
         $cursus->addEtudiant($etudiant);
 
-        $etudiant->setUtilisateur($utilisateur);
         $utilisateur->setEtudiant($etudiant);
+        
+        // On persiste l'utilisateur associé à l'étudiant (persisté en cascade), ainsi que son adresse et son cursus
 
-        // On persiste l'utilisateur associé à l'étudiant, ainsi que son adresse et son cursus
+        $manager->persist($utilisateur);
+        $manager->persist($adresse);
+        $manager->persist($cursus);
+
+
+
+
+
+        // Création d'un administrateur et de son utilisateur associé
+
+        $administrateur = new Administrateur();
+
+        $utilisateur = new Utilisateur();
+        $utilisateur->setUsername("admin");
+        $utilisateur->setPassword('$2y$10$z0u8K/0HEh7.Gtep3XUQxOZzCoyis2y2qW5V3cQcKPrwC807U40O.');
+        $utilisateur->setRoles(["ROLE_ADMIN"]);
+
+        $utilisateur->setAdministrateur($administrateur);
+
+        // On persiste l'utilisateur associé à l'administrateur (persisté en cascade)
+
+        $manager->persist($utilisateur);
+
+
+
+        // Création des quatre médias de contact possibles
 
         $presentiel = new MediaContact();
         $mail = new MediaContact();
@@ -64,9 +136,7 @@ class AppFixtures extends Fixture
         $telephone->setIntitule("Téléphone");
         $courrier->setIntitule("Courrier");
 
-        $manager->persist($utilisateur);
-        $manager->persist($adresse);
-        $manager->persist($cursus);
+        // On persiste ces nouveaux médias de contact
 
         $manager->persist($presentiel);
         $manager->persist($mail);

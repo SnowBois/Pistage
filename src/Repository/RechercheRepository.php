@@ -48,17 +48,33 @@ class RechercheRepository extends ServiceEntityRepository
     }
     */
 
-    public function findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant)
+    public function findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant)
     {
         return $this->createQueryBuilder('rec')
-                    ->select('rec,ent,emp,etu,adr,eta')
+                    ->select('rec,mec,eta,ent,adr,emp,etu')
+                    ->join('rec.mediaContact', 'mec')
+                    ->join('rec.etatsRecherche', 'eta')
                     ->join('rec.entreprise', 'ent')
                     ->join('ent.adresse', 'adr')
                     ->leftjoin('rec.employe', 'emp')
                     ->join('rec.etudiant', 'etu')
-                    ->join('rec.etatsRecherche', 'eta')
                     ->andWhere('etu = :etudiant')
                     ->setParameter('etudiant', $etudiant)
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }
+
+    public function findAllRecherchesEtEtudiantsEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployes()
+    {
+        return $this->createQueryBuilder('rec')
+                    ->select('rec,mec,eta,ent,adr,emp,etu')
+                    ->join('rec.etudiant', 'etu')
+                    ->join('rec.mediaContact', 'mec')
+                    ->join('rec.etatsRecherche', 'eta')
+                    ->join('rec.entreprise', 'ent')
+                    ->join('ent.adresse', 'adr')
+                    ->leftjoin('rec.employe', 'emp')
                     ->getQuery()
                     ->getResult()
         ;

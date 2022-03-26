@@ -14,7 +14,11 @@
 {% endblock %}
 
 {% block titrePage %}
-    Journal de recherches de stage de {{etudiant.getNomComplet()}}
+    {% if is_granted('ROLE_ADMIN') %}
+        Ensemble des journaux de recherches des étudiants
+    {% else %}
+        Journal de recherches de stage de {{etudiant.getNomComplet()}}
+    {% endif %}
 {% endblock %}
 
 {% block contenu %}
@@ -34,6 +38,11 @@
                 <table id="dataTable" class="table table-bordered display">
                      <thead class="thead">
                         <tr>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <th scope="col">
+                                    Étudiant
+                                </th>
+                            {% endif %}
                             <th scope="col">
                                 Date d'ajout
                             </th>
@@ -69,6 +78,11 @@
                     <tbody>
                     {% for recherche in recherches %}
 					    <tr>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>
+                                    {{recherche.etudiant.prenom}} {{recherche.etudiant.nom}}
+                                </td>
+                            {% endif %}
 							<td>
                                 {{recherche.etatsRecherche[0].date|date("d/m/Y H:i")}}
                             </td>

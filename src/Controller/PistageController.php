@@ -31,7 +31,7 @@ class PistageController extends AbstractController
         {
             // Redirection vers l'ensemble des journaux pour Admin
 
-            $recherches = $repositoryRecherche->findAll();
+            $recherches = $repositoryRecherche->findAllRecherchesEtEtudiantsEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployes();
 
             return $this->render('pistage/index.html.twig', ['recherches' => $recherches]);
         }
@@ -41,7 +41,7 @@ class PistageController extends AbstractController
 
             $etudiant = $user->getEtudiant();
 
-            $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
+            $recherches = $repositoryRecherche->findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
     
             return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
                                                              'etudiant' => $etudiant]);
