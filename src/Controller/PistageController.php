@@ -27,20 +27,47 @@ class PistageController extends AbstractController
     {
         $user = $this->getUser();
 
-        if(in_array('ROLE_ADMIN', $user->getRoles())){
+        if(in_array('ROLE_ADMIN', $user->getRoles()))
+        {
+            // Redirection vers l'ensemble des journaux pour Admin
+
             $recherches = $repositoryRecherche->findAll();
 
-            return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
-                                                             'etudiant']);
+            return $this->render('pistage/index.html.twig', ['recherches' => $recherches]);
         }
-        else{
+        else
+        {
+            // Redirection vers le journal spécifique de l'étudiant
+
             $etudiant = $user->getEtudiant();
 
             $recherches = $repositoryRecherche->findRecherchesEtEtatsEtEntreprisesEtAdressesEtEmployesByEtudiant($etudiant);
     
             return $this->render('pistage/index.html.twig', ['recherches' => $recherches,
                                                              'etudiant' => $etudiant]);
-
         }
     } 
+
+    /**
+     * @Route("/profil", name="pistage_profil")
+     */
+    public function afficherProfil(): Response
+    {
+        $user = $this->getUser();
+
+        if(in_array('ROLE_ADMIN', $user->getRoles()))
+        {
+            // Redirection vers la page de profil Admin
+
+            return $this->render('pistage/index.html.twig', ['recherches' => $recherches]);
+        }
+        else
+        {
+            // Redirection vers la page de profil étudiant
+
+            $etudiant = $user->getEtudiant();
+    
+            return $this->render('etudiant/profil.html.twig', ['etudiant' => $etudiant]);
+        }
+    }
 }
