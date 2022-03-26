@@ -59,10 +59,10 @@ class AppFixtures extends Fixture
         $telephone = new MediaContact();
         $courrier = new MediaContact();
         
-        $presentiel->setNomMedia("Présentiel");
-        $mail->setNomMedia("Mail");
-        $telephone->setNomMedia("Télépone");
-        $courrier->setNomMedia("Courrier");
+        $presentiel->setIntitule("Présentiel");
+        $mail->setIntitule("Mail");
+        $telephone->setIntitule("Téléphone");
+        $courrier->setIntitule("Courrier");
 
         $manager->persist($utilisateur);
         $manager->persist($adresse);
@@ -127,22 +127,29 @@ class AppFixtures extends Fixture
             $entreprise->setAdresseMail("contact@" . str_replace(' ', '', strtolower($entreprise->getNom())) . ".com");
             $entreprise->setSiteWeb($faker->domainName());
 
-            // L'employé servant d'interlocuteur à la recherche
+            // On génère entre 1 et 10 employés
+            $nombreEmployes = $faker->numberBetween(1,10);
 
-            $employe = new Employe();
-            $employe->setNom($faker->lastName());
-            $employe->setPrenom($faker->firstName());
-            $employe->setFonction($faker->jobTitle());
-            $employe->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
-            $employe->setAdresseMail(strtolower($employe->getPrenom()) . "." . strtolower($employe->getNom()) . "@" . str_replace(' ', '', strtolower($entreprise->getNom())) . ".com");
+            for ($j = 1 ; $j <= $nombreEmployes ; $j++)
+            {
+                $employe = new Employe();
+                $employe->setNom($faker->lastName());
+                $employe->setPrenom($faker->firstName());
+                $employe->setFonction($faker->jobTitle());
+                $employe->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
+                $employe->setAdresseMail(strtolower($employe->getPrenom()) . "." . strtolower($employe->getNom()) . "@" . str_replace(' ', '', strtolower($entreprise->getNom())) . ".com");
+                
+                $entreprise->addEmploye($employe);
+
+                $manager->persist($employe);
+            }
 
             // Mise en place des relations
 
-            $entreprise->addEmploye($employe);
+            $employe->addRecherche($recherche);     // Le dernier employé généré est l'interlocuteur de la recherche
+            $manager->persist($employe);
 
             $adresse->addEntreprise($entreprise);
-
-            $employe->addRecherche($recherche);
 
             $entreprise->addRecherche($recherche);
 
@@ -154,13 +161,9 @@ class AppFixtures extends Fixture
 
             $manager->persist($etatRecherche);
             $manager->persist($recherche);
-            $manager->persist($employe);
             $manager->persist($entreprise);
             $manager->persist($adresse);
 		}
-
-
-
 
         // On persiste l'étudiant avec toutes ses recherches
 

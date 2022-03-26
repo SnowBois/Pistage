@@ -12,8 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Entreprise;
 use App\Entity\Employe;
+use App\Entity\MediaContact;
 use App\Repository\EmployeRepository;
 use App\Repository\EntrepriseRepository;
+use App\Repository\MediaContactRepository;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -27,13 +29,17 @@ class RechercheType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $option): void
     {
         $builder
-            ->add('mediaContact', ChoiceType::class, array(
-                'choices'  => [
-                    'Courrier' => 'Courrier',
-                    'Mail' => 'Mail',
-                    'Présentiel' => 'Présentiel',
-                    'Téléphone' => 'Téléphone'
-                ],
+            ->add('mediaContact', EntityType::class, array(
+                'class' => MediaContact::class,
+                'choice_label' => 'intitule',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => false,
+                'expanded' => false,
+                'query_builder' => function (MediaContactRepository $repositoryMediaContact) {
+                    return $repositoryMediaContact->createQueryBuilder('mc')
+                        ->orderBy('mc.intitule', 'ASC');
+                },
                 'placeholder' => "Sélectionner le média de contact..."
             ))
             ->add('observations', TextareaType::class, ['required' => false])

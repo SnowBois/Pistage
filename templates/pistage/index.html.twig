@@ -97,7 +97,7 @@
                             {% endif %}
 
                             <td>
-                                {{recherche.mediaContact}}
+                                {{recherche.mediaContact.intitule}}
                             </td>
 
                             <td>
@@ -109,15 +109,18 @@
                             </td>
                             
                                 {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
-                                    <td style="background-color:#008196;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                    <td style="background-color:#008196;color:#FFFFFF">
                                 {% elseif (recherche.etatsRecherche|last.etat) == "Relancé" %}
-                                    <td style="background-color:#C47F00;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                    <td style="background-color:#C47F00;color:#FFFFFF">
                                 {% elseif (recherche.etatsRecherche|last.etat) == "Accepté" %}
-                                    <td style="background-color:#189618;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                    <td style="background-color:#189618;color:#FFFFFF">
                                 {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
-                                    <td style="background-color:#CA3120;color:#FFFFFF">{{recherche.etatsRecherche|last.etat}}</td>
+                                    <td style="background-color:#CA3120;color:#FFFFFF">        
                                 {% endif %}
-                            
+
+                                    {{recherche.etatsRecherche|last.etat}}
+                                </td>
+    
                             <td>
                                 Voir
                                 <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >

@@ -20,6 +20,13 @@ class Recherche
      * @ORM\Column(type="integer")
      */
     private $id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity=MediaContact::class, inversedBy="recherches")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
+     */
+    private $mediaContact;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -54,12 +61,6 @@ class Recherche
      */
     private $stage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaContact::class, inversedBy="recherches")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mediaContact;
-
     public function __construct()
     {
         $this->etatsRecherche = new ArrayCollection();
@@ -68,6 +69,18 @@ class Recherche
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMediaContact(): ?MediaContact
+    {
+        return $this->mediaContact;
+    }
+
+    public function setMediaContact(?MediaContact $mediaContact): self
+    {
+        $this->mediaContact = $mediaContact;
+
+        return $this;
     }
     
     public function getObservations(): ?string
@@ -156,18 +169,6 @@ class Recherche
     public function setStage(?Stage $stage): self
     {
         $this->stage = $stage;
-
-        return $this;
-    }
-
-    public function getMediaContact(): ?MediaContact
-    {
-        return $this->mediaContact;
-    }
-
-    public function setMediaContact(?MediaContact $mediaContact): self
-    {
-        $this->mediaContact = $mediaContact;
 
         return $this;
     }

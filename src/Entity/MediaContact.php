@@ -22,7 +22,7 @@ class MediaContact
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nomMedia;
+    private $intitule;
 
     /**
      * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="mediaContact")
@@ -39,14 +39,14 @@ class MediaContact
         return $this->id;
     }
 
-    public function getNomMedia(): ?string
+    public function getIntitule(): ?string
     {
-        return $this->nomMedia;
+        return $this->intitule;
     }
 
-    public function setNomMedia(string $nomMedia): self
+    public function setIntitule(string $intitule): self
     {
-        $this->nomMedia = $nomMedia;
+        $this->intitule = $intitule;
 
         return $this;
     }
@@ -59,22 +59,22 @@ class MediaContact
         return $this->recherches;
     }
 
-    public function addRecherch(Recherche $recherch): self
+    public function addRecherche(Recherche $recherche): self
     {
-        if (!$this->recherches->contains($recherch)) {
-            $this->recherches[] = $recherch;
-            $recherch->setMediaContact($this);
+        if (!$this->recherches->contains($recherche)) {
+            $this->recherches[] = $recherche;
+            $recherche->setMediaContact($this);
         }
 
         return $this;
     }
 
-    public function removeRecherch(Recherche $recherch): self
+    public function removeRecherche(Recherche $recherche): self
     {
-        if ($this->recherches->removeElement($recherch)) {
+        if ($this->recherches->removeElement($recherche)) {
             // set the owning side to null (unless already changed)
-            if ($recherch->getMediaContact() === $this) {
-                $recherch->setMediaContact(null);
+            if ($recherche->getMediaContact() === $this) {
+                $recherche->setMediaContact(null);
             }
         }
 
