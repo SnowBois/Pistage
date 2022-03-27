@@ -35,7 +35,7 @@ class Adresse
     private $commune;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=10)
      */
     private $codePostal;
 
@@ -45,7 +45,7 @@ class Adresse
     private $pays;
 
     /**
-     * @ORM\Column(type="string", length=5, nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $cedex;
 

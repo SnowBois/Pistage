@@ -35,7 +35,7 @@ class EtablissementEnseignement
     private $etapeEtude;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=20)
      */
     private $numeroTelephone;
 

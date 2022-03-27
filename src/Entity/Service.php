@@ -29,7 +29,7 @@ class Service
     private $entreprise;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="services")
+     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="services", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresse;

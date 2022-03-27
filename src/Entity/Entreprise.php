@@ -25,7 +25,7 @@ class Entreprise
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=20)
      */
     private $numeroTelephone;
 
@@ -60,7 +60,7 @@ class Entreprise
     private $effectif;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $numeroFax;
 
@@ -192,12 +192,12 @@ class Entreprise
         return $this;
     }
 
-    public function getEffectif(): ?int
+    public function getEffectif(): ?string
     {
         return $this->effectif;
     }
 
-    public function setEffectif(int $effectif): self
+    public function setEffectif(string $effectif): self
     {
         $this->effectif = $effectif;
 

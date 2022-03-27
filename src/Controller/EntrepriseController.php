@@ -8,7 +8,7 @@ use App\Entity\Adresse;
 use App\Form\EntrepriseType;
 use App\Form\FormulaireCSVType;
 use App\Repository\AdresseRepository;
-use App\Repository\CursusRepository;
+use App\Repository\ServiceRepository;
 use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,22 +31,23 @@ class EntrepriseController extends AbstractController
     const COLONNE_ADRESSE_VOIE = 3;
     const COLONNE_ADRESSE_CEDEX = 4;
     const COLONNE_CODE_POSTAL = 5;
-    const COLONNE_PAYS = 6;
-    const COLONNE_STATUT_JURIDIQUE = 7;
-    const COLONNE_TYPE_STRUCTURE = 8;
-    const COLONNE_EFFECTIF = 9;
-    const COLONNE_CODE_NAF = 10;
-    const COLONNE_TELEPHONE = 11;
-    const COLONNE_FAX = 12;
-    const COLONNE_MAIL = 13;
-    const COLONNE_SITE_WEB = 14;
-    const COLONNE_SERVICE_ACCUEIL_NOM = 15;
-    const COLONNE_SERVICE_ACCUEIL_VOIE = 16;
-    const COLONNE_SERVICE_ACCUEIL_RESIDENCE = 17;
-    const COLONNE_SERVICE_ACCUEIL_CEDEX = 18;
-    const COLONNE_SERVICE_ACCUEIL_CODE_POSTAL = 19;
-    const COLONNE_SERVICE_ACCUEIL_COMMUNE = 20;
-    const COLONNE_SERVICE_ACCUEIL_PAYS = 21;
+    const COLONNE_COMMUNE = 6;
+    const COLONNE_PAYS = 7;
+    const COLONNE_STATUT_JURIDIQUE = 8;
+    const COLONNE_TYPE_STRUCTURE = 9;
+    const COLONNE_EFFECTIF = 10;
+    const COLONNE_CODE_NAF = 11;
+    const COLONNE_TELEPHONE = 12;
+    const COLONNE_FAX = 13;
+    const COLONNE_MAIL = 14;
+    const COLONNE_SITE_WEB = 15;
+    const COLONNE_SERVICE_ACCUEIL_NOM = 16;
+    const COLONNE_SERVICE_ACCUEIL_VOIE = 17;
+    const COLONNE_SERVICE_ACCUEIL_RESIDENCE = 18;
+    const COLONNE_SERVICE_ACCUEIL_CEDEX = 19;
+    const COLONNE_SERVICE_ACCUEIL_CODE_POSTAL = 20;
+    const COLONNE_SERVICE_ACCUEIL_COMMUNE = 21;
+    const COLONNE_SERVICE_ACCUEIL_PAYS = 22;
 
     /**
      * @Route("/", name="entreprise_index", methods={"GET"})
@@ -85,7 +86,7 @@ class EntrepriseController extends AbstractController
      */
     public function ajoutCSV(Request $request, EntityManagerInterface $manager, 
                             EntrepriseRepository $repositoryEntreprise, AdresseRepository $repositoryAdresse,
-                            CursusRepository $repositoryService):Response
+                            ServiceRepository $repositoryService):Response
     {
         $form = $this->createForm(FormulaireCSVType::class);
         $form->handleRequest($request);
@@ -95,8 +96,9 @@ class EntrepriseController extends AbstractController
             $fichierCSV = $form['fichierCSV']->getData();
             $fichier = fopen($fichierCSV, "r");
             $nbLignes = count(file($fichierCSV));
-            $premiereLigne = chop(fgets($fichier));
-            if ($premiereLigne === "Nom Etablissement d'accueil;Siret;Adresse Residence;Adresse Voie;Adresse lib cedex;Code Postal;Pays;Statut Juridique;Type de Structure;Effectif;Code NAF;Téléphone ;Fax;Mail;SiteWeb;Service d'accueil - Nom;Service d'accueil - Residence;Service d'accueil - Voie;Service d'accueil - Cedex;Service d'accueil - Code postal;Service d'accueil - Commune;Service d'accueil - Pays") 
+            $premiereLigne = utf8_encode(chop(fgets($fichier)));
+
+            if ($premiereLigne === "Nom Etablissement d'accueil;Siret;Adresse Residence;Adresse Voie;Adresse lib cedex;Code Postal;Commune;Pays;Statut Juridique;Type de Structure;Effectif;Code NAF;Téléphone;Fax;Mail;SiteWeb;Service d'accueil - Nom;Service d'accueil - Residence;Service d'accueil - Voie;Service d'accueil - Cedex;Service d'accueil - Code postal;Service d'accueil - Commune;Service d'accueil - Pays")
             {
                 for ($i = 0; $i < $nbLignes - 1; ++$i) 
                 {
@@ -126,7 +128,7 @@ class EntrepriseController extends AbstractController
                         $adresse = new Adresse();
                         $adresse->setVoie($entrepriseCourante[EntrepriseController::COLONNE_ADRESSE_VOIE]);
                         $adresse->setBatimentResidenceZI($entrepriseCourante[EntrepriseController::COLONNE_ADRESSE_RESIDENCE]);
-                        // $adresse->setCommune($entrepriseCourante[EntrepriseController::COLONNE_COMMUNE]);  Les entreprises dans le CSV n'ont pas de commune
+                        $adresse->setCommune($entrepriseCourante[EntrepriseController::COLONNE_COMMUNE]);
                         $adresse->setCEDEX($entrepriseCourante[EntrepriseController::COLONNE_ADRESSE_CEDEX]);
                         $adresse->setCodePostal($entrepriseCourante[EntrepriseController::COLONNE_CODE_POSTAL]);
                         $adresse->setPays($entrepriseCourante[EntrepriseController::COLONNE_PAYS]);
@@ -157,7 +159,7 @@ class EntrepriseController extends AbstractController
                         $service->setNom($entrepriseCourante[EntrepriseController::COLONNE_SERVICE_ACCUEIL_NOM]);
 
                         // On vérifie que le service spécifié n'existe pas déjà
-                        $resultat = $repositoryService->findOneBy(['entreprise' => $entreprise, 
+                        $resultat = $repositoryService->findOneBy(['entreprise' => $entreprise->getId(), 
                                                                 'nom' => $service->getNom()
                                                                 ]);
 
@@ -201,8 +203,6 @@ class EntrepriseController extends AbstractController
                         {
                             // Le service existe déjà dans l'entreprise
                         }
-
-                        dump($entreprise);
 
                         $manager->persist($entreprise);
                         $manager->flush();  
