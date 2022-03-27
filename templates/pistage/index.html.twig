@@ -25,16 +25,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="d-flex flex-row mb-1 boutonsTable">
-					<div class="col-md-12">
-						<a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
-							<button type="button" class="btn btn-success" id="boutonAjoutRecherche">
-								Ajouter une recherche
-							</button>
-						</a>
-					</div>
-                </div>
-
+                {% if app.user.etudiant is not null %}
+                    <div class="d-flex flex-row mb-1 boutonsTable">
+                        <div class="col-md-12">
+                            <a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
+                                <button type="button" class="btn btn-success" id="boutonAjoutRecherche">
+                                    Ajouter une recherche
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                
                 <table id="dataTable" class="table table-bordered display">
                      <thead class="thead">
                         <tr>
