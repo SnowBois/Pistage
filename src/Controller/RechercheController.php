@@ -67,8 +67,8 @@ class RechercheController extends AbstractController
             $recherche->setDernierEtat($etatRecherche);
 
             // Enregistrer la recherche en BD
-            $manager->persist($etatRecherche);
             $manager->persist($recherche);
+            $manager->persist($etatRecherche);
             $manager->flush();
 
             // Rediriger l'utilisateur vers la page d'accueil affichant la liste des recherches
@@ -124,8 +124,8 @@ class RechercheController extends AbstractController
             $recherche->setDernierEtat($etatRecherche);
 
             // Enregistrer la recherche en BD
-            $manager->persist($etatRecherche);
             $manager->persist($recherche);
+            $manager->persist($etatRecherche);
             $manager->flush();
 
             // Rediriger l'utilisateur vers la page d'accueil affichant la liste des recherches
