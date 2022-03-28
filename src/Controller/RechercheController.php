@@ -64,6 +64,7 @@ class RechercheController extends AbstractController
             $etatRecherche->setDate(new \DateTime());
 
             $recherche->addEtatRecherche($etatRecherche);
+            $recherche->setDernierEtat($etatRecherche);
 
             // Enregistrer la recherche en BD
             $manager->persist($etatRecherche);
@@ -120,6 +121,7 @@ class RechercheController extends AbstractController
             $etatRecherche->setDate(new \DateTime());
 
             $recherche->addEtatRecherche($etatRecherche);
+            $recherche->setDernierEtat($etatRecherche);
 
             // Enregistrer la recherche en BD
             $manager->persist($etatRecherche);
@@ -135,4 +137,6 @@ class RechercheController extends AbstractController
 
         return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 'action' => 'modifier']);
     }
+
+    
 }

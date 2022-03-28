@@ -227,6 +227,8 @@ class AppFixtures extends Fixture
 
             $recherche->addEtatRecherche($etatRecherche);
 
+            $recherche->setDernierEtat($etatRecherche);
+
             // On persiste toutes les entités générées
 
             $manager->persist($etatRecherche);

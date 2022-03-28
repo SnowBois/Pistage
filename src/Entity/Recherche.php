@@ -61,6 +61,11 @@ class Recherche
      */
     private $stage;
 
+    /**
+     * @ORM\OneToOne(targetEntity=EtatRecherche::class, cascade={"persist", "remove"})
+     */
+    private $dernierEtat;
+
     public function __construct()
     {
         $this->etatsRecherche = new ArrayCollection();
@@ -170,6 +175,17 @@ class Recherche
     {
         $this->stage = $stage;
 
+        return $this;
+    }
+
+    public function getDernierEtat(): ?EtatRecherche
+    {
+        return $this->dernierEtat;
+    }
+
+    public function setDernierEtat(EtatRecherche $dernierEtat): self
+    {
+        $this->dernierEtat = $dernierEtat;
         return $this;
     }
 }
