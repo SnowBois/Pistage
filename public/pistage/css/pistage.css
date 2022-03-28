@@ -39,3 +39,47 @@ label.required:before {
 [class~=boutonsTable]{
 	margin-bottom:2%;
 }
+
+
+/* MEDIA QUERIES POUR LE RESPONSIVE */
+
+/* Au-delà de 1500 pixels de largeur, on peut laisser tous les champs */
+@media only screen and (max-width: 1500px) {
+    /* Entre 1500 et 800 pixels de largeur, on retire uniquement
+    - L'adresse de l'entreprise
+    - Le mail de l'entreprise
+    - Le téléphone de l'entreprise
+    */
+    .facultatif-nv-1 {
+        display:none;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    /* Entre 800 et 600 pixels de largeur, on retire uniquement
+    - L'adresse de l'entreprise
+    - Le mail de l'entreprise
+    - Le téléphone de l'entreprise
+    - Le nom du contact
+    - La fonction du contact
+    - Le média utilisé
+    */
+    .facultatif-nv-2 {
+        display:none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    /* Entre 600 et moins de pixels de largeur, on retire uniquement
+    - L'adresse de l'entreprise
+    - Le mail de l'entreprise
+    - Le téléphone de l'entreprise
+    - Le nom du contact
+    - La fonction du contact
+    - Le média utilisé
+    - L'action
+    */
+    .facultatif-nv-3 {
+        display:none;
+    }
+}

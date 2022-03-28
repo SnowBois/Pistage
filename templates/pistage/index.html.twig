@@ -51,28 +51,28 @@
                             <th scope="col">
                                 Nom de l'entreprise
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-1" scope="col">
                                 Adresse de l'entreprise
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-2" scope="col">
                                 Nom du contact
                             </th >
-                            <th scope="col">
+                            <th class="facultatif-nv-2" scope="col">
                                 Fonction du contact
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-3" scope="col">
                                 Média utilisé
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-1" scope="col">
                                 Mail de l'entreprise
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-1" scope="col">
                                 Téléphone de l'entreprise
                             </th>
                             <th scope="col">
                                 État de la recherche
                             </th>
-                            <th scope="col">
+                            <th class="facultatif-nv-3" scope="col">
                                 Actions
                             </th>
                         </tr>
@@ -93,51 +93,50 @@
                                 {{recherche.entreprise.nom}}
                             </td>
 
-                            <td>
+                            <td class="facultatif-nv-1">
                                 {{recherche.entreprise.adresse.voie}} {{recherche.entreprise.adresse.batimentResidenceZI}} {{recherche.entreprise.adresse.codePostal}} {{recherche.entreprise.adresse.commune}} 
                             </td>
 
                             {% if recherche.employe is not null %}
-                                <td>
+                                <td class="facultatif-nv-2">
                                     {{recherche.employe.prenom}} {{recherche.employe.nom}}
                                 </td>
 
-                                <td>
+                                <td class="facultatif-nv-2">
                                     {{recherche.employe.fonction}}
                                 </td>
                             {% else %}
-                                <td>
+                                <td class="facultatif-nv-2">
                                 </td>
-                                <td>
+                                <td class="facultatif-nv-2">
                                 </td>
                             {% endif %}
 
-                            <td>
+                            <td class="facultatif-nv-3">
                                 {{recherche.mediaContact.intitule}}
                             </td>
 
-                            <td>
+                            <td class="facultatif-nv-1">
                                 {{recherche.entreprise.adresseMail}}
                             </td>
 
-                            <td>
+                            <td class="facultatif-nv-1">
                                 {{recherche.entreprise.numeroTelephone}}
                             </td>
                             
-                                {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
-                                    <td style="background-color:#008196;color:#FFFFFF">
-                                {% elseif (recherche.etatsRecherche|last.etat) == "Relancé" %}
-                                    <td style="background-color:#C47F00;color:#FFFFFF">
-                                {% elseif (recherche.etatsRecherche|last.etat) == "Accepté" %}
-                                    <td style="background-color:#189618;color:#FFFFFF">
-                                {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
-                                    <td style="background-color:#CA3120;color:#FFFFFF">        
-                                {% endif %}
-
-                                    {{recherche.etatsRecherche|last.etat}}
-                                </td>
+                            {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
+                                <td style="background-color:#008196;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Relancé" %}
+                                <td style="background-color:#C47F00;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Accepté" %}
+                                <td style="background-color:#189618;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
+                                <td style="background-color:#CA3120;color:#FFFFFF">        
+                            {% endif %}
+                                {{recherche.etatsRecherche|last.etat}}
+                            </td>
     
-                            <td>
+                            <td class="facultatif-nv-3">
                                 Voir
                                 <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
                                     <button type="button" class="btn btn-success">
