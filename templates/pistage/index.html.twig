@@ -17,7 +17,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                {% if app.user.etudiant is not null %}
+                {% if not is_granted('ROLE_ADMIN') %}
                     <div class="d-flex flex-row mb-1 boutonsTable">
                         <div class="col-md-12">
                             <a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
@@ -33,94 +33,63 @@
                      <thead class="thead">
                         <tr>
                             {% if is_granted('ROLE_ADMIN') %}
-                                <th scope="col">
-                                    Étudiant
-                                </th>
+                                <th scope="col">Étudiant</th>
                             {% endif %}
-                            <th class="invisible colonneDateEtHeure" scope="col">
-                                Date et heure d'ajout
+
+                            <th class="invisible colonneDateEtHeure" scope="col">Date et heure d'ajout</th>
+
+                            <th class="colonneDate" scope="col">Date d'ajout</th>
+
+                            <th scope="col">Nom de l'entreprise</th>
+
+                            <th class="facultatif-nv-1" scope="col">Adresse de l'entreprise
                             </th>
-                            <th class="colonneDate" scope="col">
-                                Date d'ajout
-                            </th>
-                            <th scope="col">
-                                Nom de l'entreprise
-                            </th>
-                            <th class="facultatif-nv-1" scope="col">
-                                Adresse de l'entreprise
-                            </th>
-                            <th class="facultatif-nv-2" scope="col">
-                                Nom du contact
-                            </th >
-                            <th class="facultatif-nv-2" scope="col">
-                                Fonction du contact
-                            </th>
-                            <th class="facultatif-nv-3" scope="col">
-                                Média utilisé
-                            </th>
-                            <th class="facultatif-nv-1" scope="col">
-                                Mail de l'entreprise
-                            </th>
-                            <th class="facultatif-nv-1" scope="col">
-                                Téléphone de l'entreprise
-                            </th>
-                            <th scope="col">
-                                État de la recherche
-                            </th>
-                            <th class="facultatif-nv-3" scope="col">
-                            </th>
+
+                            <th class="facultatif-nv-2" scope="col">Nom du contact</th>
+
+                            <th class="facultatif-nv-2" scope="col">Fonction du contact</th>
+
+                            <th class="facultatif-nv-3" scope="col">Média utilisé</th>
+
+                            <th class="facultatif-nv-1" scope="col">Mail de l'entreprise</th>
+
+                            <th class="facultatif-nv-1" scope="col">Téléphone de l'entreprise</th>
+                            
+                            <th scope="col">État de la recherche</th>
+
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <th class="colonneAction facultatif-nv-3" scope="col"></th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                     {% for recherche in recherches %}
 					    <tr>
                             {% if is_granted('ROLE_ADMIN') %}
-                                <td>
-                                    {{recherche.etudiant.prenom}} {{recherche.etudiant.nom}}
-                                </td>
+                                <td>{{recherche.etudiant.prenom}} {{recherche.etudiant.nom}}</td>
                             {% endif %}
-                            <td class="invisible">
-                                {{recherche.etatsRecherche[0].date|date("d/m/Y H:i:s")}}
-                            </td>
+                            <td class="invisible">{{recherche.etatsRecherche[0].date|date("d/m/Y H:i:s")}}</td>
 
-							<td>
-                                {{recherche.etatsRecherche[0].date|date("d/m/Y")}}
-                            </td>
+							<td>{{recherche.etatsRecherche[0].date|date("d/m/Y")}}</td>
 
-                            <td>
-                                {{recherche.entreprise.nom}}
-                            </td>
+                            <td>{{recherche.entreprise.nom}}</td>
 
-                            <td class="facultatif-nv-1">
-                                {{recherche.entreprise.adresse.voie}} {{recherche.entreprise.adresse.batimentResidenceZI}} {{recherche.entreprise.adresse.codePostal}} {{recherche.entreprise.adresse.commune}} 
-                            </td>
+                            <td class="facultatif-nv-1">{{recherche.entreprise.adresse.voie}} {{recherche.entreprise.adresse.batimentResidenceZI}} {{recherche.entreprise.adresse.codePostal}} {{recherche.entreprise.adresse.commune}} </td>
 
                             {% if recherche.employe is not null %}
-                                <td class="facultatif-nv-2">
-                                    {{recherche.employe.prenom}} {{recherche.employe.nom}}
-                                </td>
+                                <td class="facultatif-nv-2">{{recherche.employe.prenom}} {{recherche.employe.nom}}</td>
 
-                                <td class="facultatif-nv-2">
-                                    {{recherche.employe.fonction}}
-                                </td>
+                                <td class="facultatif-nv-2">{{recherche.employe.fonction}}</td>
                             {% else %}
-                                <td class="facultatif-nv-2">
-                                </td>
-                                <td class="facultatif-nv-2">
-                                </td>
+                                <td class="facultatif-nv-2"></td>
+                                <td class="facultatif-nv-2"></td>
                             {% endif %}
 
-                            <td class="facultatif-nv-3">
-                                {{recherche.mediaContact.intitule}}
-                            </td>
+                            <td class="facultatif-nv-3">{{recherche.mediaContact.intitule}}</td>
 
-                            <td class="facultatif-nv-1">
-                                {{recherche.entreprise.adresseMail}}
-                            </td>
+                            <td class="facultatif-nv-1">{{recherche.entreprise.adresseMail}}</td>
 
-                            <td class="facultatif-nv-1">
-                                {{recherche.entreprise.numeroTelephone}}
-                            </td>
+                            <td class="facultatif-nv-1">{{recherche.entreprise.numeroTelephone}}</td>
                             
                             {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
                                 <td style="background-color:#008196;color:#FFFFFF">
@@ -130,15 +99,16 @@
                                 <td style="background-color:#189618;color:#FFFFFF">
                             {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
                                 <td style="background-color:#CA3120;color:#FFFFFF">        
-                            {% endif %}
-                                {{recherche.etatsRecherche|last.etat}}
-                            </td>
+                            {% endif %}{{recherche.etatsRecherche|last.etat}}</td>
                             
-                            <td class="facultatif-nv-3 celluleBoutonModif">
-                                <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
-                                    <i class="icon-cog"></i>
-                                </a>
-                            </td>
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <td class="facultatif-nv-3 celluleBoutonModif">
+                                    <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
+                                        <i class="icon-cog"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            
 					    </tr>
 					
 				
@@ -147,7 +117,6 @@
 					{% endfor %}
 					</tbody>
 				</table>
-                
             </div>
         </div>
     </div>
@@ -160,12 +129,19 @@
     <script src="{{ asset('/datatables/js/datetime-moment.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() 
+        {
             $.fn.dataTable.moment('DD/MM/YYYY HH:mm:ss');
             $.fn.dataTable.moment('DD/MM/YYYY'); 
 
-            $('#dataTable').DataTable( {
-                searching: false,
+            // On clone l'entête de chaque colonne puis on l'y place en-dessous
+            $('#dataTable thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#dataTable thead');
+
+            $('#dataTable').DataTable( 
+            {
                 "order": [[ $('th.colonneDate').index(), "desc" ]],
                 "oLanguage": {
                     "sUrl": "/datatables/datatables.french.json"
@@ -173,8 +149,60 @@
                 "aoColumnDefs": [
                     { "iDataSort": $('th.colonneDateEtHeure').index(), "aTargets": [ $('th.colonneDate').index() ] },
                     { orderable: false, targets: [ $('th.colonneAction').index() ] }
-                ]
-            } );
-        } );
+                ],
+                orderCellsTop: true,
+                fixedHeader: true,
+                initComplete: function () 
+                {
+                    var api = this.api();
+        
+                    // Pour chacune des colonnes de la dataTable
+                    api.columns().eq(0).each(function (colIdx) 
+                    {
+                        if($(api.column(colIdx).header()).index() != $('th.colonneAction').index())
+                        {
+                            // La colonne d'actions n'a pas besoin de champ de recherche
+
+                            // On modifie la cellule clonée pour la remplacer avec un champ de saisie
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            $(cell).html('<input type="text" placeholder="..." size="5" />');
+        
+                            // À chaque frappe dans ce champ de saisie
+                            $(
+                                'input',
+                                $('.filters th').eq($(api.column(colIdx).header()).index())
+                            )
+                            .off('keyup change')
+                            .on('keyup change', function (e) {
+                                e.stopPropagation();
+
+                                // On récupère la valeur saisie
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})';
+
+                                var cursorPosition = this.selectionStart;
+                                // On cherche la valeur saisie dans la colonne en question
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                    .draw();
+
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                        }
+                    });
+                },
+            });
+        });
     </script>
 {% endblock %}

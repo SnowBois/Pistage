@@ -1,10 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
-{% endblock %}
-
 {% block titrePage %}
     {% if action == 'ajouter' %}
         Formulaire d'ajout d'une recherche
@@ -59,6 +54,10 @@
             </div>
 	    </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
 
     <script>
         $( document ).ajaxStart(function() {
@@ -90,6 +89,7 @@
             });
         });
     </script>
+            
 {% endblock %}
 
 
