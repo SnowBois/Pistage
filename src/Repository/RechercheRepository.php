@@ -19,6 +19,11 @@ class RechercheRepository extends ServiceEntityRepository
         parent::__construct($registry, Recherche::class);
     }
 
+
+  /*  public function findVieillesRecherchesEnAttente($etudiant){
+       $this ->createQuery("Select r from App\Entity\Recherche join r.dernierEtat de where de.etat ='En attente' And where DATEDIFF(date,date)")
+
+   }*/
     // /**
     //  * @return Recherche[] Returns an array of Recherche objects
     //  */
