@@ -45,7 +45,10 @@
                                     Étudiant
                                 </th>
                             {% endif %}
-                            <th scope="col">
+                            <th class="invisible colonneDateEtHeure" scope="col">
+                                Date et heure d'ajout
+                            </th>
+                            <th class="colonneDate" scope="col">
                                 Date d'ajout
                             </th>
                             <th scope="col">
@@ -73,7 +76,6 @@
                                 État de la recherche
                             </th>
                             <th class="facultatif-nv-3" scope="col">
-                                Actions
                             </th>
                         </tr>
                     </thead>
@@ -85,8 +87,12 @@
                                     {{recherche.etudiant.prenom}} {{recherche.etudiant.nom}}
                                 </td>
                             {% endif %}
-							<td>
+                            <td class="invisible">
                                 {{recherche.etatsRecherche[0].date|date("d/m/Y H:i")}}
+                            </td>
+
+							<td>
+                                {{recherche.etatsRecherche[0].date|date("d/m/Y")}}
                             </td>
 
                             <td>
@@ -135,13 +141,10 @@
                             {% endif %}
                                 {{recherche.etatsRecherche|last.etat}}
                             </td>
-    
-                            <td class="facultatif-nv-3">
-                                Voir
+                            
+                            <td class="facultatif-nv-3 celluleBoutonModif">
                                 <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
-                                    <button type="button" class="btn btn-success">
-                                       Modifier
-                                    </button>
+                                    <i class="icon-cog"></i>
                                 </a>
                             </td>
 					    </tr>
@@ -162,10 +165,13 @@
             $.fn.dataTable.moment('D/MM/YYYY HH:mm');
 
             $('#dataTable').DataTable( {
-                "order": [[ 0, "desc" ]],
+                "order": [[ $('th.colonneDate').index(), "desc" ]],
                 "oLanguage": {
                     "sUrl": "/datatables/datatables.french.json"
-                    }
+                },
+                "columnDefs": [
+                    { "iDataSort": $('th.colonneDate').index(), "aTargets": [ $('th.colonneDateEtHeure').index() ] }
+                ]
             } );
         } );
     </script>

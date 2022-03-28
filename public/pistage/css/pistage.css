@@ -30,14 +30,23 @@ label.required:before {
 	background:#8fc857;
 }
 
-[class~=enTete]{
+.enTete {
 	border:solid 2px #228B22;
 	background-color:#8fc857;
 	margin-bottom:3%;
 }
 
-[class~=boutonsTable]{
+.boutonsTable {
 	margin-bottom:2%;
+}
+
+.celluleBoutonModif {
+    text-align:center;
+    vertical-align: middle;
+}
+
+.invisible {
+    display:none;
 }
 
 

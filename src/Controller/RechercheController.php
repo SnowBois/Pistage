@@ -112,7 +112,7 @@ class RechercheController extends AbstractController
             $etudiant = $this->getUser()->getEtudiant();
             $recherche->setEtudiant($etudiant);
 
-            // On crée le premier état de la recherche et on l'assigne à la recherche
+            // On crée le nouvel état de la recherche et on l'assigne à la recherche
             $etat = $formulaireRecherche->get('premierEtat')->getData();
 
             $etatRecherche = new EtatRecherche();
