@@ -5,14 +5,6 @@
     <link rel="stylesheet" href="{{ asset('/datatables/css/datatables.min.css') }}">
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
-    <script src="{{ asset('/datatables/js/datatables.min.js') }}"></script>
-    <script src="{{ asset('/datatables/js/moment.min.js') }}"></script>
-    <script src="{{ asset('/datatables/js/datetime-moment.js') }}"></script>
-{% endblock %}
-
 {% block titrePage %}
     {% if is_granted('ROLE_ADMIN') %}
         Ensemble des journaux de recherches des étudiants
@@ -159,6 +151,13 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/datatables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/moment.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/datetime-moment.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -166,12 +165,14 @@
             $.fn.dataTable.moment('DD/MM/YYYY'); 
 
             $('#dataTable').DataTable( {
+                searching: false,
                 "order": [[ $('th.colonneDate').index(), "desc" ]],
                 "oLanguage": {
                     "sUrl": "/datatables/datatables.french.json"
                 },
                 "aoColumnDefs": [
-                    { "iDataSort": $('th.colonneDateEtHeure').index(), "aTargets": [ $('th.colonneDate').index() ] }
+                    { "iDataSort": $('th.colonneDateEtHeure').index(), "aTargets": [ $('th.colonneDate').index() ] },
+                    { orderable: false, targets: [ $('th.colonneAction').index() ] }
                 ]
             } );
         } );

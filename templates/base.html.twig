@@ -36,7 +36,7 @@
                                     Mon Compte
                                 </button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-									<li><a class="dropdown-item" href="#">Alertes</a></li>
+									<li><a id="bouton_alerte" class="dropdown-item" href="#">Alertes</a></li>
 									<li><a class="dropdown-item" href="{{ path('pistage_profil') }}">Profil</a></li>
 									<li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
 								</ul>
@@ -47,12 +47,6 @@
             </div>
        
         {% endblock %}
-
-        <!-- BLOCK DES SCRIPTS JAVASCRIPT -->
-        {% block javascripts %}
-            <script src="{{ asset('/bootstrap/js/bootstrap.bundle.min.js') }}"> </script>
-        {% endblock %}
-        </body>
 
         <!-- BLOCK DU TITRE DE LA PAGE -->
         <div class="container-fluid">
@@ -70,6 +64,30 @@
         
         <!-- BLOCK DU PIED DE PAGE -->
         {% block footer %}
+        {% endblock %}
+        
+        <!-- BLOCK DES SCRIPTS JAVASCRIPT -->
+        {% block javascripts %}
+            <script src="{{ asset('/bootstrap/js/bootstrap.bundle.min.js') }}"> </script>
+            <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
+
+            <script>
+                var $boutonAlerte = $('#bouton_alerte');
+                
+                $boutonAlerte.click(function() {
+                    var data = {};
+                    
+                    $.ajax({
+                        url : "{{ path('recherche_alertes') }}",
+                        type: "POST",
+                        data : data,
+                        dataType: "json",
+                        complete: function(html) {
+                            console.log(html.responseJSON);
+                        }
+                    });
+                });
+            </script>
         {% endblock %}
     </body>
 </html>

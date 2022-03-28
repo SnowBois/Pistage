@@ -84,4 +84,21 @@ class RechercheRepository extends ServiceEntityRepository
                     ->getResult()
         ;
     }
+
+    public function findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant)
+    {
+        $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
+
+        return $this->createQueryBuilder('rec')
+                    ->join('rec.dernierEtat', 'der')
+                    ->join('rec.etudiant', 'etu')
+                    ->andWhere('etu = :etudiant')
+                    ->andWhere('der.etat = \'En attente\'')
+                    ->andWhere('der.date < :dateDeuxSemainesAuparavant')
+                    ->setParameter('etudiant', $etudiant)
+                    ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
+                    ->getQuery()
+                    ->getArrayResult()
+        ;
+   }
 }

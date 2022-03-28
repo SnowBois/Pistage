@@ -15,6 +15,9 @@ use App\Form\RechercheType;
 use App\Entity\EtatRecherche;
 
 use App\Repository\EntrepriseRepository;
+use App\Repository\RechercheRepository;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -138,5 +141,13 @@ class RechercheController extends AbstractController
         return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 'action' => 'modifier']);
     }
 
-    
+    /**
+     * @Route("/alertes", name="recherche_alertes")
+     */
+    public function recupererAlertes(Request $request, RechercheRepository $repositoryRecherche): JsonResponse
+    {
+        $etudiant = $this->getUser()->getEtudiant();
+
+        return new JsonResponse($repositoryRecherche->findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant));
+    }
 }
