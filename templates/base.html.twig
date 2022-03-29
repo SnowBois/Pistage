@@ -101,6 +101,7 @@
                     $.ajax({
                         url : "{{ path('recherche_alertes') }}",
                         type: "POST",
+                        global: false,
                         data : data,
                         dataType: "json",
                         complete: function(html) {

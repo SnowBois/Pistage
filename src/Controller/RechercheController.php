@@ -40,11 +40,13 @@ class RechercheController extends AbstractController
         // Traiter les données du formulaire s'il a été soumis et est valide
         if($formulaireRecherche->isSubmitted() && $formulaireRecherche->isValid())
         {
-            $nouvelleEntreprise = $formulaireRecherche->get('nouvelleEntreprise')->getData()->get('0');
+            $formulaireNouvelleEntreprise = $formulaireRecherche->get('nouvelleEntreprise')->getData();
 
-            if($nouvelleEntreprise != null)
+            if(!empty($formulaireNouvelleEntreprise))
             {
                 // Une nouvelle entreprise a été saisie
+                $nouvelleEntreprise = $formulaireNouvelleEntreprise[array_key_first($formulaireNouvelleEntreprise)];
+
                 $recherche->setEntreprise($nouvelleEntreprise);
             }
             else
@@ -67,11 +69,13 @@ class RechercheController extends AbstractController
                 }
             }
 
-            $nouvelEmploye = $formulaireRecherche->get('nouvelEmploye')->getData()->get('0');
+            $formulaireNouvelEmploye = $formulaireRecherche->get('nouvelEmploye')->getData();
 
-            if($nouvelEmploye != null)
+            if(!empty($formulaireNouvelEmploye))
             {
                 // Un nouvel employé a été saisi
+                $nouvelEmploye = $formulaireNouvelEmploye[array_key_first($formulaireNouvelEmploye)];
+
                 $recherche->setEmploye($nouvelEmploye);
                 $recherche->getEntreprise()->addEmploye($nouvelEmploye);
             }
@@ -172,7 +176,6 @@ class RechercheController extends AbstractController
         return new JsonResponse($repositoryRecherche->findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant));
     }
 
-     
     /**
      * @Route("/relances", name="pistage_relancesTableau")
      */
@@ -187,5 +190,4 @@ class RechercheController extends AbstractController
         return $this->render('recherche/recherchesARelancer.html.twig', ['recherches' => $recherchesARelancer,
                                                          'etudiant' => $etudiant]);
     }
-        
 }

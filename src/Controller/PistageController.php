@@ -48,9 +48,7 @@ class PistageController extends AbstractController
                                                              'etudiant' => $etudiant]);
         }
     } 
-
-   
-
+    
     /**
      * @Route("/profil", name="pistage_profil")
      */
