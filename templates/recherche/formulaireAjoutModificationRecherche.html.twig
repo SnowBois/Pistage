@@ -32,12 +32,24 @@
                         {{form_row(vueFormulaireRecherche.entreprise)}}
                     </div>
 
+                    <ul class="nouvelleEntreprise" data-prototype="{{ form_widget(vueFormulaireRecherche.nouvelleEntreprise.vars.prototype)|e('html_attr') }}"></ul>
+                    
+                    <div id="zoneBoutonAjoutEntreprise">
+                        <button type="button" id="add_entreprise_link" class="add_item_link" data-collection-holder-class="nouvelleEntreprise">Ajouter une entreprise</button>
+                    </div>
+
                     <br/>
 
                     <HR>
 
                     <div> <!-- Affichage du champ de sélection de l'employé associée à la recherche -->
                         {{form_row(vueFormulaireRecherche.employe)}}
+                    </div>
+
+                    <ul class="nouvelEmploye" data-prototype="{{ form_widget(vueFormulaireRecherche.nouvelEmploye.vars.prototype)|e('html_attr') }}"></ul>
+                    
+                    <div id="zoneBoutonAjoutEmploye">
+                        <button type="button" id="add_employe_link" class="add_item_link" data-collection-holder-class="nouvelEmploye">Ajouter un employé</button>
                     </div>
 
                     <HR>
@@ -50,7 +62,7 @@
 
                     <button type="submit" class="btn btn-dark">Enregistrer</button>
 
-                    {{ form_end(vueFormulaireRecherche) }}
+                    {{ form_end(vueFormulaireRecherche, {'render_rest': false}) }}
             </div>
 	    </div>
     </div>
@@ -60,6 +72,136 @@
     {{ parent() }}
 
     <script>
+        $(document).ready(function() {
+            // Get the ul that holds the collection of entreprises
+            var $entreprisesCollectionHolder = $('ul.nouvelleEntreprise');
+
+            // add a delete link to all of the existing entreprise form li elements
+            $entreprisesCollectionHolder.find('li').each(function() {
+                addEntrepriseFormDeleteLink($(this));
+            });
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $entreprisesCollectionHolder.data('index', $entreprisesCollectionHolder.find('input').length);
+
+            $('body').on('click', '#add_entreprise_link', function(e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                // add a new Entreprise form (see next code block)
+                addEntrepriseFormToCollection($collectionHolderClass);
+
+                // Supprimer le bouton d'ajout d'entreprise
+
+                $(e.currentTarget).remove();
+
+                // Désactiver et réinitialiser la liste déroulante d'entreprises et d'employés
+                $("#recherche_entreprise").val($("select[id='recherche_entreprise'] option:first").val());
+                $("#recherche_employe").val($("select[id='recherche_employe'] option:first").val());
+
+                $("#recherche_entreprise").prop( "disabled", true);
+                $("#recherche_employe").prop( "disabled", true);
+            })
+
+            $('body').on('click', '#add_employe_link', function(e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                // add a new Employe form (see next code block)
+                addEmployeFormToCollection($collectionHolderClass);
+
+                // Supprimer le bouton d'ajout d'employé
+
+                $(e.currentTarget).remove();
+
+                // Désactiver et réinitialiser la liste déroulante d'employés
+                $("#recherche_employe").val($("select[id='recherche_employe'] option:first").val());
+                $("#recherche_employe").prop( "disabled", true);
+            })
+        });
+
+        function addEntrepriseFormToCollection($collectionHolderClass) {
+            // Get the ul that holds the collection of Entreprises
+            var $collectionHolder = $('.' + $collectionHolderClass);
+
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a entreprise" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            // Add the new form at the end of the list
+            $collectionHolder.append($newFormLi);
+
+            // add a delete link to the new form
+            addEntrepriseFormDeleteLink($newFormLi);
+        }
+
+        function addEntrepriseFormDeleteLink($formulaireAjoutEntreprise) {
+            var $removeFormButton = $('<button type="button">Supprimer cette entreprise</button>');
+            $formulaireAjoutEntreprise.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                // Remettre le bouton d'ajout d'entreprise
+                var $addFormButton = $('<button type="button" id="add_entreprise_link" class="add_item_link" data-collection-holder-class="nouvelleEntreprise">Ajouter une entreprise</button>');
+                $('#zoneBoutonAjoutEntreprise').append($addFormButton);
+
+                // Réactiver la liste déroulante d'entreprises et d'employés
+                $("#recherche_entreprise").prop( "disabled", false);
+                $("#recherche_employe").prop( "disabled", false);
+
+                // remove the li for the entreprise form
+                $formulaireAjoutEntreprise.remove();
+            });
+        }
+
+        function addEmployeFormToCollection($collectionHolderClass) {
+            // Get the ul that holds the collection of Employés
+            var $collectionHolder = $('.' + $collectionHolderClass);
+
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a employé" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            // Add the new form at the end of the list
+            $collectionHolder.append($newFormLi);
+
+            // add a delete link to the new form
+            addEmployeFormDeleteLink($newFormLi);
+        }
+
+        function addEmployeFormDeleteLink($formulaireAjoutEmploye) {
+            var $removeFormButton = $('<button type="button">Supprimer cet employé</button>');
+            $formulaireAjoutEmploye.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                // Remettre le bouton d'ajout d'employé
+                var $addFormButton = $('<button type="button" id="add_employe_link" class="add_item_link" data-collection-holder-class="nouvelEmploye">Ajouter un employé</button>');
+                $('#zoneBoutonAjoutEmploye').append($addFormButton);
+
+                // Réactiver la liste déroulante d'employés
+                $("#recherche_employe").prop( "disabled", false);
+
+                // remove the li for the entreprise form
+                $formulaireAjoutEmploye.remove();
+            });
+        }
+
         $( document ).ajaxStart(function() {
             $( "#contenuPage" ).fadeOut();
             $( "#chargement" ).fadeIn();

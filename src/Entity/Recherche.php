@@ -46,7 +46,6 @@ class Recherche
     /**
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="recherches", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank
      */
     private $entreprise;
 

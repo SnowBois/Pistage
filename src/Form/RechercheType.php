@@ -10,12 +10,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\Entreprise;
 use App\Entity\Employe;
 use App\Entity\MediaContact;
 use App\Repository\EmployeRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\MediaContactRepository;
+use App\Form\EntrepriseType;
+use App\Form\EmployeType;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -56,6 +59,20 @@ class RechercheType extends AbstractType
                 },
                 'placeholder' => "Choisissez l'entreprise..."
             ))
+            ->add('nouvelleEntreprise', CollectionType::class, [
+                'entry_type' => EntrepriseType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'mapped' => false
+            ])
+            ->add('nouvelEmploye', CollectionType::class, [
+                'entry_type' => EmployeType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'mapped' => false
+            ])
             ->add('premierEtat', ChoiceType::class, array(
                 'choices'  => [
                     'Refusé' => 'Refusé',

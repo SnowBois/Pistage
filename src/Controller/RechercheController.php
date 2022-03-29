@@ -40,19 +40,40 @@ class RechercheController extends AbstractController
         // Traiter les données du formulaire s'il a été soumis et est valide
         if($formulaireRecherche->isSubmitted() && $formulaireRecherche->isValid())
         {
-            // On récupère l'employé saisi pour l'assigner à l'entreprise choisie
-            $employe = $recherche->getEmploye();
-            $entreprise = $recherche->getEntreprise();
+            $nouvelleEntreprise = $formulaireRecherche->get('nouvelleEntreprise')->getData()->get('0');
 
-            // On vérifie si l'employé a été saisi
-            if($employe != null)
+            if($nouvelleEntreprise != null)
             {
-                // On vérifie si c'était un employé parmi la liste ou un nouvel employé ajouté
-                if($employe->getEntreprise() == null)
+                // Une nouvelle entreprise a été saisie
+                $recherche->setEntreprise($nouvelleEntreprise);
+            }
+            else
+            {
+                // Une entreprise a été sélectionnée dans la liste
+
+                // On récupère l'employé saisi pour l'assigner à l'entreprise choisie
+                $employe = $recherche->getEmploye();
+                $entreprise = $recherche->getEntreprise();
+
+                // On vérifie si l'employé a été saisi
+                if($employe != null)
                 {
-                    // Si c'était un nouvel employé ajouté, on définit son entreprise comme étant celle saisie
-                    $employe->setEntreprise($entreprise);
+                    // On vérifie si c'était un employé parmi la liste ou un nouvel employé ajouté
+                    if($employe->getEntreprise() == null)
+                    {
+                        // Si c'était un nouvel employé ajouté, on définit son entreprise comme étant celle saisie
+                        $employe->setEntreprise($entreprise);
+                    }
                 }
+            }
+
+            $nouvelEmploye = $formulaireRecherche->get('nouvelEmploye')->getData()->get('0');
+
+            if($nouvelEmploye != null)
+            {
+                // Un nouvel employé a été saisi
+                $recherche->setEmploye($nouvelEmploye);
+                $recherche->getEntreprise()->addEmploye($nouvelEmploye);
             }
 
             // On assigne la recherche saisie à l'utilisateur connecté
