@@ -29,6 +29,26 @@
                             <img src="{{ asset('/img/pistage_logo_titre.png') }}" />
                         </a>
                     </div>
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h4> Les entreprises à relancer </h4>
+                                <ul id="entrepriseARelancer">
+
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onClick=>afficher sur le </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6 align-middle">
                         <div class="d-flex justify-content-end align-middle">
                             <div class="dropdown ">
@@ -36,7 +56,7 @@
                                     Mon Compte
                                 </button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-									<li><a id="bouton_alerte" class="dropdown-item" href="#">Alertes</a></li>
+									<li><a id="bouton_alerte" class="dropdown-item close" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Alertes</a></li>
 									<li><a class="dropdown-item" href="{{ path('pistage_profil') }}">Profil</a></li>
 									<li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
 								</ul>
@@ -70,6 +90,7 @@
         {% block javascripts %}
             <script src="{{ asset('/bootstrap/js/bootstrap.bundle.min.js') }}"> </script>
             <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
+            <script src="{{ asset('/pistage/js/alerte.js') }}"> </script>
 
             <script>
                 var $boutonAlerte = $('#bouton_alerte');
@@ -86,7 +107,13 @@
                             console.log(html.responseJSON);
                         }
                     });
+
+                    liste = document.getElementById('entrepriseARelancer');
+                    
+
+
                 });
+
             </script>
         {% endblock %}
     </body>

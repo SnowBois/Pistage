@@ -41,7 +41,11 @@ label.required:before {
     vertical-align: middle;
 }
 
-.invisible {
+.test{
+
+}
+
+[class~=invisible] {
     display:none;
 }
 

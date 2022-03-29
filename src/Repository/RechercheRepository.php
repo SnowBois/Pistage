@@ -90,8 +90,11 @@ class RechercheRepository extends ServiceEntityRepository
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
 
         return $this->createQueryBuilder('rec')
+                    ->select('der.date,rec,add,ent')
                     ->join('rec.dernierEtat', 'der')
                     ->join('rec.etudiant', 'etu')
+                    ->join('rec.entreprise','ent')
+                    ->join('ent.adresse','add')
                     ->andWhere('etu = :etudiant')
                     ->andWhere('der.etat = \'En attente\'')
                     ->andWhere('der.date < :dateDeuxSemainesAuparavant')
