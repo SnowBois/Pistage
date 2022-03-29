@@ -33,18 +33,17 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">Les entreprises à relancer</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h4> Les entreprises à relancer </h4>
                                 <ul id="entrepriseARelancer">
 
                                 </ul>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onClick=>afficher sur le </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+                                <button type="button" class="btn btn-primary" onClick=>afficher sur le tableau</button>
                             </div>
                             </div>
                         </div>
@@ -90,7 +89,6 @@
         {% block javascripts %}
             <script src="{{ asset('/bootstrap/js/bootstrap.bundle.min.js') }}"> </script>
             <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
-            <script src="{{ asset('/pistage/js/alerte.js') }}"> </script>
 
             <script>
                 var $boutonAlerte = $('#bouton_alerte');
@@ -104,14 +102,20 @@
                         data : data,
                         dataType: "json",
                         complete: function(html) {
+                        
                             console.log(html.responseJSON);
+                            var objet =JSON.parse(JSON.stringify(html.responseJSON));
+                            var ul = document.getElementById('entrepriseARelancer');
+                            $.each(objet, function(i, obj) {
+                                    var ligne =obj.date.date.split(' ')[0] + " / " + obj[0].entreprise.adresse.voie + " / " + obj[0].entreprise.adresse.commune;
+                                    var li = document.createElement('li');
+                                    li.appendChild(document.createTextNode(ligne));
+                                    ul.appendChild(li);
+            
+                            });
+
                         }
                     });
-
-                    liste = document.getElementById('entrepriseARelancer');
-                    
-
-
                 });
 
             </script>
