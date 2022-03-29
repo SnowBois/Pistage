@@ -55,8 +55,10 @@
                                     Mon Compte
                                 </button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                {% if not is_granted('ROLE_ADMIN') %}
 									<li><a id="bouton_alerte" class="dropdown-item close" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Alertes</a></li>
-									<li><a class="dropdown-item" href="{{ path('pistage_profil') }}">Profil</a></li>
+								{% endif %}
+                                    <li><a class="dropdown-item" href="{{ path('pistage_profil') }}">Profil</a></li>
 									<li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
 								</ul>
 							</div>
@@ -108,7 +110,7 @@
                             var objet =JSON.parse(JSON.stringify(html.responseJSON));
                             var ul = document.getElementById('entrepriseARelancer');
                             $.each(objet, function(i, obj) {
-                                    var ligne =obj.date.date.split(' ')[0] + " / " + obj[0].entreprise.adresse.voie + " / " + obj[0].entreprise.adresse.commune;
+                                    var ligne =obj.date.date.split(' ')[0] + " / "+ obj[0].entreprise.nom +" / " + obj[0].entreprise.adresse.voie + " - " + obj[0].entreprise.adresse.commune;
                                     var li = document.createElement('li');
                                     li.appendChild(document.createTextNode(ligne));
                                     ul.appendChild(li);
