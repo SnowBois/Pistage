@@ -6,11 +6,7 @@
 {% endblock %}
 
 {% block titrePage %}
-    {% if is_granted('ROLE_ADMIN') %}
-        Ensemble des journaux de recherches des étudiants
-    {% else %}
-        Journal de recherches de stage de {{etudiant.getNomComplet()}}
-    {% endif %}
+    Les recherches à relancer de {{etudiant.getNomComplet()}}
 {% endblock %}
 
 {% block contenu %}
@@ -20,9 +16,9 @@
                 {% if not is_granted('ROLE_ADMIN') %}
                     <div class="d-flex flex-row mb-1 boutonsTable">
                         <div class="col-md-12">
-                            <a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
+                            <a href="{{  path('pistage_accueil')  }}" >
                                 <button type="button" class="btn btn-success" id="boutonAjoutRecherche">
-                                    Ajouter une recherche
+                                    Retour
                                 </button>
                             </a>
                         </div>
@@ -32,9 +28,6 @@
                 <table id="dataTable" class="table table-bordered display">
                      <thead class="thead">
                         <tr>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <th scope="col">Étudiant</th>
-                            {% endif %}
 
                             <th class="invisible colonneDateEtHeure" scope="col">Date et heure d'ajout</th>
 
@@ -113,7 +106,7 @@
 					
 				
 					{% else %}
-						<h3><center>Aucune recherche disponible.</center></h3>
+						<h3><center>Aucune recherche à relancer.</center></h3>
 					{% endfor %}
 					</tbody>
 				</table>

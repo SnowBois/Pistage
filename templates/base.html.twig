@@ -29,8 +29,8 @@
                             <img src="{{ asset('/img/pistage_logo_titre.png') }}" />
                         </a>
                     </div>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                    <div class="modal fade bd-example-modal-lglg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="staticBackdropLabel">Les entreprises à relancer</h5>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
-                                <button type="button" class="btn btn-primary" onClick=>afficher sur le tableau</button>
+                                <a type="button" class="btn btn-primary" href="{{ path('pistage_relancesTableau') }}">afficher sur le tableau</a>
                             </div>
                             </div>
                         </div>
@@ -91,9 +91,9 @@
             <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
 
             <script>
-                var $boutonAlerte = $('#bouton_alerte');
+               
                 
-                $boutonAlerte.click(function() {
+                window.onload=function() {
                     var data = {};
                     
                     $.ajax({
@@ -104,6 +104,7 @@
                         complete: function(html) {
                         
                             console.log(html.responseJSON);
+                            var objet = "";
                             var objet =JSON.parse(JSON.stringify(html.responseJSON));
                             var ul = document.getElementById('entrepriseARelancer');
                             $.each(objet, function(i, obj) {
@@ -113,10 +114,9 @@
                                     ul.appendChild(li);
             
                             });
-
                         }
                     });
-                });
+                };
 
             </script>
         {% endblock %}

@@ -85,6 +85,30 @@ class RechercheRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public function findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesEnAttenteSuperieuresA15JoursByEtudiant($etudiant)
+    {
+        $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
+
+        return $this->createQueryBuilder('rec')
+                    ->select('rec,mec,eta,ent,adr,emp,etu')
+                    ->join('rec.mediaContact', 'mec')
+                    ->join('rec.dernierEtat', 'der')
+                    ->join('rec.etatsRecherche', 'eta')
+                    ->join('rec.entreprise', 'ent')
+                    ->join('ent.adresse', 'adr')
+                    ->leftjoin('rec.employe', 'emp')
+                    ->join('rec.etudiant', 'etu')
+                    ->andWhere('etu = :etudiant')
+                    ->andWhere('der.etat = \'En attente\'')
+                    ->andWhere('der.date < :dateDeuxSemainesAuparavant')
+                    ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
+                    ->setParameter('etudiant', $etudiant)
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }
+
     public function findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant)
     {
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
@@ -104,4 +128,6 @@ class RechercheRepository extends ServiceEntityRepository
                     ->getArrayResult()
         ;
    }
+
+
 }
