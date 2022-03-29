@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/datatables/css/datatables.min.css') }}">
+{% endblock %}
+
+{% block titrePage %}
+    Les recherches à relancer de {{etudiant.getNomComplet()}}
+{% endblock %}
+
+{% block contenu %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                {% if not is_granted('ROLE_ADMIN') %}
+                    <div class="d-flex flex-row mb-1 boutonsTable">
+                        <div class="col-md-12">
+                            <a href="{{  path('pistage_accueil')  }}" >
+                                <button type="button" class="btn btn-success" id="boutonAjoutRecherche">
+                                    Retour
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <table id="dataTable" class="table table-bordered display">
+                     <thead class="thead">
+                        <tr>
+
+                            <th class="invisible colonneDateEtHeure" scope="col">Date et heure d'ajout</th>
+
+                            <th class="colonneDate" scope="col">Date d'ajout</th>
+
+                            <th scope="col">Nom de l'entreprise</th>
+
+                            <th class="facultatif-nv-1" scope="col">Adresse de l'entreprise
+                            </th>
+
+                            <th class="facultatif-nv-2" scope="col">Nom du contact</th>
+
+                            <th class="facultatif-nv-2" scope="col">Fonction du contact</th>
+
+                            <th class="facultatif-nv-3" scope="col">Média utilisé</th>
+
+                            <th class="facultatif-nv-1" scope="col">Mail de l'entreprise</th>
+
+                            <th class="facultatif-nv-1" scope="col">Téléphone de l'entreprise</th>
+                            
+                            <th scope="col">État de la recherche</th>
+
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <th class="colonneAction facultatif-nv-3" scope="col"></th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for recherche in recherches %}
+					    <tr>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>{{recherche.etudiant.prenom}} {{recherche.etudiant.nom}}</td>
+                            {% endif %}
+                            <td class="invisible">{{recherche.etatsRecherche[0].date|date("d/m/Y H:i:s")}}</td>
+
+							<td>{{recherche.etatsRecherche[0].date|date("d/m/Y")}}</td>
+
+                            <td>{{recherche.entreprise.nom}}</td>
+
+                            <td class="facultatif-nv-1">{{recherche.entreprise.adresse.voie}} {{recherche.entreprise.adresse.batimentResidenceZI}} {{recherche.entreprise.adresse.codePostal}} {{recherche.entreprise.adresse.commune}} </td>
+
+                            {% if recherche.employe is not null %}
+                                <td class="facultatif-nv-2">{{recherche.employe.prenom}} {{recherche.employe.nom}}</td>
+
+                                <td class="facultatif-nv-2">{{recherche.employe.fonction}}</td>
+                            {% else %}
+                                <td class="facultatif-nv-2"></td>
+                                <td class="facultatif-nv-2"></td>
+                            {% endif %}
+
+                            <td class="facultatif-nv-3">{{recherche.mediaContact.intitule}}</td>
+
+                            <td class="facultatif-nv-1">{{recherche.entreprise.adresseMail}}</td>
+
+                            <td class="facultatif-nv-1">{{recherche.entreprise.numeroTelephone}}</td>
+                            
+                            {% if (recherche.etatsRecherche|last.etat) == "En attente" %}
+                                <td style="background-color:#008196;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Relancé" %}
+                                <td style="background-color:#C47F00;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Accepté" %}
+                                <td style="background-color:#189618;color:#FFFFFF">
+                            {% elseif (recherche.etatsRecherche|last.etat) == "Refusé" %}
+                                <td style="background-color:#CA3120;color:#FFFFFF">        
+                            {% endif %}{{recherche.etatsRecherche|last.etat}}</td>
+                            
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <td class="facultatif-nv-3 celluleBoutonModif">
+                                    <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
+                                        <i class="icon-cog"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            
+					    </tr>
+					
+				
+					{% else %}
+						<h3><center>Aucune recherche à relancer.</center></h3>
+					{% endfor %}
+					</tbody>
+				</table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/datatables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/moment.min.js') }}"></script>
+    <script src="{{ asset('/datatables/js/datetime-moment.js') }}"></script>
+
+    <script src="{{ asset('/pistage/js/recherche_par_colonne.js') }} ">
+       
+    </script>
+{% endblock %}

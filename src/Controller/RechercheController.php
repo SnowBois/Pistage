@@ -171,4 +171,21 @@ class RechercheController extends AbstractController
 
         return new JsonResponse($repositoryRecherche->findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant));
     }
+
+     
+    /**
+     * @Route("/relances", name="pistage_relancesTableau")
+     */
+    public function afficherRelancesDansTableau(RechercheRepository $repositoryRecherche): Response
+    {
+        $user = $this->getUser();
+
+        $etudiant = $user->getEtudiant();
+
+        $recherchesARelancer = $repositoryRecherche->findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesEnAttenteSuperieuresA15JoursByEtudiant($etudiant);
+
+        return $this->render('recherche/recherchesARelancer.html.twig', ['recherches' => $recherchesARelancer,
+                                                         'etudiant' => $etudiant]);
+    }
+        
 }
