@@ -82,10 +82,6 @@ class AppFixtures extends Fixture
         $adresse->setCodePostal($faker->randomNumber(5, true));
         $adresse->setPays($faker->country());
 
-        $cursus = new Cursus();
-        $cursus->setNomLong("Diplôme Universitaire de Technologie en Informatique");
-        $cursus->setNomCourt("DUT Info");
-
         $utilisateur = new Utilisateur();
         $utilisateur->setUsername("slongy");
         $utilisateur->setPassword('$2y$10$xKguGVF8mtNfaFu3hohum.YFrS/5x0aJ4wd8InSSMJhnKyhXHZbUi');
@@ -231,8 +227,8 @@ class AppFixtures extends Fixture
 
             // On persiste toutes les entités générées
 
-            $manager->persist($etatRecherche);
             $manager->persist($recherche);
+            $manager->persist($etatRecherche);
             $manager->persist($entreprise);
             $manager->persist($adresse);
 		}

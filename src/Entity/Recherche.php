@@ -64,6 +64,7 @@ class Recherche
 
     /**
      * @ORM\OneToOne(targetEntity=EtatRecherche::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $dernierEtat;
 
