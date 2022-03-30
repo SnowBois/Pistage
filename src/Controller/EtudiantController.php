@@ -93,6 +93,7 @@ class EtudiantController extends AbstractController
                     $etudiant->setNumeroEtudiant($etudiantCourant[EtudiantController::COLONNE_NUMERO_ETUDIANT]);
                     $etudiant->setNumeroTelephone($etudiantCourant[EtudiantController::COLONNE_NUMERO_TELEPHONE]);
                     $etudiant->setAdresseMail($etudiantCourant[EtudiantController::COLONNE_ADRESSE_MAIL]);
+                    $etudiant->setPremiereConnexion(true);
 
                     // On vérifie que l'étudiant spécifié n'existe pas déjà
                     $resultat = $repositoryEtudiant->findOneBy(['numeroEtudiant' => $etudiant->getNumeroEtudiant()]);

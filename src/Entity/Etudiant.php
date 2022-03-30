@@ -70,6 +70,11 @@ class Etudiant
      */
     private $utilisateur;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $premiereConnexion;
+
     public function __construct()
     {
         $this->recherches = new ArrayCollection();
@@ -209,5 +214,17 @@ class Etudiant
     public function getNomComplet(): ?string 
     {
         return $this->getPrenom() . ' ' . $this->getNom();
+    }
+
+    public function getPremiereConnexion(): ?bool
+    {
+        return $this->premiereConnexion;
+    }
+
+    public function setPremiereConnexion(bool $premiereConnexion): self
+    {
+        $this->premiereConnexion = $premiereConnexion;
+
+        return $this;
     }
 }
