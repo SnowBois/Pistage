@@ -36,7 +36,9 @@ class SecurityController extends AbstractController
         $form = $this->createForm(UtilisateurPremConnexionType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            
+            $email = $form['email']->getData();
+            $login = explode('@',$email);
+
         }
         
         return $this->render('pro_stage/formulaireEntreprise.html.twig',['vueFormulaireInscription' => $formulaireInscription -> createView()]);  
