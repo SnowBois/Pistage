@@ -105,7 +105,8 @@ class RechercheController extends AbstractController
 
         // Récupération de la liste des entreprises disponibles
 
-        return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 'action' => 'ajouter']);
+        return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 
+                                                                                          'action' => 'ajouter']);
     }
 
     /**
@@ -162,7 +163,22 @@ class RechercheController extends AbstractController
 
         
         // Récupération de la liste des entreprises disponibles
-        return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 'action' => 'modifier']);
+        return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 
+                                                                                          'recherche' => $recherche,
+                                                                                          'action' => 'modifier']);
+    }
+
+    /**
+     * @Route("/supprimerRecherche/{id}", name="recherche_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Recherche $recherche, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$recherche->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($recherche);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('pistage_accueil', [], Response::HTTP_SEE_OTHER);
     }
 
     /**

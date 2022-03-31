@@ -93,8 +93,9 @@
             <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
 
             <script>
-            {% if not is_granted('ROLE_ADMIN') %}
                 {% if is_granted('ROLE_USER') %}
+                    // Récupérer les recherches à relancer de plus de deux semaines
+                    
                         window.onload=function() {
                             var data = {};
                             
@@ -120,7 +121,7 @@
                     
                 {% endif %}
             {% else %}
-            
+                // Récupérer les étudiants n'ayant pas assez cherché
 
             {% endif %}
             </script>
