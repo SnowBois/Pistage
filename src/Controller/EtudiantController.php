@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/etudiant")
@@ -143,9 +144,13 @@ class EtudiantController extends AbstractController
         
     }
 
-    /*public function recupererEtudiantSansRechercheRecentes(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
-    {
 
-        return new JsonResponse($repositoryRecherche->findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant));
-    }*/
+    
+    /**
+     * @Route("/etudiantAfouhaiter", name="etudiant_etudiantAfouhaiter")
+     */
+    public function recupererEtudiantAvecRechercheDateDePlusDe15j(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
+    {
+        return new JsonResponse($repositoryEtudiant->findEtudiantAvecRecherchesEnAttenteSuperieuresA15Jours());
+    }
 }
