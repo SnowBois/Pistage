@@ -43,7 +43,8 @@ class RechercheType extends AbstractType
                     return $repositoryMediaContact->createQueryBuilder('mc')
                         ->orderBy('mc.intitule', 'ASC');
                 },
-                'placeholder' => "Sélectionner le média de contact..."
+                'placeholder' => "Sélectionner le média de contact...",
+                'label' => 'Média de contact'
             ))
             ->add('observations', TextareaType::class, ['required' => false])
             ->add('entreprise', EntityType::class, array(
@@ -59,20 +60,22 @@ class RechercheType extends AbstractType
                 },
                 'placeholder' => "Choisissez l'entreprise..."
             ))
-            ->add('nouvelleEntreprise', CollectionType::class, [
+            ->add('nouvelleEntreprise', CollectionType::class, array(
                 'entry_type' => EntrepriseType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'mapped' => false
-            ])
-            ->add('nouvelEmploye', CollectionType::class, [
+                'mapped' => false,
+                'label' => false
+            ))
+            ->add('nouvelEmploye', CollectionType::class, array(
                 'entry_type' => EmployeType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'mapped' => false
-            ])
+                'mapped' => false,
+                'label' => false
+            ))
             ->add('premierEtat', ChoiceType::class, array(
                 'choices'  => [
                     'Refusé' => 'Refusé',
@@ -88,7 +91,8 @@ class RechercheType extends AbstractType
                 'label_attr' =>  [
                     'class'=>'radio-inline' // Pour que les boutons radio soient alignés
                 ],
-                'mapped' => false // Pour dire que cet attribut n'est pas dans l'entité (mais nous servira dans le contrôleur)
+                'mapped' => false, // Pour dire que cet attribut n'est pas dans l'entité (mais nous servira dans le contrôleur)
+                'label' => "État de la recherche"
             ))
             // ->add('etatsRecherche')
             // ->add('etudiant')

@@ -36,17 +36,20 @@ label.required:before {
 	margin-bottom:3%;
 }
 
-.celluleBoutonModif {
+.celluleBoutonsAction {
     text-align:center;
     vertical-align: middle;
 }
 
-.test{
-
+.invisible {
+    display:none;
 }
 
-[class~=invisible] {
-    display:none;
+.boutonInvisible {
+    background: none;
+    padding: 0px;
+    border: none;
+    color: #0d6efd;
 }
 
 

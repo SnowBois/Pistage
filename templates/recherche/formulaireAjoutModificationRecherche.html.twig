@@ -19,7 +19,7 @@
                     {{ form_start(vueFormulaireRecherche) }}
 
                     <div> <!-- Affichage du champ de sélection du média de contact de la recherche -->
-                        {{form_row(vueFormulaireRecherche.mediaContact, {'label': "Média de contact"})}} <br/>
+                        {{form_row(vueFormulaireRecherche.mediaContact)}} <br/>
                     </div>
 
                     <div> <!-- Affichage du champ de saisie des observations de la recherche -->
@@ -55,23 +55,14 @@
                     <HR>
 
                     <div> <!-- Affichage des boutons radio de choix d'état de la recherche -->
-                        {{form_row(vueFormulaireRecherche.premierEtat, {'label': 'État de la recherche'})}}
+                        {{form_row(vueFormulaireRecherche.premierEtat)}}
                     </div>
 
                     <br/>
 
                     <button type="submit" class="btn btn-dark">Enregistrer</button>
 
-                    {{ form_row(vueFormulaireRecherche._token) }}
-
-                    {{ form_end(vueFormulaireRecherche, {'render_rest': false}) }}
-
-                    {% if action == 'modifier' %}
-                        <form method="post" action="{{ path('recherche_delete', {'id': recherche.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recherche ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recherche.id) }}">
-                            <button class="btn btn-dark">Supprimer</button>
-                        </form>
-                    {% endif %}
+                    {{ form_end(vueFormulaireRecherche) }}
             </div>
 	    </div>
     </div>

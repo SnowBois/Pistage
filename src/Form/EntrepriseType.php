@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 use App\Form\AdresseType;
 
 class EntrepriseType extends AbstractType
@@ -15,14 +18,14 @@ class EntrepriseType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('numeroTelephone')
-            ->add('typeEtablissement')
-            ->add('activite')
-            ->add('numeroSIRET')
-            ->add('codeAPEouNAF')
+            ->add('numeroTelephone', TelType::class, array('label' => "Numéro de téléphone"))
+            ->add('typeEtablissement', TextType::class, array('label' => "Type d'établissement"))
+            ->add('activite', TextType::class, array('label' => "Activité"))
+            ->add('numeroSIRET', TextType::class, array('label' => "Numéro de SIRET"))
+            ->add('codeAPEouNAF', TextType::class, array('label' => "Code APE ou NAF"))
             ->add('statutJuridique')
             ->add('effectif')
-            ->add('numeroFax')
+            ->add('numeroFax', TextType::class, array('label' => "Numéro de fax"))
             ->add('adresseMail')
             ->add('siteWeb')
             ->add('adresse', AdresseType::class)
