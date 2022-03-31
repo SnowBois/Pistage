@@ -196,4 +196,9 @@ class Employe
     {
         return $this->getPrenom() . ' ' . $this->getNom() . ' (' . $this->getEntreprise()->getNom() . ')';
     }
+
+    public function __toString(): string
+    {
+        return $this->getNomComplet();
+    }
 }

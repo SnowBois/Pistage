@@ -1,0 +1,20 @@
+easy_admin:
+    design:
+          brand_color: '#8FC857'
+    site_name: '<img src="/img/pistage_logo_titre.png">'
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Administrateur
+        - App\Entity\Adresse
+        - App\Entity\Cursus
+        - App\Entity\Employe
+        - App\Entity\EnseignantReferent
+        - App\Entity\Entreprise
+        - App\Entity\EtablissementEnseignement
+        - App\Entity\EtatRecherche
+        - App\Entity\Etudiant
+        - App\Entity\MediaContact
+        - App\Entity\Recherche
+        - App\Entity\Service
+        - App\Entity\Stage
+        - App\Entity\Utilisateur

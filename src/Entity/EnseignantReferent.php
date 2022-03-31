@@ -122,4 +122,9 @@ class EnseignantReferent
     {
         return $this->getPrenom() . ' ' . $this->getNom();
     }
+
+    public function __toString(): string
+    {
+        return $this->getNomComplet();
+    }
 }

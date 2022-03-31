@@ -312,4 +312,9 @@ class Adresse
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->voie . " " . $this->codePostal . " " . $this->commune . " " . $this->pays;
+    }
 }

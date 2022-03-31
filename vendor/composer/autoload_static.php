@@ -116,6 +116,16 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
             'ProxyManager\\' => 13,
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
+            'Pagerfanta\\Twig\\' => 16,
+            'Pagerfanta\\Solarium\\' => 20,
+            'Pagerfanta\\Elastica\\' => 20,
+            'Pagerfanta\\Doctrine\\PHPCRODM\\' => 29,
+            'Pagerfanta\\Doctrine\\ORM\\' => 24,
+            'Pagerfanta\\Doctrine\\MongoDBODM\\' => 31,
+            'Pagerfanta\\Doctrine\\DBAL\\' => 25,
+            'Pagerfanta\\Doctrine\\Collections\\' => 32,
+            'Pagerfanta\\Adapter\\' => 19,
+            'Pagerfanta\\' => 11,
         ),
         'N' => 
         array (
@@ -138,6 +148,7 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         'E' => 
         array (
             'Egulias\\EmailValidator\\' => 23,
+            'EasyCorp\\Bundle\\EasyAdminBundle\\' => 32,
         ),
         'D' => 
         array (
@@ -483,6 +494,46 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'Pagerfanta\\Twig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Twig',
+        ),
+        'Pagerfanta\\Solarium\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Solarium',
+        ),
+        'Pagerfanta\\Elastica\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Elastica',
+        ),
+        'Pagerfanta\\Doctrine\\PHPCRODM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/PHPCRODM',
+        ),
+        'Pagerfanta\\Doctrine\\ORM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/ORM',
+        ),
+        'Pagerfanta\\Doctrine\\MongoDBODM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/MongoDBODM',
+        ),
+        'Pagerfanta\\Doctrine\\DBAL\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/DBAL',
+        ),
+        'Pagerfanta\\Doctrine\\Collections\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/Collections',
+        ),
+        'Pagerfanta\\Adapter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/src/Adapter',
+        ),
+        'Pagerfanta\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Core',
+        ),
         'Nelmio\\CorsBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
@@ -510,6 +561,10 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
+        ),
+        'EasyCorp\\Bundle\\EasyAdminBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/easycorp/easyadmin-bundle/src',
         ),
         'Doctrine\\SqlFormatter\\' => 
         array (
