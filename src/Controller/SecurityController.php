@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\UtilisateurPremConnexionType;
 
 class SecurityController extends AbstractController
 {
@@ -29,19 +30,20 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/inscription", name="app_inscription")
+     * @Route("/premiereConnexion", name="app_premiere_connexion")
      */
-    public function inscription(Request $requeteHTTP, EntityManagerInterface $manager): Response
+    public function premiereConnexion(Request $requeteHTTP, EntityManagerInterface $manager): Response
     {
-        $form = $this->createForm(UtilisateurPremConnexionType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        $formulairePremiereConnexion = $this->createForm(UtilisateurPremConnexionType::class);
+        $formulairePremiereConnexion->handleRequest($requeteHTTP);
+        if ($formulairePremiereConnexion->isSubmitted() && $formulairePremiereConnexion->isValid()){
             $email = $form['email']->getData();
-            $login = explode('@',$email);
+            $chaineCoupee = explode('@',$email);
+            $login = $chaineCoupee[0];
 
         }
         
-        return $this->render('pro_stage/formulaireEntreprise.html.twig',['vueFormulaireInscription' => $formulaireInscription -> createView()]);  
+        return $this->render('security/premiereConnexion.html.twig',['vueFormulairePremiereConnexion' => $formulairePremiereConnexion -> createView()]);  
     }
 
 

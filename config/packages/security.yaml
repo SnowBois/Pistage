@@ -25,4 +25,4 @@ security:
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: '^/[^login]', roles: ROLE_USER }
+        - { path: '^/[^(login|api|inscription)]', roles: ROLE_USER }

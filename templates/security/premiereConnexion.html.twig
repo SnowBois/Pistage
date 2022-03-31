@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}
+    Formulaire de première connexion
+{% endblock %}
+
+{% block contenu %}
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form method="post">
+
+
+                        {{ form_start(vueFormulairePremiereConnexion) }}
+
+                            {{ form_row(vueFormulairePremiereConnexion.email) }}
+
+                        {{ form_end(vueFormulairePremiereConnexion) }}
+
+                        {#
+                            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                            See https://symfony.com/doc/current/security/remember_me.html
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" name="_remember_me"> Remember me
+                                </label>
+                            </div>
+                        #}
+
+                        <button class="btn btn-lg btn-primary" type="submit">
+                            S'inscrire
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}
