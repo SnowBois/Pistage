@@ -105,9 +105,6 @@
                         data : data,
                         dataType: "json",
                         complete: function(html) {
-                        
-                            console.log(html.responseJSON);
-                            var objet = "";
                             var objet =JSON.parse(JSON.stringify(html.responseJSON));
                             var ul = document.getElementById('entrepriseARelancer');
                             $.each(objet, function(i, obj) {
