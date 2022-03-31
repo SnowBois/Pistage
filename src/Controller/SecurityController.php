@@ -57,6 +57,7 @@ class SecurityController extends AbstractController
                         $encodagePassword = $passwordEncoder->encodePassword($utilisateur,$pwd);
                         $utilisateur->setPassword($encodagePassword);
                         $utilisateur->setEtudiant($etudiantCherche);
+                        $utilisateur->setRoles(array('ROLE_USER'));
                         
                         $manager->persist($etudiantCherche);
                         $manager->persist($utilisateur);
