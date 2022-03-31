@@ -19,6 +19,17 @@ class EtudiantRepository extends ServiceEntityRepository
         parent::__construct($registry, Etudiant::class);
     }
 
+    public function findEtudiantByEmail($email)
+    {
+        return $this    ->createQueryBuilder('etu')
+                        ->select('etu')                    
+                        ->andWhere('etu.adresseMail = :email')
+                        ->setParameter('email', $email)
+                        ->getQuery()
+                        ->getOneOrNullResult()
+        ;       
+    }
+
     // /**
     //  * @return Etudiant[] Returns an array of Etudiant objects
     //  */

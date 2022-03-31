@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\UtilisateurChangerMdpType;
+use App\Repository\EtudiantRepository;
+use App\Entity\Utilisateur;
 
 use App\Form\UtilisateurPremConnexionType;
 
@@ -35,24 +37,42 @@ class SecurityController extends AbstractController
     /**
      * @Route("/premiereConnexion", name="app_premiere_connexion")
      */
-    public function premiereConnexion(Request $requeteHTTP, EntityManagerInterface $manager): Response
+    public function premiereConnexion(Request $requeteHTTP, EntityManagerInterface $manager, EtudiantRepository $etudiantRepository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $formulairePremiereConnexion = $this->createForm(UtilisateurPremConnexionType::class);
         $formulairePremiereConnexion->handleRequest($requeteHTTP);
         if ($formulairePremiereConnexion->isSubmitted() && $formulairePremiereConnexion->isValid()){
-            $email = $form['email']->getData();
+            $email = $formulairePremiereConnexion['email']->getData();
             $chaineCoupee = explode('@',$email);
-            if($chaineCoupee[1]==="iutbayonne.univ-pau.fr" || $chaineCoupee[1]==="etud.univ-pau.fr"){
-                $login = $chaineCoupee[0];
-                $etudiant = $utilisateurRepository->findEtudiantByLogin($login);
-                if($etudiant == null){
-                    
-                }
-            }
-            
+            if($chaineCoupee[1]==="iutbayonne.univ-pau.fr"){
+                $etudiantCherche = $etudiantRepository->findEtudiantByEmail($email);
+                if($etudiantCherche != null){                    
+                    if($etudiantCherche->getPremiereConnexion()){
+                        $etudiantCherche->setPremiereConnexion(false);
+                        $utilisateur = new Utilisateur();
+                        $login = $chaineCoupee[0];
+                        $utilisateur->setUsername($login);
+                        $pwd = random_bytes(15);
+                        //mail($email, "Pistage - Votre mot de passe", "Bonjour, \n votre mot de passe temporaire est $pwd. \n Cordialement, \n l'équipe Pistage.");
+                        $encodagePassword = $passwordEncoder->encodePassword($utilisateur,$pwd);
+                        $utilisateur->setPassword($encodagePassword);
+                        $utilisateur->setEtudiant($etudiantCherche);
+                        
+                        $manager->persist($etudiantCherche);
+                        $manager->persist($utilisateur);
+                        $manager->flush();
 
+                        return $this->redirectToRoute('pistage_accueil');
+                    }
+                    else{
+                        return $this->redirectToRoute('app_login');
+                    }                                     
+                }
+                else{
+                    return $this->redirectToRoute('app_inscription');
+                }               
+            }
         }
-        
         return $this->render('security/premiereConnexion.html.twig',['vueFormulairePremiereConnexion' => $formulairePremiereConnexion -> createView()]);  
     }
 
