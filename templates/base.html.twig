@@ -93,33 +93,32 @@
             <script src="{{ asset('/jquery/js/jquery-3.6.0.min.js') }}"> </script>
 
             <script>
-                {% if is_granted('ROLE_USER') %}
-                    // Récupérer les recherches à relancer de plus de deux semaines
+            {% if is_granted('ROLE_USER') %}
+                // Récupérer les recherches à relancer de plus de deux semaines
+
+                window.onload=function() {
+                    var data = {};
                     
-                        window.onload=function() {
-                            var data = {};
-                            
-                            $.ajax({
-                                url : "{{ path('recherche_alertes') }}",
-                                type: "POST",
-                                global: false,
-                                data : data,
-                                dataType: "json",
-                                complete: function(html) {
-                                    var objet =JSON.parse(JSON.stringify(html.responseJSON));
-                                    var ul = document.getElementById('entrepriseARelancer');
-                                    $.each(objet, function(i, obj) {
-                                            var ligne =obj.date.date.split(' ')[0] + " / "+ obj[0].entreprise.nom +" / " + obj[0].entreprise.adresse.voie + " - " + obj[0].entreprise.adresse.commune;
-                                            var li = document.createElement('li');
-                                            li.appendChild(document.createTextNode(ligne));
-                                            ul.appendChild(li);
-                    
-                                    });
-                                }
+                    $.ajax({
+                        url : "{{ path('recherche_alertes') }}",
+                        type: "POST",
+                        global: false,
+                        data : data,
+                        dataType: "json",
+                        complete: function(html) {
+                            var objet =JSON.parse(JSON.stringify(html.responseJSON));
+                            var ul = document.getElementById('entrepriseARelancer');
+                            $.each(objet, function(i, obj) {
+                                    var ligne =obj.date.date.split(' ')[0] + " / "+ obj[0].entreprise.nom +" / " + obj[0].entreprise.adresse.voie + " - " + obj[0].entreprise.adresse.commune;
+                                    var li = document.createElement('li');
+                                    li.appendChild(document.createTextNode(ligne));
+                                    ul.appendChild(li);
+            
                             });
-                        };
-                    
-                {% endif %}
+                        }
+                    });
+                };
+
             {% else %}
                 // Récupérer les étudiants n'ayant pas assez cherché
 
