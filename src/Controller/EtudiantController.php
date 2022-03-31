@@ -139,5 +139,13 @@ class EtudiantController extends AbstractController
         return $this->render('etudiant/formulaireAjoutEtudiantsCSV.html.twig', [
             'vueFormulaireEtudiant' => $form->createView()
         ]);
+
+        
     }
+
+    /*public function recupererEtudiantSansRechercheRecentes(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
+    {
+
+        return new JsonResponse($repositoryRecherche->findRecherchesEnAttenteSuperieuresA15JoursByEtudiant($etudiant));
+    }*/
 }

@@ -47,4 +47,15 @@ class EtudiantRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /*public function findREtudiantEtDateDerniereRechercheSuperieuresA15JoursBy()
+    {
+        $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
+
+        return $this->createQueryBuilder('etu')
+                    ->select('etu')
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }*/
 }
