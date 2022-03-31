@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\UtilisateurChangerMdpType;
+
 use App\Form\UtilisateurPremConnexionType;
 
 class SecurityController extends AbstractController
@@ -61,4 +64,30 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+
+    /**
+     * @Route("/changerMdp", name="app_changerMdp")
+     */
+    public function changerDeMotDePasse(Request $requeteHTTP, EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $form = $this->createForm(UtilisateurChangerMdpType::class);
+        $form->handleRequest($requeteHTTP);
+        $user = $this->getUser();
+        if ($passwordEncoder->isPasswordValid($user, $form->get('oldPassword')->getData())){
+            if ($form->isSubmitted() && $form->isValid()){
+                
+                $newPassWord = $form['newPassword']->getData();
+                
+                $encodagePassword = $passwordEncoder->encodePassword($user,$newPassWord);
+                $user->setPassword($encodagePassword);
+                $manager->persist($user);
+                $manager->flush();
+
+                return $this->redirectToRoute('pistage_profil');
+            }
+        }   
+        return $this->render('security/formulaireChangementDeMdp.html.twig',['vueFormulaireChangementMdp' => $form -> createView()]);  
+    }
+    
 }

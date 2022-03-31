@@ -162,7 +162,6 @@ class RechercheController extends AbstractController
 
         
         // Récupération de la liste des entreprises disponibles
-
         return $this->render('recherche/formulaireAjoutModificationRecherche.html.twig', ['vueFormulaireRecherche' => $formulaireRecherche->createView(), 'action' => 'modifier']);
     }
 
