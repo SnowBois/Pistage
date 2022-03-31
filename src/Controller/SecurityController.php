@@ -42,7 +42,14 @@ class SecurityController extends AbstractController
         if ($formulairePremiereConnexion->isSubmitted() && $formulairePremiereConnexion->isValid()){
             $email = $form['email']->getData();
             $chaineCoupee = explode('@',$email);
-            $login = $chaineCoupee[0];
+            if($chaineCoupee[1]==="iutbayonne.univ-pau.fr" || $chaineCoupee[1]==="etud.univ-pau.fr"){
+                $login = $chaineCoupee[0];
+                $etudiant = $utilisateurRepository->findEtudiantByLogin($login);
+                if($etudiant == null){
+                    
+                }
+            }
+            
 
         }
         
