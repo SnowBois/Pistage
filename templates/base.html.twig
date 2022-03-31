@@ -118,9 +118,23 @@
                         }
                     });
                 };
-
-            {% else %}
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
                 // Récupérer les étudiants n'ayant pas assez cherché
+                /*window.onload=function() {
+                    var data = {};
+                    
+                    $.ajax({
+                        url : "{{ path('etudiant_etudiantAfouhaiter') }}",
+                        type: "POST",
+                        global: false,
+                        data : data,
+                        dataType: "json",
+                        complete: function(html) {
+                            console.log(html.responseJSON);
+                        }
+                    });
+                };/*
 
             {% endif %}
             </script>

@@ -59,14 +59,65 @@ class EtudiantRepository extends ServiceEntityRepository
     }
     */
 
-    /*public function findREtudiantEtDateDerniereRechercheSuperieuresA15JoursBy()
+
+    public function findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesEnAttenteSuperieuresA15JoursByEtudiant($etudiant)
     {
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
 
-        return $this->createQueryBuilder('etu')
-                    ->select('etu')
+        return $this->createQueryBuilder('rec')
+                    ->select('rec,mec,eta,ent,adr,emp,etu')
+                    ->join('rec.mediaContact', 'mec')
+                    ->join('rec.dernierEtat', 'der')
+                    ->join('rec.etatsRecherche', 'eta')
+                    ->join('rec.entreprise', 'ent')
+                    ->join('ent.adresse', 'adr')
+                    ->leftjoin('rec.employe', 'emp')
+                    ->join('rec.etudiant', 'etu')
+                    ->andWhere('etu = :etudiant')
+                    ->andWhere('der.etat = \'En attente\'')
+                    ->andWhere('der.date < :dateDeuxSemainesAuparavant')
+                    ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
+                    ->setParameter('etudiant', $etudiant)
                     ->getQuery()
                     ->getResult()
         ;
-    }*/
+    }
+
+    public function findEtudiantAvecRecherchesEnAttenteSuperieuresA15Jours()
+    {
+        $gestionnaireEntite=$this->getEntityManager();
+        
+        $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
+        $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat having COUNT(rec)>0');
+        $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
+        return $requete->execute();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       /* return $this->createQueryBuilder('etu',)
+                    ->select('etu,derE.date')
+                    ->join('etu.recherches','rec')
+                    ->join('rec.dernierEtat','derE')
+                    ->andWhere('derE.etat != \'Accepté\'')
+                    ->distinct('etu')
+                    ->getQuery()
+                    ->getResult()
+        ;*/
+    }
 }
