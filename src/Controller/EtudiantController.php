@@ -151,6 +151,6 @@ class EtudiantController extends AbstractController
      */
     public function recupererEtudiantAvecRechercheDateDePlusDe15j(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
     {
-        return new JsonResponse($repositoryEtudiant->findEtudiantAvecRecherchesEnAttenteSuperieuresA15Jours());
+        return new JsonResponse($repositoryEtudiant->findEtudiantSansRechercheValide());
     }
 }

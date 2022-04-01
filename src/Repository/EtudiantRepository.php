@@ -83,41 +83,25 @@ class EtudiantRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findEtudiantAvecRecherchesEnAttenteSuperieuresA15Jours()
+    public function findEtudiantAvecRechercheValide()
     {
-        $gestionnaireEntite=$this->getEntityManager();
         
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
-        $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat having COUNT(rec)>0');
+       /* $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat,derE. having COUNT(rec)>0');
         $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
-        return $requete->execute();
+        return $requete->execute();*/
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       /* return $this->createQueryBuilder('etu',)
-                    ->select('etu,derE.date')
+       return $this->createQueryBuilder('etu') 
+                    ->select('etu.nom')
                     ->join('etu.recherches','rec')
                     ->join('rec.dernierEtat','derE')
-                    ->andWhere('derE.etat != \'Accepté\'')
-                    ->distinct('etu')
+                    ->andWhere('derE.etat = \'Accepté\'')
+                    ->groupBy('etu.nom')
+                    ->having('COUNT(rec)>0')
                     ->getQuery()
                     ->getResult()
-        ;*/
+        ;
     }
 }
