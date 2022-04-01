@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\UtilisateurChangerMdpType;
 use App\Repository\EtudiantRepository;
 use App\Entity\Utilisateur;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 use App\Form\UtilisateurPremConnexionType;
 
@@ -37,7 +39,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/premiereConnexion", name="app_premiere_connexion")
      */
-    public function premiereConnexion(Request $requeteHTTP, EntityManagerInterface $manager, EtudiantRepository $etudiantRepository, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function premiereConnexion(Request $requeteHTTP, EntityManagerInterface $manager, EtudiantRepository $etudiantRepository, UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer): Response
     {
         $formulairePremiereConnexion = $this->createForm(UtilisateurPremConnexionType::class);
         $formulairePremiereConnexion->handleRequest($requeteHTTP);
@@ -48,11 +50,26 @@ class SecurityController extends AbstractController
                 $etudiantCherche = $etudiantRepository->findEtudiantByEmail($email);
                 if($etudiantCherche != null){                    
                     if($etudiantCherche->getPremiereConnexion()){
-                        $etudiantCherche->setPremiereConnexion(false);
                         $utilisateur = new Utilisateur();
                         $login = $chaineCoupee[0];
                         $utilisateur->setUsername($login);
                         $pwd = random_bytes(15);
+                        $email = (new Email())
+                                        ->from('kgarel@iutbayonne.univ-pau.fr')
+                                        ->to($email)
+                                        ->priority(Email::PRIORITY_HIGH)
+                                        ->subject('Pistage - Votre mot de passe')
+                                        ->html("
+                                        <h1> Votre mot de passe temporaire sur Pistage </h1>
+                                        <p> Il semble que vous ayez demandé à obtenir un message temporaire sur l'application Pistage <BR>
+                                        Votre mot de passe est le suivant : $pwd <BR>
+                                        Cordialement, <BR>
+                                        l'équipe Pistage.
+                                        </p>
+                                        <p style=\"font-size:10px\"> Si cette opération ne vient pas de vous, veuillez contacter l'enseignant responsable des stages et/ou l'administrateur de l'application</p>
+                                        ");
+            
+                    $mailer->send($email);
                         //mail($email, "Pistage - Votre mot de passe", "Bonjour, \n votre mot de passe temporaire est $pwd. \n Cordialement, \n l'équipe Pistage.");
                         $encodagePassword = $passwordEncoder->encodePassword($utilisateur,$pwd);
                         $utilisateur->setPassword($encodagePassword);
