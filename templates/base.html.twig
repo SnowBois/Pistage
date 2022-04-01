@@ -109,7 +109,10 @@
                             var objet =JSON.parse(JSON.stringify(html.responseJSON));
                             var ul = document.getElementById('entrepriseARelancer');
                             $.each(objet, function(i, obj) {
-                                    var ligne =obj.date.date.split(' ')[0] + " / "+ obj[0].entreprise.nom +" / " + obj[0].entreprise.adresse.voie + " - " + obj[0].entreprise.adresse.commune;
+                                    var dateUS = obj.date.date.split(' ')[0].split('-');
+                                    var dateFR = dateUS[2] + '/' + dateUS[1] + '/' + dateUS[0];
+
+                                    var ligne = dateFR + " / "+ obj[0].entreprise.nom +" / " + obj[0].entreprise.adresse.voie + " - " + obj[0].entreprise.adresse.commune;
                                     var li = document.createElement('li');
                                     li.appendChild(document.createTextNode(ligne));
                                     ul.appendChild(li);

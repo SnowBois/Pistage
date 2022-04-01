@@ -100,8 +100,6 @@ class RechercheType extends AbstractType
         ;
 
         $formModifier = function (FormInterface $form, Entreprise $entreprise = null) {
-            $employes = null === $entreprise ? array() : $entreprise->getEmployes();
-
             $form->add('employe', EntityType::class, array(
                 'class' => Employe::class,
                 'choice_label' => 'nomComplet',
@@ -110,7 +108,12 @@ class RechercheType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'placeholder' => "Choisissez l'employé...",
-                'choices' => $employes,
+                'query_builder' => function (EmployeRepository $repositoryEmploye) use ($entreprise) {
+                    return $repositoryEmploye->createQueryBuilder('emp')
+                        ->andWhere('emp.entreprise = :entreprise')
+                        ->setParameter('entreprise', $entreprise)
+                        ->orderBy('emp.nom', 'ASC');
+                },
                 'disabled' => $entreprise === null,
                 'required' => false
             ));
