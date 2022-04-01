@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\EtatRechercheRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=EtatRechercheRepository::class)
  */
 class EtatRecherche
