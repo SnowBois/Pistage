@@ -104,17 +104,17 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/changerMdp", name="app_changerMdp")
+     * @Route("/modifierMotDePasse", name="app_modification_mot_de_passe")
      */
-    public function changerDeMotDePasse(Request $requeteHTTP, EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function modifierMotDePasse(Request $requeteHTTP, EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(UtilisateurChangerMdpType::class);
         $form->handleRequest($requeteHTTP);
         $user = $this->getUser();
-        if ($passwordEncoder->isPasswordValid($user, $form->get('oldPassword')->getData())){
+        if ($passwordEncoder->isPasswordValid($user, $form->get('ancienMotDePasse')->getData())){
             if ($form->isSubmitted() && $form->isValid()){
                 
-                $newPassWord = $form['newPassword']->getData();
+                $newPassWord = $form['nouveauMotDePasse']->getData();
                 
                 $encodagePassword = $passwordEncoder->encodePassword($user,$newPassWord);
                 $user->setPassword($encodagePassword);
@@ -124,7 +124,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('pistage_profil');
             }
         }   
-        return $this->render('security/formulaireChangementDeMdp.html.twig',['vueFormulaireChangementMdp' => $form -> createView()]);  
+        return $this->render('security/formulaireModificationMotDePasse.html.twig',['vueFormulaireModificationMotDePasse' => $form -> createView()]);  
     }
     
 }

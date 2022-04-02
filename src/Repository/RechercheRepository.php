@@ -128,6 +128,4 @@ class RechercheRepository extends ServiceEntityRepository
                     ->getArrayResult()
         ;
    }
-
-
 }

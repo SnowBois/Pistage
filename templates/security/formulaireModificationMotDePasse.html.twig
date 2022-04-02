@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}
+    Changement du mot de passe
+{% endblock %}
+
+{% block contenu %}
+    <div id="contenuPage" class="container-fluid">
+	    <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {{ form_start(vueFormulaireModificationMotDePasse) }}
+
+                <div>
+                    {{form_row(vueFormulaireModificationMotDePasse.ancienMotDePasse) }} <br/>
+                </div>
+
+                <div>
+                    {{form_row(vueFormulaireModificationMotDePasse.nouveauMotDePasse) }} <br/>
+                </div>
+
+                <button type="submit" class="btn btn-dark">Enregistrer</button>
+
+                {{ form_end(vueFormulaireModificationMotDePasse) }}
+            </div>
+	    </div>
+    </div>
+{% endblock %}
+

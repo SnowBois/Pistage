@@ -130,7 +130,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         'N' => 
         array (
             'Nelmio\\CorsBundle\\' => 18,
-            'Negotiation\\' => 12,
         ),
         'M' => 
         array (
@@ -142,7 +141,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         ),
         'F' => 
         array (
-            'Fig\\Link\\' => 9,
             'Faker\\' => 6,
         ),
         'E' => 
@@ -175,7 +173,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         array (
             'App\\Tests\\' => 10,
             'App\\' => 4,
-            'ApiPlatform\\Core\\' => 17,
         ),
     );
 
@@ -538,10 +535,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         array (
             0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
         ),
-        'Negotiation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
-        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -549,10 +542,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         'Laminas\\Code\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-code/src',
-        ),
-        'Fig\\Link\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/fig/link-util/src',
         ),
         'Faker\\' => 
         array (
@@ -647,10 +636,6 @@ class ComposerStaticInit60cb1671c654909b24ae0c7bd582c234
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
-        ),
-        'ApiPlatform\\Core\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/api-platform/core/src',
         ),
     );
 

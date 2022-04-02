@@ -59,49 +59,88 @@ class EtudiantRepository extends ServiceEntityRepository
     }
     */
 
-
-    public function findRecherchesEtMediasContactEtEtatsEtEntreprisesEtAdressesEtEmployesEnAttenteSuperieuresA15JoursByEtudiant($etudiant)
+    public function findEtudiantSansRechercheValide()
     {
-        $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
-
-        return $this->createQueryBuilder('rec')
-                    ->select('rec,mec,eta,ent,adr,emp,etu')
-                    ->join('rec.mediaContact', 'mec')
-                    ->join('rec.dernierEtat', 'der')
-                    ->join('rec.etatsRecherche', 'eta')
-                    ->join('rec.entreprise', 'ent')
-                    ->join('ent.adresse', 'adr')
-                    ->leftjoin('rec.employe', 'emp')
-                    ->join('rec.etudiant', 'etu')
-                    ->andWhere('etu = :etudiant')
-                    ->andWhere('der.etat = \'En attente\'')
-                    ->andWhere('der.date < :dateDeuxSemainesAuparavant')
-                    ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
-                    ->setParameter('etudiant', $etudiant)
-                    ->getQuery()
-                    ->getResult()
-        ;
-    }
-
-    public function findEtudiantAvecRechercheValide()
-    {
-        
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
        /* $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat,derE. having COUNT(rec)>0');
         $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
         return $requete->execute();*/
-    
-
-
-       return $this->createQueryBuilder('etu') 
-                    ->select('etu.nom')
-                    ->join('etu.recherches','rec')
-                    ->join('rec.dernierEtat','derE')
-                    ->andWhere('derE.etat = \'Accepté\'')
-                    ->groupBy('etu.nom')
-                    ->having('COUNT(rec)>0')
-                    ->getQuery()
-                    ->getResult()
+        
+        /*
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+        return $this->createQueryBuilder('etu')
+                ->select('etu.nom')
+                ->join('etu.recherches', 'rec')
+                ->join('rec.dernierEtat', 'dern')
+                ->where(
+                    $expr->in(
+                        'rec.id',
+                        $this->createQueryBuilder('etud')
+                            ->select('rech.id, MAX(der.date)')
+                            ->join('etud.recherches', 'rech')
+                            ->join('rech.dernierEtat', 'der')
+                            ->getDQL()
+                    )
+                )
+                ->andWhere('dern.etat != \'Accepté\'')
+                ->andWhere('dern.date < :dateDeuxSemainesAuparavant')
+                ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
+                ->getQuery()
+                ->getResult()
         ;
+        */
+        
+        /*
+
+        SELECT etu FROM etudiant 
+        join rec...
+        join etat_rec...
+        where etu not in (
+        Select etu where
+            SELECT disticnt(etu) from etudiant
+            WHERE etat_rec.dernier = 'accepté'
+            and etu not in (
+                SELECT etu From etudiant
+                where dernier_etat.date > dateYa2semaine
+                GroupBy etu
+            Having count(rec) > 0
+        )*/
+
+        /*
+
+        // Récupération du gestionnaire d'entité
+        $gestionnaireEntite = $this->getEntityManager();
+        
+        $qb = $gestionnaireEntite->createQuery(
+            "SELECT etud.id
+            FROM App\Entity\Etudiant etud
+            JOIN etud.recherches rech
+            JOIN rech.dernierEtat eta
+            WHERE eta.etat != 'Accepté'
+            AND eta.date < :dateDeuxSemainesAuparavant"
+        )
+        ->setMaxResults(1);
+        
+        // Construction de la requête
+        $requete = $gestionnaireEntite->createQuery(
+                "SELECT etu.nom
+                FROM App\Entity\Etudiant etu
+                JOIN etu.recherches rec
+                WHERE etu.id IN (
+                    SELECT etud.id
+                    FROM App\Entity\Etudiant etud
+                    JOIN etud.recherches rech
+                    JOIN rech.dernierEtat eta
+                    WHERE eta.etat != 'Accepté'
+                    AND eta.date < :dateDeuxSemainesAuparavant
+                )"  
+            );
+        
+        $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
+
+        // Exécution de la requête et retour des résultats
+        return $requete->execute();
+
+        */
     }
 }

@@ -128,13 +128,20 @@
                     var data = {};
                     
                     $.ajax({
-                        url : "{{ path('etudiant_etudiantAfouhaiter') }}",
+                        url : "{{ path('etudiant_etudiantsAFouetter') }}",
                         type: "POST",
                         global: false,
                         data : data,
                         dataType: "json",
                         complete: function(html) {
-                            console.log(html.responseJSON);
+                            console.log(JSON.stringify(html.responseJSON));
+                            var objet =JSON.parse(JSON.stringify(html.responseJSON));
+                            $.each(objet, function(i, obj) {
+                                    console.log(obj);
+                                    var ligne = obj[0].etudiant.nom;
+                                    console.log(ligne);
+            
+                            });
                         }
                     });
                 };

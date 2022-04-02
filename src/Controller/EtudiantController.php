@@ -143,11 +143,9 @@ class EtudiantController extends AbstractController
 
         
     }
-
-
     
     /**
-     * @Route("/etudiantAfouhaiter", name="etudiant_etudiantAfouhaiter")
+     * @Route("/etudiantsAFouetter", name="etudiant_etudiantsAFouetter")
      */
     public function recupererEtudiantAvecRechercheDateDePlusDe15j(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
     {
