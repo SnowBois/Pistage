@@ -32,6 +32,7 @@ class AppFixtures extends Fixture
         $etudiant->setNumeroEtudiant("667442");
         $etudiant->setAdresseMail("shyldas@iutbayonne.univ-pau.fr");
         $etudiant->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
+        $etudiant->setPremiereConnexion(false);
 
         $adresse = new Adresse();
         $adresse->setVoie($faker->streetAddress());
@@ -74,6 +75,7 @@ class AppFixtures extends Fixture
         $etudiant->setNumeroEtudiant("573323");
         $etudiant->setAdresseMail("slongy@iutbayonne.univ-pau.fr");
         $etudiant->setNumeroTelephone(str_replace(' ', '', $faker->serviceNumber()));
+        $etudiant->setPremiereConnexion(false);
 
         $adresse = new Adresse();
         $adresse->setVoie($faker->streetAddress());
