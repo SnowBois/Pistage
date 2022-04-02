@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '08c437f5c148e2d85b449710f6fcf89d401b0b05',
+        'reference' => '7bbf02e4f2275e3608b669df83964845d3287501',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '08c437f5c148e2d85b449710f6fcf89d401b0b05',
+            'reference' => '7bbf02e4f2275e3608b669df83964845d3287501',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -1227,12 +1227,12 @@
             'dev_requirement' => false,
         ),
         'symfony/serializer' => array(
-            'pretty_version' => 'v4.4.37',
-            'version' => '4.4.37.0',
+            'pretty_version' => 'v4.4.40',
+            'version' => '4.4.40.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/serializer',
             'aliases' => array(),
-            'reference' => '91a221aa75f5e47aa3a49267587b189cc33fbe5c',
+            'reference' => '8efe86f60f594882f118a319ef8fac9353d67b84',
             'dev_requirement' => false,
         ),
         'symfony/service-contracts' => array(
