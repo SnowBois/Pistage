@@ -22,8 +22,9 @@ label.required:before {
 	border:solid 1px black;
 }
 
-#boutonAjoutRecherche{
+.boutonMenuDroite{
 	float:right;
+    margin-left:5px;
 }
 
 .thead{
@@ -45,11 +46,19 @@ label.required:before {
     display:none;
 }
 
+.lienVert {
+    color:#198754;
+}
+
 .boutonInvisible {
     background: none;
     padding: 0px;
     border: none;
-    color: #0d6efd;
+    color:#198754;
+}
+
+.boutonVert:active {
+    background-color:#198754;
 }
 
 

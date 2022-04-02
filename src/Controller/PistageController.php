@@ -60,7 +60,9 @@ class PistageController extends AbstractController
         {
             // Redirection vers la page de profil Admin
 
-            return $this->render('pistage/index.html.twig', ['recherches' => $recherches]);
+            $administrateur = $user->getAdministrateur();
+
+            return $this->render('pistage/profil.html.twig', ['utilisateur' => $user, 'administrateur' => $administrateur]);
         }
         else
         {
@@ -68,7 +70,7 @@ class PistageController extends AbstractController
 
             $etudiant = $user->getEtudiant();
     
-            return $this->render('etudiant/profil.html.twig', ['etudiant' => $etudiant]);
+            return $this->render('pistage/profil.html.twig', ['utilisateur' => $user, 'etudiant' => $etudiant]);
         }
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @Route("/etudiant")
+ * @Route("/admin/etudiant")
  */
 class EtudiantController extends AbstractController
 {

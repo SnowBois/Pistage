@@ -17,11 +17,31 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                {% if not is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="d-flex flex-row mb-1 boutonsTable">
+                        <div class="col-md-12">
+                            <a href="{{ path('easyadmin') }}" >
+                                <button type="button" class="btn btn-success boutonMenuDroite">
+                                    Interface d'administration
+                                </button>
+                            </a>
+                            <a href="{{ path('entreprise_ajout_par_CSV') }}" >
+                                <button type="button" class="btn btn-success boutonMenuDroite">
+                                    Importation CSV Entreprises
+                                </button>
+                            </a>
+                            <a href="{{ path('etudiant_ajout_par_CSV') }}" >
+                                <button type="button" class="btn btn-success boutonMenuDroite">
+                                    Importation CSV Étudiants
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
                     <div class="d-flex flex-row mb-1 boutonsTable">
                         <div class="col-md-12">
                             <a href="{{ path('recherche_formulaireAjoutRecherche') }}" >
-                                <button type="button" class="btn btn-success" id="boutonAjoutRecherche">
+                                <button type="button" class="btn btn-success boutonMenuDroite">
                                     Ajouter une recherche
                                 </button>
                             </a>
@@ -104,7 +124,7 @@
                             {% if not is_granted('ROLE_ADMIN') %}
                                 <td class="facultatif-nv-3 celluleBoutonsAction">
                                     <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
-                                        <i class="icon-cog"></i>
+                                        <i class="icon-cog lienVert"></i>
                                     </a>
 
                                     <form method="post" action="{{ path('recherche_delete', {'id': recherche.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recherche ?');">
