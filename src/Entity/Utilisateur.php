@@ -6,12 +6,15 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
 class Utilisateur implements UserInterface
 {
     /**
+     * @Groups("utilisateur")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -19,11 +22,13 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
+     * @Groups("utilisateur")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
 
     /**
+     * @Groups("utilisateur")
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -41,6 +46,7 @@ class Utilisateur implements UserInterface
     private $administrateur;
 
     /**
+     * @Groups("etudiant_detail")
      * @ORM\OneToOne(targetEntity=Etudiant::class, mappedBy="utilisateur", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
@@ -91,7 +97,7 @@ class Utilisateur implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

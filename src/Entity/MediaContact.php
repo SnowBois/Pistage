@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=MediaContactRepository::class)
  */
 class MediaContact
 {
     /**
+     * @Groups("mediacontact")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,11 +23,13 @@ class MediaContact
     private $id;
 
     /**
+     * @Groups("mediacontact")
      * @ORM\Column(type="string", length=30)
      */
     private $intitule;
 
     /**
+     * @Groups("recherches_detail")
      * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="mediaContact")
      */
     private $recherches;

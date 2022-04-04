@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EtatRechercheRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EtatRechercheRepository::class)
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EtatRecherche
 {
     /**
+     * @Groups("etatrecherche")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -19,16 +21,19 @@ class EtatRecherche
     private $id;
 
     /**
+     * @Groups("etatrecherche")
      * @ORM\Column(type="string", length=30)
      */
     private $etat;
 
     /**
+     * @Groups("etatrecherche")
      * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
+     * @Groups("recherche_detail")
      * @ORM\ManyToOne(targetEntity=Recherche::class, inversedBy="etatsRecherche")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -77,6 +82,6 @@ class EtatRecherche
 
     public function __toString(): string
     {
-        return $this->etat . " " . $this->date;
+        return $this->etat . " " . $this->date->format('d/m/Y H:i:s');
     }
 }

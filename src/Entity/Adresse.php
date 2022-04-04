@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  */
 class Adresse
 {
     /**
+     * @Groups("adresse")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,36 +23,43 @@ class Adresse
     private $id;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=50)
      */
     private $voie;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $batimentResidenceZI;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=50)
      */
     private $commune;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=10)
      */
     private $codePostal;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=50)
      */
     private $pays;
 
     /**
+     * @Groups("adresse")
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $cedex;
 
     /**
+     * @Groups("etudiant_detail")
      * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="adresse")
      */
     private $etudiants;

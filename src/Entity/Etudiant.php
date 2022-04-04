@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant
 {
     /**
+     * @Groups("etudiant")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,29 +23,40 @@ class Etudiant
     private $id;
 
     /**
+     * @Groups("etudiant")
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Groups("etudiant")
      * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
     /**
+     * @Groups("etudiant")
      * @ORM\Column(type="string", length=10)
      */
     private $numeroEtudiant;
 
     /**
+     * @Groups("etudiant")
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $numeroTelephone;
 
     /**
+     * @Groups("etudiant")
      * @ORM\Column(type="string", length=100)
      */
     private $adresseMail;
+
+    /**
+     * @Groups("etudiant")
+     * @ORM\Column(type="boolean")
+     */
+    private $premiereConnexion;
 
     /**
      * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="etudiant")
@@ -50,12 +64,14 @@ class Etudiant
     private $recherches;
 
     /**
+     * @Groups("etudiant")
      * @ORM\ManyToOne(targetEntity=Cursus::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $cursus;
 
     /**
+     * @Groups("etudiant")
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -66,11 +82,6 @@ class Etudiant
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $utilisateur;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $premiereConnexion;
 
     public function __construct()
     {

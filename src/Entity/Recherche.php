@@ -8,12 +8,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=RechercheRepository::class)
  */
 class Recherche
 {
     /**
+     * @Groups("recherche")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,6 +24,7 @@ class Recherche
     private $id;
     
     /**
+     * @Groups("recherche")
      * @ORM\ManyToOne(targetEntity=MediaContact::class, inversedBy="recherches")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
@@ -28,27 +32,39 @@ class Recherche
     private $mediaContact;
 
     /**
+     * @Groups("recherche")
      * @ORM\Column(type="text", nullable=true)
      */
     private $observations;
 
     /**
+     * @Groups("recherche")
      * @ORM\OneToMany(targetEntity=EtatRecherche::class, mappedBy="recherche")
      */
     private $etatsRecherche;
 
     /**
+     * @Groups("recherche")
+     * @ORM\OneToOne(targetEntity=EtatRecherche::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $dernierEtat;
+
+    /**
+     * @Groups("recherche")
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="recherches", cascade={"persist"})
      */
     private $employe;
 
     /**
+     * @Groups("recherche")
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="recherches", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $entreprise;
 
     /**
+     * @Groups("recherche")
      * @ORM\ManyToOne(targetEntity=Etudiant::class, inversedBy="recherches")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -58,12 +74,6 @@ class Recherche
      * @ORM\OneToOne(targetEntity=Stage::class, inversedBy="recherche", cascade={"persist", "remove"})
      */
     private $stage;
-
-    /**
-     * @ORM\OneToOne(targetEntity=EtatRecherche::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private $dernierEtat;
 
     public function __construct()
     {

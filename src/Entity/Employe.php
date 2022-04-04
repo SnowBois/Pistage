@@ -7,12 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=EmployeRepository::class)
  */
 class Employe
 {
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,41 +24,55 @@ class Employe
     private $id;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $fonction;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $numeroTelephone;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $adresseMail;
 
     /**
+     * @Groups("employe_sans_entreprise")
+     * @Groups("employe")
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $estRepresentantLegal;
 
     /**
+     * @Groups("recherches_detail")
      * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="employe")
      */
     private $recherches;
 
     /**
+     * @Groups("employe")
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="employes")
      * @ORM\JoinColumn(nullable=false)
      */

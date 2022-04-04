@@ -7,12 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=EnseignantReferentRepository::class)
  */
 class EnseignantReferent
 {
     /**
+     * @Groups("enseignantreferent")
+     * @Groups("enseignantreferent_sans_stages")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,21 +24,28 @@ class EnseignantReferent
     private $id;
 
     /**
+     * @Groups("enseignantreferent")
+     * @Groups("enseignantreferent_sans_stages")
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Groups("enseignantreferent")
+     * @Groups("enseignantreferent_sans_stages")
      * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
     /**
+     * @Groups("enseignantreferent")
+     * @Groups("enseignantreferent_sans_stages")
      * @ORM\Column(type="string", length=100)
      */
     private $adresseMail;
 
     /**
+     * @Groups("enseignantreferent")
      * @ORM\OneToMany(targetEntity=Stage::class, mappedBy="enseignantReferent")
      */
     private $stages;

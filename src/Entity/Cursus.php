@@ -7,12 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=CursusRepository::class)
  */
 class Cursus
 {
     /**
+     * @Groups("cursus")
+     * @Groups("cursus_sans_etudiants")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,16 +24,21 @@ class Cursus
     private $id;
 
     /**
+     * @Groups("cursus")
+     * @Groups("cursus_sans_etudiants")
      * @ORM\Column(type="text")
      */
     private $nomLong;
 
     /**
+     * @Groups("cursus")
+     * @Groups("cursus_sans_etudiants")
      * @ORM\Column(type="string", length=20)
      */
     private $nomCourt;
 
     /**
+     * @Groups("cursus")
      * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="cursus")
      */
     private $etudiants;

@@ -5,12 +5,14 @@ namespace App\Entity;
 use App\Repository\StageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=StageRepository::class)
  */
 class Stage
 {
     /**
+     * @Groups("stage")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -18,173 +20,207 @@ class Stage
     private $id;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=50)
      */
     private $affiliationSecuriteSociale;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=30)
      */
     private $caisseAssuranceMaladie;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $nombrePersonnesAidant;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text")
      */
     private $moyensOutilsDisponibles;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text", nullable=true)
      */
     private $autreMateriel;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text")
      */
     private $typeTaches;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text", nullable=true)
      */
     private $autresTaches;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text")
      */
     private $competences;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="boolean")
      */
     private $confidentiel;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text")
      */
     private $sujet;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="boolean")
      */
     private $interrompu;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="date")
      */
     private $dateDebut;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="date")
      */
     private $dateFin;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $dureeEnHeures;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $nombreJoursTravailHebdomadaires;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $nombreJoursConges;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="boolean")
      */
     private $gratifie;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="float", nullable=true)
      */
     private $tauxHoraireNetParHeure;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $montantGratification;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=20)
      */
     private $deviseLocale;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=20)
      */
     private $modalitesVersement;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=100)
      */
     private $modaliteSuiviStagiaire;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text", nullable=true)
      */
     private $listeAvantagesEnNature;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=50)
      */
     private $natureTravailFourniSuiteAuStage;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text", nullable=true)
      */
     private $presencesExceptionnelles;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=30)
      */
     private $typeStage;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=50)
      */
     private $thematiqueStage;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="text", nullable=true)
      */
     private $informationsComplementaires;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="string", length=30)
      */
     private $modaliteValidationStage;
 
     /**
+     * @Groups("stage")
      * @ORM\Column(type="integer")
      */
     private $nombreHeuresEnseignement;
 
     /**
+     * @Groups("stage")
      * @ORM\OneToOne(targetEntity=Recherche::class, mappedBy="stage", cascade={"persist", "remove"})
      */
     private $recherche;
 
     /**
+     * @Groups("stage")
      * @ORM\ManyToOne(targetEntity=EtablissementEnseignement::class, inversedBy="stages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $etablissementEnseignement;
 
     /**
+     * @Groups("stage")
      * @ORM\ManyToOne(targetEntity=EnseignantReferent::class, inversedBy="stages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $enseignantReferent;
 
     /**
+     * @Groups("stage")
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="stages")
      */
     private $adresse;

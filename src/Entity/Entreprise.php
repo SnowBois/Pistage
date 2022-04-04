@@ -8,12 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=EntrepriseRepository::class)
  */
 class Entreprise
 {
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,77 +25,106 @@ class Entreprise
     private $id;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=20)
      */
     private $numeroTelephone;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=30)
      */
     private $typeEtablissement;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="text", nullable=true)
      */
     private $activite;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=14)
      */
     private $numeroSIRET;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $codeAPEouNAF;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $statutJuridique;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=10)
      */
     private $effectif;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $numeroFax;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $adresseMail;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $siteWeb;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\OneToMany(targetEntity=Employe::class, mappedBy="entreprise")
      */
     private $employes;
 
     /**
+     * @Groups("recherche_detail")
      * @ORM\OneToMany(targetEntity=Recherche::class, mappedBy="entreprise")
      */
     private $recherches;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\OneToMany(targetEntity=Service::class, mappedBy="entreprise", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $services;
 
     /**
+     * @Groups("entreprise")
+     * @Groups("entreprise_sans_employes")
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="entreprises", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */

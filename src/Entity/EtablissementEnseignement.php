@@ -7,12 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=EtablissementEnseignementRepository::class)
  */
 class EtablissementEnseignement
 {
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,31 +24,42 @@ class EtablissementEnseignement
     private $id;
 
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\Column(type="string", length=50)
      */
     private $composanteUFR;
 
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\Column(type="string", length=30)
      */
     private $disciplineEtDiplome;
 
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\Column(type="string", length=30)
      */
     private $etapeEtude;
 
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\Column(type="string", length=20)
      */
     private $numeroTelephone;
 
     /**
+     * @Groups("etablissementenseignement")
      * @ORM\OneToMany(targetEntity=Stage::class, mappedBy="etablissementEnseignement")
      */
     private $stages;
 
     /**
+     * @Groups("etablissementenseignement")
+     * @Groups("etablissementenseignement_sans_stages")
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="etablissementsEnseignement")
      * @ORM\JoinColumn(nullable=false)
      */

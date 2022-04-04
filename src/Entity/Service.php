@@ -5,12 +5,16 @@ namespace App\Entity;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  */
 class Service
 {
     /**
+     * @Groups("service_sans_entreprise")
+     * @Groups("service")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -18,17 +22,22 @@ class Service
     private $id;
 
     /**
+     * @Groups("service_sans_entreprise")
+     * @Groups("service")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
 
     /**
+     * @Groups("service")
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="services")
      * @ORM\JoinColumn(nullable=false)
      */
     private $entreprise;
 
     /**
+     * @Groups("service_sans_entreprise")
+     * @Groups("service")
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="services", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
