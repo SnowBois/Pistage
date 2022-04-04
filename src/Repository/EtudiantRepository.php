@@ -58,11 +58,13 @@ class EtudiantRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+    /* Abandon de la requête permettant de récupérer les étudiants n'ayant pas assez cherché
 
     public function findEtudiantSansRechercheValide()
     {
         $dateDeuxSemainesAuparavant = new \DateTime('-14 days');
-       /* $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat,derE. having COUNT(rec)>0');
+        /* $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat,derE. having COUNT(rec)>0');
         $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
         return $requete->execute();*/
         
@@ -141,6 +143,8 @@ class EtudiantRepository extends ServiceEntityRepository
         // Exécution de la requête et retour des résultats
         return $requete->execute();
 
-        */
+        
     }
+
+    */
 }
