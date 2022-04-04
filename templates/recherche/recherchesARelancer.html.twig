@@ -95,13 +95,19 @@
                             {% endif %}{{recherche.etatsRecherche|last.etat}}</td>
                             
                             {% if not is_granted('ROLE_ADMIN') %}
-                                <td class="facultatif-nv-3 celluleBoutonModif">
+                                <td class="facultatif-nv-3 celluleBoutonsAction">
                                     <a href="{{ path('recherche_formulaireModificationRecherche', {id: recherche.id}) }}" >
-                                        <i class="icon-cog"></i>
+                                        <i class="icon-cog lienVert"></i>
                                     </a>
+
+                                    <form method="post" action="{{ path('recherche_delete', {'id': recherche.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recherche ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recherche.id) }}">
+                                        <button class="boutonInvisible">
+                                            <i class="icon-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             {% endif %}
-                            
 					    </tr>
 					
 				

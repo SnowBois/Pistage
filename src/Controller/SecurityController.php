@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Form\UtilisateurChangerMdpType;
+use App\Form\UtilisateurModifierMdpType;
 use App\Repository\EtudiantRepository;
 use App\Entity\Utilisateur;
 use Symfony\Component\Mailer\MailerInterface;
@@ -108,7 +108,7 @@ class SecurityController extends AbstractController
      */
     public function modifierMotDePasse(Request $requeteHTTP, EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $form = $this->createForm(UtilisateurChangerMdpType::class);
+        $form = $this->createForm(UtilisateurModifierMdpType::class);
         $form->handleRequest($requeteHTTP);
         $user = $this->getUser();
         if ($passwordEncoder->isPasswordValid($user, $form->get('ancienMotDePasse')->getData())){
