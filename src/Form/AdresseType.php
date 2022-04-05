@@ -15,7 +15,7 @@ class AdresseType extends AbstractType
     {
         $builder
             ->add('voie')
-            ->add('batimentResidenceZI', TextType::class, array('label' => "Bâtiment/Résidence/Z.I."))
+            ->add('batimentResidenceZI', TextType::class, array('label' => "Bâtiment/Résidence/Z.I.", 'required' => false))
             ->add('commune')
             ->add('codePostal')
             ->add('pays')

@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 class EmployeType extends AbstractType
 {
@@ -16,9 +17,9 @@ class EmployeType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
+            ->add('prenom', TextType::class, ['label' => "Prénom"])
             ->add('fonction')
-            ->add('numeroTelephone', TextType::class, ['required' => false])
+            ->add('numeroTelephone', TelType::class, ['required' => false])
             ->add('adresseMail', EmailType::class, ['required' => false])
             // ->add('estRepresentantLegal')
             // ->add('entreprise')
