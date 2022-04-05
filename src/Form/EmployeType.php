@@ -19,7 +19,7 @@ class EmployeType extends AbstractType
             ->add('nom')
             ->add('prenom', TextType::class, ['label' => "Prénom"])
             ->add('fonction')
-            ->add('numeroTelephone', TelType::class, ['required' => false])
+            ->add('numeroTelephone', TelType::class, ['label' => "Numéro de téléphone", 'required' => false])
             ->add('adresseMail', EmailType::class, ['required' => false])
             // ->add('estRepresentantLegal')
             // ->add('entreprise')

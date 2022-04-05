@@ -74,7 +74,8 @@ class RechercheType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'mapped' => false,
-                'label' => false
+                'label' => false,
+                'constraints' => [ new Assert\Valid() ]
             ))
             ->add('premierEtat', ChoiceType::class, array(
                 'choices'  => [
@@ -85,9 +86,7 @@ class RechercheType extends AbstractType
                 ],
                 'multiple' => false,
                 'expanded' => true,
-                'constraints' => [
-                    new Assert\NotBlank()
-                ],
+                'constraints' => [ new Assert\NotBlank() ],
                 'label_attr' =>  [
                     'class'=>'radio-inline' // Pour que les boutons radio soient alignés
                 ],

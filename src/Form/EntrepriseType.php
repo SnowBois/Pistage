@@ -21,15 +21,15 @@ class EntrepriseType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('numeroTelephone', TelType::class, array('label' => "Numéro de téléphone", 'required' => false))
-            ->add('numeroFax', TelType::class, array('label' => "Numéro de fax", 'required' => false))
-            ->add('adresseMail', EmailType::class, array('required' => false))
-            ->add('typeEtablissement', TextType::class, array('label' => "Type d'établissement", 'required' => false))
-            ->add('activite', TextAreaType::class, array('label' => "Activité", 'required' => false))
-            ->add('numeroSIRET', TextType::class, array('label' => "Numéro de SIRET", 'required' => false))
-            ->add('codeAPEouNAF', TextType::class, array('label' => "Code APE ou NAF", 'required' => false))
+            ->add('numeroTelephone', TelType::class, ['label' => "Numéro de téléphone", 'required' => false])
+            ->add('numeroFax', TelType::class, ['label' => "Numéro de fax", 'required' => false])
+            ->add('adresseMail', EmailType::class, ['required' => false])
+            ->add('typeEtablissement', TextType::class, ['label' => "Type d'établissement", 'required' => false])
+            ->add('activite', TextAreaType::class, ['label' => "Activité", 'required' => false])
+            ->add('numeroSIRET', TextType::class, ['label' => "Numéro de SIRET", 'required' => false])
+            ->add('codeAPEouNAF', TextType::class, ['label' => "Code APE ou NAF", 'required' => false])
             ->add('statutJuridique')
-            ->add('effectif', IntegerType::class, array('required' => false))
+            ->add('effectif', IntegerType::class, ['required' => false])
             ->add('siteWeb')
             ->add('adresse', AdresseType::class)
         ;
