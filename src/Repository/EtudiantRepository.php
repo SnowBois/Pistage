@@ -59,7 +59,7 @@ class EtudiantRepository extends ServiceEntityRepository
     }
     */
     
-    /* Abandon de la requête permettant de récupérer les étudiants n'ayant pas assez cherché
+    /* Abandon de la requête permettant de récupérer les étudiants n'ayant pas assez cherché */
 
     public function findEtudiantSansRechercheValide()
     {
@@ -67,26 +67,46 @@ class EtudiantRepository extends ServiceEntityRepository
         /* $requete=$gestionnaireEntite->createQuery('Select etu,derE.date,derE.etat from App\Entity\Etudiant etu join etu.recherches rec join rec.dernierEtat derE where derE.etat=\'Accepté\' and derE.date<:dateDeuxSemainesAuparavant group By etu,derE.etat,derE. having COUNT(rec)>0');
         $requete->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
         return $requete->execute();*/
-        
+
+        /*
+
+        $q1 = $this->createQueryBuilder('et')
+                ->select('DISTINCT et.id')
+                ->join('et.recherches', 're')
+                ->join('re.dernierEtat', 'de')
+                ->andWhere('de.etat = \'Accepté\'');
+
+        $q2 = $this->createQueryBuilder('etud')
+                ->select('DISTINCT etud.id')
+                ->join('etud.recherches', 'rech')
+                ->join('rech.dernierEtat', 'der')
+                ->andWhere('der.date > :dateDeuxSemainesAuparavant');
+
+        $q2->where($q2->expr()->notIn('etud.id', $q1->getDQL()));
+                
+
+        $query = $this->createQueryBuilder('etu')
+                    ->select('DISTINCT etu')
+                    ->join('etu.recherches', 'rec');
+
+        $query->where($query->expr()->notIn('etud.id', $q2->getDQL()))
+            ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant);
+
+        return $query->getQuery()->getArrayResult();
+
+        */
+            
         /*
         $expr = $this->getEntityManager()->getExpressionBuilder();
         return $this->createQueryBuilder('etu')
                 ->select('etu.nom')
-                ->join('etu.recherches', 'rec')
-                ->join('rec.dernierEtat', 'dern')
                 ->where(
-                    $expr->in(
+                    $expr->notIn(
                         'rec.id',
-                        $this->createQueryBuilder('etud')
-                            ->select('rech.id, MAX(der.date)')
-                            ->join('etud.recherches', 'rech')
-                            ->join('rech.dernierEtat', 'der')
+                        
                             ->getDQL()
                     )
                 )
-                ->andWhere('dern.etat != \'Accepté\'')
-                ->andWhere('dern.date < :dateDeuxSemainesAuparavant')
-                ->setParameter('dateDeuxSemainesAuparavant', $dateDeuxSemainesAuparavant)
                 ->getQuery()
                 ->getResult()
         ;
@@ -142,9 +162,8 @@ class EtudiantRepository extends ServiceEntityRepository
 
         // Exécution de la requête et retour des résultats
         return $requete->execute();
-
+            
+        */ 
         
     }
-
-    */
 }

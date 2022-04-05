@@ -137,7 +137,7 @@
                             var objet =JSON.parse(JSON.stringify(html.responseJSON));
                             $.each(objet, function(i, obj) {
                                     console.log(obj);
-                                    var ligne = obj[0].etudiant.nom;
+                                    var ligne = obj.nom;
                                     console.log(ligne);
             
                             });

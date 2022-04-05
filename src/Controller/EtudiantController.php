@@ -51,7 +51,8 @@ class EtudiantController extends AbstractController
             $fichier = fopen($fichierCSV, "r");
             $nbLignes = count(file($fichierCSV));
             $premiereLigne = chop(fgets($fichier));
-            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;CEDEX;PAYS;CURSUS_NOM_LONG;CURSUS_NOM_COURT") {
+            if ($premiereLigne === "NOM;PRENOM;NUMERO_ETUDIANT;NUMERO_TELEPHONE;
+            ADRESSE_MAIL;VOIE;BATIMENT_RESIDENCE_ZI;COMMUNE;CODE_POSTAL;CEDEX;PAYS;CURSUS_NOM_LONG;CURSUS_NOM_COURT") {
                 for ($i = 0; $i < $nbLignes - 1; ++$i) {
                     $ligneCourante = utf8_encode(fgets($fichier));
                     $etudiantCourant = explode(";", $ligneCourante);
@@ -147,8 +148,11 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/etudiantsAFouetter", name="etudiant_etudiantsAFouetter")
      */
+    /*
     public function recupererEtudiantAvecRechercheDateDePlusDe15j(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
     {
         return new JsonResponse($repositoryEtudiant->findEtudiantSansRechercheValide());
     }
+    */
+    
 }
