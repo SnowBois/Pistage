@@ -43,17 +43,22 @@ class SecurityController extends AbstractController
     {
         $formulairePremiereConnexion = $this->createForm(UtilisateurPremConnexionType::class);
         $formulairePremiereConnexion->handleRequest($requeteHTTP);
-        if ($formulairePremiereConnexion->isSubmitted() && $formulairePremiereConnexion->isValid()){
+        if ($formulairePremiereConnexion->isSubmitted() && $formulairePremiereConnexion->isValid())
+        {
             $email = $formulairePremiereConnexion['email']->getData();
             $chaineCoupee = explode('@',$email);
-            if($chaineCoupee[1]==="iutbayonne.univ-pau.fr"){
+            if($chaineCoupee[1]==="iutbayonne.univ-pau.fr")
+            {
                 $etudiantCherche = $etudiantRepository->findEtudiantByEmail($email);
-                if($etudiantCherche != null){                    
-                    if($etudiantCherche->getPremiereConnexion()){
+                if($etudiantCherche != null)
+                {                    
+                    if($etudiantCherche->getPremiereConnexion())
+                    {
                         $utilisateur = new Utilisateur();
                         $login = $chaineCoupee[0];
                         $utilisateur->setUsername($login);
                         $pwd = random_bytes(15);
+                        dump($pwd);
                         $email = (new Email())
                                         ->from('kgarel@iutbayonne.univ-pau.fr')
                                         ->to($email)
@@ -69,7 +74,9 @@ class SecurityController extends AbstractController
                                         <p style=\"font-size:10px\"> Si cette opération ne vient pas de vous, veuillez contacter l'enseignant responsable des stages et/ou l'administrateur de l'application</p>
                                         ");
             
-                    $mailer->send($email);
+                        
+                        $mailer->send($email);
+                        
                         //mail($email, "Pistage - Votre mot de passe", "Bonjour, \n votre mot de passe temporaire est $pwd. \n Cordialement, \n l'équipe Pistage.");
                         $encodagePassword = $passwordEncoder->encodePassword($utilisateur,$pwd);
                         $utilisateur->setPassword($encodagePassword);
@@ -81,15 +88,14 @@ class SecurityController extends AbstractController
 
                         return $this->redirectToRoute('pistage_accueil');
                     }
-                    else{
+                    else
+                    {
                         return $this->redirectToRoute('app_login');
-                    }                                     
-                }
-                else{
-                    return $this->redirectToRoute('app_inscription');
-                }               
+                    }               
+                }   
             }
         }
+
         return $this->render('security/premiereConnexion.html.twig',['vueFormulairePremiereConnexion' => $formulairePremiereConnexion -> createView()]);  
     }
 

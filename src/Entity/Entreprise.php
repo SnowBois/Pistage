@@ -34,14 +34,14 @@ class Entreprise
     /**
      * @Groups("entreprise")
      * @Groups("entreprise_sans_employes")
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $numeroTelephone;
 
     /**
      * @Groups("entreprise")
      * @Groups("entreprise_sans_employes")
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $typeEtablissement;
 
@@ -55,7 +55,7 @@ class Entreprise
     /**
      * @Groups("entreprise")
      * @Groups("entreprise_sans_employes")
-     * @ORM\Column(type="string", length=14)
+     * @ORM\Column(type="string", length=14, nullable=true)
      */
     private $numeroSIRET;
 
@@ -76,7 +76,7 @@ class Entreprise
     /**
      * @Groups("entreprise")
      * @Groups("entreprise_sans_employes")
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $effectif;
 
@@ -105,6 +105,7 @@ class Entreprise
      * @Groups("entreprise")
      * @Groups("entreprise_sans_employes")
      * @ORM\OneToMany(targetEntity=Employe::class, mappedBy="entreprise")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $employes;
 
