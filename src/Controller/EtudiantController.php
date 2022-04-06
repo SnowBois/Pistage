@@ -148,11 +148,8 @@ class EtudiantController extends AbstractController
     /**
      * @Route("/etudiantsAFouetter", name="etudiant_etudiantsAFouetter")
      */
-    /*
     public function recupererEtudiantAvecRechercheDateDePlusDe15j(Request $request, EtudiantRepository $repositoryEtudiant): JsonResponse
     {
         return new JsonResponse($repositoryEtudiant->findEtudiantSansRechercheValide());
     }
-    */
-    
 }
